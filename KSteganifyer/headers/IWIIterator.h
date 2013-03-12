@@ -18,7 +18,7 @@ class IWorkItem;
 class IWIIterator: public Core::IIterator<IWorkItem*>
 {
 public:
-	IWIIterator(const IWorkItem * ipFirst);
+	IWIIterator(IWorkItem * ipFirst);
 	virtual ~IWIIterator();
 	virtual IWorkItem * Current() const;
 	virtual IWorkItem * First() const;
@@ -27,7 +27,7 @@ public:
 private:
 	typedef std::pair<IWorkItem*, int> StackItem;
 	typedef std::stack<StackItem> StackType;
-	const IWorkItem * mpFirst;
+	IWorkItem * mpFirst;
 	StackType mStack;
 };
 

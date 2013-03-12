@@ -1,4 +1,18 @@
 
+#
+# Makefile For building PITUnicode String
+#
+
+# the build target executable:
+TARGET = KStegCore.dll
+# define any directories containing header files
+INCLUDES = -I./headers
+# define any libraries to link into executable
+LIBS =
+
+
+# define the C source files
+SRCS = CWorkItemImpl.cpp CWICompositeImpl.cpp IWIIterator.cpp main.cpp
 
 # define the C compiler to use
 CC = g++
@@ -10,7 +24,8 @@ CFLAGS = -Wall -g
 #define link paths in addition
 LFLAGS = -shared -fPIC 
 
-
+OBJ_FLDR = obj
+BIN_FLDR = bin
 
 # define the C object files  (with macro)
 OBJS = $(SRCS:.cpp=.o)
@@ -24,10 +39,14 @@ OBJS = $(SRCS:.cpp=.o)
 .SUFFIXES: .o .cpp
 
 %.o : source/%.cpp
-	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
-	
-$(TARGET): $(OBJS) 
-	$(CC) $(LFLAGS) $(OBJS) -o $(TARGET) $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $(OBJ_FLDR)/$@
+
+Folders : 
+	@mkdir $(OBJ_FLDR)
+	@mkdir $(BIN_FLDR)
+
+$(TARGET): Folders $(OBJS) 
+	$(CC) $(LFLAGS) $(OBJS) -o $(BIN_FLDR)/$(TARGET) $(LIBS)
 
 all: $(TARGET)
 	@echo  Simple compiler named mycc has been compiled
@@ -37,20 +56,5 @@ clean:
 
 depend: $(SRCS)
 	makedepend $(INCLUDES) $^
-#
-# Makefile For building PITUnicode String
-#
 
-# the build target executable:
-TARGET = PITConUnicodeString.dll
-# define any directories containing header files
-INCLUDES = -I./headers -I../PITConCommon/headers 
-# define any libraries to link into executable
-LIBS =
-
-
-# define the C source files
-SRCS = PITUnicodeString.cpp PITUnicodeStringHelper.cpp
-
-include ../common.mk
 # DO NOT DELETE THIS LINE -- make depend needs it

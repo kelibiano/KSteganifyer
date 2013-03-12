@@ -10,7 +10,7 @@
 #include "../headers/Config.h"
 using namespace Core;
 
-IWIIterator::IWIIterator(const IWorkItem* ipFirst):
+IWIIterator::IWIIterator(IWorkItem* ipFirst):
 		mpFirst(ipFirst)
 {
 }

@@ -12,7 +12,7 @@
 
 namespace Core
 {
-
+class IWIComposite;
 class CWorkItemImpl: public IWorkItem
 {
 public:

@@ -6,6 +6,7 @@
  */
 
 #include "CWorkItemImpl.h"
+#include "IWIComposite.h"
 
 using namespace Core;
 

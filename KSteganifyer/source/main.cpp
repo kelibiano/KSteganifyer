@@ -5,12 +5,14 @@
  *      Author: Kelibiano
  */
 
-#include "../headers/IWorkItem.h"
-#include "../headers/IWIComposite.h"
-#include "../headers/IWIIterator.h"
+#include "IWorkItem.h"
+#include "IWIComposite.h"
+#include "CWICompositeImpl.h"
+#include "IWIIterator.h"
 
 int main(int argc, char ** argv)
 {
+	Core::IWIComposite * pComposite = new Core::CWICompositeImpl();
 	return 0;
 }
 
