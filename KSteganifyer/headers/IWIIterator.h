@@ -1,9 +1,10 @@
-/*
+/* DISTRIBUTED UNDER GNU PUBLIC LICENCE 2013                                   *
+ *******************************************************************************
  * IWIIterator.h
  *
  *  Created on: Mar 10, 2013
  *      Author: Kelibiano
- */
+ ******************************************************************************/
 
 #ifndef IWIITERATOR_H_
 #define IWIITERATOR_H_

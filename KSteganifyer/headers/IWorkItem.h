@@ -1,9 +1,10 @@
-/*
+/* DISTRIBUTED UNDER GNU PUBLIC LICENCE 2013                                   *
+ *******************************************************************************
  * IWorkItem.h
  *
  *  Created on: Mar 9, 2013
  *      Author: Kelibiano
- */
+ ******************************************************************************/
 
 #ifndef IWORKITEM_H_
 #define IWORKITEM_H_

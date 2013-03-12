@@ -1,15 +1,19 @@
-/*
+/* DISTRIBUTED UNDER GNU PUBLIC LICENCE 2013                                   *
+ *******************************************************************************
  * CWorkItemImpl.cpp
  *
  *  Created on: Mar 10, 2013
  *      Author: Kelibiano
- */
+ ******************************************************************************/
 
 #include "CWorkItemImpl.h"
 #include "IWIComposite.h"
 
 using namespace Core;
 
+/******************************************************************************/
+/* CWorkItemImpl::CWorkItemImpl(IWIComposite * iParent)                       */
+/******************************************************************************/
 CWorkItemImpl::CWorkItemImpl(IWIComposite * iParent) :
 		mpParent(iParent)
 {
@@ -19,20 +23,32 @@ CWorkItemImpl::CWorkItemImpl(IWIComposite * iParent) :
 	}
 }
 
+/******************************************************************************/
+/* CWorkItemImpl::CWorkItemImpl()                                             */
+/******************************************************************************/
 CWorkItemImpl::CWorkItemImpl() :
 		mpParent(NULL)
 {
 }
 
+/******************************************************************************/
+/* CWorkItemImpl::~CWorkItemImpl()                                            */
+/******************************************************************************/
 CWorkItemImpl::~CWorkItemImpl()
 {
 }
 
+/******************************************************************************/
+/* IWorkItem* CWorkItemImpl::GetParent() const                                */
+/******************************************************************************/
 IWorkItem* CWorkItemImpl::GetParent() const
 {
 	return mpParent;
 }
 
+/******************************************************************************/
+/* bool CWorkItemImpl::IsCompound() const                                     */
+/******************************************************************************/
 bool CWorkItemImpl::IsCompound() const
 {
 	return false;

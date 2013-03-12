@@ -1,9 +1,10 @@
-/*
+/* DISTRIBUTED UNDER GNU PUBLIC LICENCE 2013                                   *
+ *******************************************************************************
  * IIterator.h
  *
  *  Created on: Mar 10, 2013
  *      Author: Kelibiano
- */
+ ******************************************************************************/
 
 #ifndef IITERATOR_H_
 #define IITERATOR_H_

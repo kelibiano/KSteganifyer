@@ -1,9 +1,10 @@
-/*
+/* DISTRIBUTED UNDER GNU PUBLIC LICENCE 2013                                   *
+ *******************************************************************************
  * IWIIterator.cpp
  *
  *  Created on: Mar 10, 2013
  *      Author: Kelibiano
- */
+ ******************************************************************************/
 
 #include "IWIIterator.h"
 #include "IWorkItem.h"
@@ -11,16 +12,25 @@
 #include "Config.h"
 using namespace Core;
 
+/******************************************************************************/
+/* IWIIterator::IWIIterator(IWorkItem* ipFirst)                               */
+/******************************************************************************/
 IWIIterator::IWIIterator(IWorkItem* ipFirst):
 		mpFirst(ipFirst), mIsDone(false)
 {
 	mStack.push(std::make_pair(ipFirst,-1));
 }
 
+/******************************************************************************/
+/* IWIIterator::~IWIIterator()                                                */
+/******************************************************************************/
 IWIIterator::~IWIIterator()
 {
 }
 
+/******************************************************************************/
+/* IWorkItem * IWIIterator::Current() const                                   */
+/******************************************************************************/
 IWorkItem * IWIIterator::Current() const
 {
 	if(mStack.empty())
@@ -28,11 +38,17 @@ IWorkItem * IWIIterator::Current() const
 	return mStack.top().first;
 }
 
+/******************************************************************************/
+/* IWorkItem* IWIIterator::First() const                                      */
+/******************************************************************************/
 IWorkItem* IWIIterator::First() const
 {
 	return mpFirst;
 }
 
+/******************************************************************************/
+/* IWorkItem * IWIIterator::Next()                                            */
+/******************************************************************************/
 IWorkItem * IWIIterator::Next()
 {
 	if(mStack.empty())
@@ -62,11 +78,17 @@ IWorkItem * IWIIterator::Next()
 	return Current();
 }
 
+/******************************************************************************/
+/* bool IWIIterator::End() const                                              */
+/******************************************************************************/
 bool IWIIterator::End() const
 {
 	return mIsDone;
 }
 
+/******************************************************************************/
+/* int IWIIterator::GetLevel()                                                */
+/******************************************************************************/
 int IWIIterator::GetLevel()
 {
 	return mStack.size() -1;

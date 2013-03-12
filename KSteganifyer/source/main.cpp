@@ -1,9 +1,10 @@
-/*
+/* DISTRIBUTED UNDER GNU PUBLIC LICENCE 2013                                   *
+ *******************************************************************************
  * main.cpp
  *
  *  Created on: Mar 10, 2013
  *      Author: Kelibiano
- */
+ ******************************************************************************/
 
 #include "IWorkItem.h"
 #include "IWIComposite.h"
@@ -13,6 +14,9 @@
 
 #include <iostream>
 
+/******************************************************************************/
+/* int main(int argc, char ** argv)                                           */
+/******************************************************************************/
 int main(int argc, char ** argv)
 {
 	Core::IWIComposite * pComposite = new Utils::CFolder();
