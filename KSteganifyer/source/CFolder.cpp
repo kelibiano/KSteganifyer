@@ -7,15 +7,15 @@
 
 #include "CFolder.h"
 
-namespace Utils {
+using namespace Utils;
 
 CFolder::CFolder() {
-	// TODO Auto-generated constructor stub
 
 }
 
 CFolder::~CFolder() {
-	// TODO Auto-generated destructor stub
 }
 
-} /* namespace Utils */
+std::string CFolder::GetName() const {
+	return "Folder";
+}

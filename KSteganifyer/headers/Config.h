@@ -9,7 +9,7 @@
 #define CONFIG_H_
 
 #ifdef WIN32
-#define NULL 0;
+//#define NULL 0;
 #endif
 
 

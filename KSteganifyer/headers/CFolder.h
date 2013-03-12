@@ -8,12 +8,15 @@
 #ifndef CFOLDER_H_
 #define CFOLDER_H_
 
+#include "CWICompositeImpl.h"
+
 namespace Utils {
 
-class CFolder {
+class CFolder : public Core::CWICompositeImpl {
 public:
 	CFolder();
 	virtual ~CFolder();
+	std::string GetName() const;
 };
 
 } /* namespace Utils */

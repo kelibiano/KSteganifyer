@@ -12,12 +12,13 @@ LIBS =
 
 
 # define the C source files
-SRCS = CWorkItemImpl.cpp CWICompositeImpl.cpp IWIIterator.cpp main.cpp
+SRCS = CWorkItemImpl.cpp CWICompositeImpl.cpp IWIIterator.cpp CFolder.cpp main.cpp
 
 # define the C compiler to use
 CC = g++
 LD = ld
-
+MKDR = @mkdir
+RMDR = @rmdir
 # define any compile-time flags
 CFLAGS = -Wall -g
 
@@ -42,17 +43,20 @@ OBJS = $(SRCS:.cpp=.o)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $(OBJ_FLDR)/$@
 
 Folders : 
-	@mkdir $(OBJ_FLDR)
-	@mkdir $(BIN_FLDR)
+	$(MKDR) $(OBJ_FLDR)
+	$(MKDR) $(BIN_FLDR)
 
 $(TARGET): Folders $(OBJS) 
 	$(CC) $(LFLAGS) $(OBJS) -o $(BIN_FLDR)/$(TARGET) $(LIBS)
 
-all: $(TARGET)
+all: clean $(TARGET)
 	@echo  Simple compiler named mycc has been compiled
 
 clean:
-	$(RM) *.o *~ $(TARGET)
+	$(RM) $(OBJ_FLDR)/*.*
+	$(RM) $(BIN_FLDR)/*.*
+	$(RMDR) $(OBJ_FLDR)
+	$(RMDR) $(BIN_FLDR)
 
 depend: $(SRCS)
 	makedepend $(INCLUDES) $^

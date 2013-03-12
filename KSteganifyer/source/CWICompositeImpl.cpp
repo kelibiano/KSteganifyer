@@ -5,16 +5,17 @@
  *      Author: Kelibiano
  */
 
-#include "../headers/CWICompositeImpl.h"
-#include <algorithm>
+#include "CWICompositeImpl.h"
 
 using namespace Core;
 
-CWICompositeImpl::CWICompositeImpl()
+CWICompositeImpl::CWICompositeImpl() :
+		CWorkItemImpl(NULL), mpParent(NULL)
 {
 }
 
-Core::CWICompositeImpl::CWICompositeImpl(IWIComposite* iParent)
+CWICompositeImpl::CWICompositeImpl(IWIComposite* iParent) :
+		CWorkItemImpl(iParent), mpParent(NULL)
 {
 }
 
@@ -35,7 +36,7 @@ void CWICompositeImpl::AddChild(IWorkItem* iChild)
 
 IWorkItem* CWICompositeImpl::DeleteChild(const int iIndex)
 {
-	if (iIndex >= mItems.size())
+	if (iIndex >= (int)mItems.size())
 		return NULL;
 	IWorkItem * tmp = mItems[iIndex];
 	mItems.erase(mItems.begin() + iIndex);
@@ -47,9 +48,14 @@ bool CWICompositeImpl::HasChildren() const
 	return !mItems.empty();
 }
 
+bool CWICompositeImpl::IsRoot() const
+{
+	return mpParent == NULL;
+}
+
 IWorkItem* CWICompositeImpl::GetChild(const int iIndex) const
 {
-	if (iIndex >= mItems.size())
+	if (iIndex >= (int)mItems.size())
 		return NULL;
 	return mItems[iIndex];
 }

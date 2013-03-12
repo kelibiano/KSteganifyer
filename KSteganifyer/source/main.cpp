@@ -7,12 +7,12 @@
 
 #include "IWorkItem.h"
 #include "IWIComposite.h"
-#include "CWICompositeImpl.h"
+#include "CFolder.h"
 #include "IWIIterator.h"
 
 int main(int argc, char ** argv)
 {
-	Core::IWIComposite * pComposite = new Core::CWICompositeImpl();
+	Core::IWIComposite * pComposite = new Utils::CFolder();
 	return 0;
 }
 
