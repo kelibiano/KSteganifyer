@@ -23,12 +23,14 @@ public:
 	virtual IWorkItem * Current() const;
 	virtual IWorkItem * First() const;
 	virtual IWorkItem * Next();
-	virtual bool End() const = 0;
+	virtual bool End() const;
+	virtual int GetLevel();
 private:
 	typedef std::pair<IWorkItem*, int> StackItem;
 	typedef std::stack<StackItem> StackType;
 	IWorkItem * mpFirst;
 	StackType mStack;
+	bool mIsDone;
 };
 
 } /* namespace Core */

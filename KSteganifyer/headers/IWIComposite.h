@@ -14,7 +14,7 @@ namespace Core {
 
 class IWIComposite: public Core::IWorkItem {
 public:
-	virtual ~IWIComposite() = 0;
+	inline virtual ~IWIComposite(){}
 	virtual bool IsRoot() const = 0;
 	virtual bool HasChildren() const = 0;
 	virtual void AddChild(IWorkItem * iChild) = 0;

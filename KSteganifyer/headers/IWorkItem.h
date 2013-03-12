@@ -17,7 +17,7 @@ public:
 	/**
 	 * Class's destructor
 	 */
-	virtual ~IWorkItem() = 0;
+	inline virtual ~IWorkItem(){}
 	virtual IWorkItem * GetParent() const = 0;
 	virtual bool IsCompound() const = 0;
 };

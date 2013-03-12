@@ -13,6 +13,10 @@ using namespace Core;
 CWorkItemImpl::CWorkItemImpl(IWIComposite * iParent) :
 		mpParent(iParent)
 {
+	if(mpParent != NULL)
+	{
+		mpParent->AddChild(this);
+	}
 }
 
 CWorkItemImpl::CWorkItemImpl() :

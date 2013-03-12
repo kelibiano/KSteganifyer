@@ -9,13 +9,21 @@
 
 using namespace Utils;
 
-CFolder::CFolder() {
+CFolder::CFolder()
+{
 
 }
 
-CFolder::~CFolder() {
+CFolder::~CFolder()
+{
 }
 
-std::string CFolder::GetName() const {
+Utils::CFolder::CFolder(IWIComposite* iParent):
+		CWICompositeImpl(iParent)
+{
+}
+
+std::string CFolder::GetName() const
+{
 	return "Folder";
 }

@@ -4,7 +4,7 @@
 #
 
 # the build target executable:
-TARGET = KStegCore.dll
+TARGET = KStegCore.exe
 # define any directories containing header files
 INCLUDES = -I./headers
 # define any libraries to link into executable
@@ -12,7 +12,7 @@ LIBS =
 
 
 # define the C source files
-SRCS = CWorkItemImpl.cpp CWICompositeImpl.cpp IWIIterator.cpp CFolder.cpp main.cpp
+SRCS = CWorkItemImpl.cpp CWICompositeImpl.cpp IWIIterator.cpp CFolder.cpp CFile.cpp main.cpp
 
 # define the C compiler to use
 CC = g++
@@ -23,7 +23,8 @@ RMDR = @rmdir
 CFLAGS = -Wall -g
 
 #define link paths in addition
-LFLAGS = -shared -fPIC 
+TYPE = #-shared -fPIC 
+LFLAGS = $(TYPE)
 
 OBJ_FLDR = obj
 BIN_FLDR = bin
@@ -40,24 +41,24 @@ OBJS = $(SRCS:.cpp=.o)
 .SUFFIXES: .o .cpp
 
 %.o : source/%.cpp
-	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $(OBJ_FLDR)/$@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
 Folders : 
-	$(MKDR) $(OBJ_FLDR)
 	$(MKDR) $(BIN_FLDR)
 
 $(TARGET): Folders $(OBJS) 
 	$(CC) $(LFLAGS) $(OBJS) -o $(BIN_FLDR)/$(TARGET) $(LIBS)
 
-all: clean $(TARGET)
-	@echo  Simple compiler named mycc has been compiled
+all: clean $(TARGET) cleanObj
+	$(RM) ./*.o
 
-clean:
-	$(RM) $(OBJ_FLDR)/*.*
+clean: cleanObj
 	$(RM) $(BIN_FLDR)/*.*
-	$(RMDR) $(OBJ_FLDR)
 	$(RMDR) $(BIN_FLDR)
 
+cleanObj : 
+	$(RM) ./*.o
+	
 depend: $(SRCS)
 	makedepend $(INCLUDES) $^
 

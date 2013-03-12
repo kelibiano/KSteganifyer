@@ -16,7 +16,7 @@ namespace Core
 class IItem
 {
 public:
-	virtual ~IItem() = 0;
+	inline virtual ~IItem(){}
 	virtual std::string GetName() const = 0;
 };
 

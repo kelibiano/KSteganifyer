@@ -12,9 +12,11 @@
 
 namespace Utils {
 
-class CFolder : public Core::CWICompositeImpl {
+class CFolder : public Core::CWICompositeImpl
+{
 public:
 	CFolder();
+	CFolder(IWIComposite * iParent);
 	virtual ~CFolder();
 	std::string GetName() const;
 };

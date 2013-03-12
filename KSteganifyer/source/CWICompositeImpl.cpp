@@ -53,6 +53,11 @@ bool CWICompositeImpl::IsRoot() const
 	return mpParent == NULL;
 }
 
+IWorkItem* Core::CWICompositeImpl::GetParent() const
+{
+	return CWorkItemImpl::GetParent();
+}
+
 IWorkItem* CWICompositeImpl::GetChild(const int iIndex) const
 {
 	if (iIndex >= (int)mItems.size())

@@ -13,11 +13,12 @@ namespace Core {
 template <class T>
 class IIterator {
 public:
-	virtual ~IIterator() = 0;
+	inline virtual ~IIterator(){};
 	virtual T Current() const = 0;
 	virtual T First() const = 0;
 	virtual T Next() = 0;
 	virtual bool End() const = 0;
+	virtual int GetLevel() = 0;
 };
 
 } /* namespace Core */

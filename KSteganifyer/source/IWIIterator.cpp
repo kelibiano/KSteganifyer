@@ -5,35 +5,69 @@
  *      Author: Kelibiano
  */
 
-#include "../headers/IWIIterator.h"
-#include "../headers/IWorkItem.h"
-#include "../headers/Config.h"
+#include "IWIIterator.h"
+#include "IWorkItem.h"
+#include "IWIComposite.h"
+#include "Config.h"
 using namespace Core;
 
 IWIIterator::IWIIterator(IWorkItem* ipFirst):
-		mpFirst(ipFirst)
+		mpFirst(ipFirst), mIsDone(false)
+{
+	mStack.push(std::make_pair(ipFirst,-1));
+}
+
+IWIIterator::~IWIIterator()
 {
 }
 
-Core::IWIIterator::~IWIIterator()
-{
-
-}
-
-IWorkItem * Core::IWIIterator::Current() const
+IWorkItem * IWIIterator::Current() const
 {
 	if(mStack.empty())
 		return NULL;
 	return mStack.top().first;
 }
 
-IWorkItem* Core::IWIIterator::First() const
+IWorkItem* IWIIterator::First() const
 {
 	return mpFirst;
 }
 
 IWorkItem * IWIIterator::Next()
 {
+	if(mStack.empty())
+	{
+		mIsDone = true;
+		return  Current();
+	}
+
+	mStack.top().second++;
+	IWorkItem* pCurrent = mStack.top().first;
+	if(pCurrent->IsCompound())
+	{
+		IWIComposite* pCurrComp = static_cast<IWIComposite*>(pCurrent);
+		if (pCurrComp->HasChildren())
+		{
+			int idx = mStack.top().second;
+			IWorkItem* child = pCurrComp->GetChild(idx);
+			if (child)
+			{
+				mStack.push(std::make_pair(child, -1));
+				return Current();
+			}
+		}
+	}
+	mStack.pop();
+	Next();
 	return Current();
 }
 
+bool IWIIterator::End() const
+{
+	return mIsDone;
+}
+
+int IWIIterator::GetLevel()
+{
+	return mStack.size() -1;
+}
