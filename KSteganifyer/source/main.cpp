@@ -11,7 +11,11 @@
 #include "CFolder.h"
 #include "CFile.h"
 #include "IWIIterator.h"
-
+#include <dirent.h>
+#include <errno.h>
+#include <dirent.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <iostream>
 
 /******************************************************************************/
@@ -31,10 +35,29 @@ int main(int argc, char ** argv)
 			std::cout << " ";
 		std::cout << pWorkItem->GetName() << std::endl;
 	}
-	delete
+	delete pIterator;
 	delete pComposite;
 	delete pFile1;
 	delete pFile2;
+
+	DIR *pdir;
+	 struct dirent *pent;
+
+	 pdir=opendir("."); //"." refers to the current dir
+	 if (!pdir){
+	 printf ("opendir() failure; terminating");
+	 exit(1);
+	 }
+	 errno=0;
+	 while ((pent=readdir(pdir))){
+	  printf("%s", pent->d_name);
+	 }
+	 if (errno){
+	 printf ("readdir() failure; terminating");
+	 exit(1);
+	 }
+	 closedir(pdir);
+
 	return 0;
 }
 

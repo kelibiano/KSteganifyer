@@ -10,13 +10,15 @@
 #define CFOLDER_H_
 
 #include "CWICompositeImpl.h"
+#include "CFile.h"
 
 namespace Utils {
 
 /**
  * Class to represent a generic folder in file system
  */
-class CFolder : public Core::CWICompositeImpl
+class CFolder : public Core::CWICompositeImpl,
+				public CFile
 {
 public:
 

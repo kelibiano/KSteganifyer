@@ -7,6 +7,7 @@
  ******************************************************************************/
 
 #include "CFolder.h"
+#include <dirent.h>
 
 using namespace Utils;
 
