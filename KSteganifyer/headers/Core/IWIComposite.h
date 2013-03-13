@@ -11,9 +11,9 @@
 
 #include "IWorkItem.h"
 
-namespace Core {
+namespace NCore {
 
-class IWIComposite: public Core::IWorkItem {
+class IWIComposite: public NCore::IWorkItem {
 public:
 	inline virtual ~IWIComposite(){}
 	virtual bool IsRoot() const = 0;

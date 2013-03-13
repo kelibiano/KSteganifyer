@@ -1,26 +1,25 @@
 /* DISTRIBUTED UNDER GNU PUBLIC LICENCE 2013                                   *
  *******************************************************************************
- * IIterator.h
+ * IItem.h
  *
  *  Created on: Mar 10, 2013
  *      Author: Kelibiano
  ******************************************************************************/
 
-#ifndef IITERATOR_H_
-#define IITERATOR_H_
+#ifndef IITEM_H_
+#define IITEM_H_
 
-namespace Core {
+#include <string>
 
-template <class T>
-class IIterator {
+namespace NCore
+{
+
+class IItem
+{
 public:
-	inline virtual ~IIterator(){};
-	virtual T Current() const = 0;
-	virtual T First() const = 0;
-	virtual T Next() = 0;
-	virtual bool End() const = 0;
-	virtual int GetLevel() = 0;
+	inline virtual ~IItem(){}
+	virtual std::string GetName() const = 0;
 };
 
 } /* namespace Core */
-#endif /* IITERATOR_H_ */
+#endif /* IITEM_H_ */

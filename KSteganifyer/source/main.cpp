@@ -6,11 +6,11 @@
  *      Author: Kelibiano
  ******************************************************************************/
 
-#include "IWorkItem.h"
-#include "IWIComposite.h"
-#include "CFolder.h"
-#include "CFile.h"
-#include "IWIIterator.h"
+#include "Core/IWorkItem.h"
+#include "Core/IWIComposite.h"
+#include "File/CFolder.h"
+#include "File/CFile.h"
+#include "Core/IWIIterator.h"
 #include <dirent.h>
 #include <errno.h>
 #include <dirent.h>
@@ -23,13 +23,13 @@
 /******************************************************************************/
 int main(int argc, char ** argv)
 {
-	Core::IWIComposite * pComposite = new Utils::CFolder();
-	Core::IWorkItem * pFile1 = new Utils::CFile(pComposite);
-	Core::IWorkItem * pFile2 = new Utils::CFile(pComposite);
-	Core::IWIIterator * pIterator = new Core::IWIIterator(pComposite);
+	NCore::IWIComposite * pComposite = new NFile::CFolder();
+	NCore::IWorkItem * pFile1 = new NFile::CFile(pComposite);
+	NCore::IWorkItem * pFile2 = new NFile::CFile(pComposite);
+	NCore::IWIIterator * pIterator = new NCore::IWIIterator(pComposite);
 	for (; !pIterator->End(); pIterator->Next())
 	{
-		Core::IWorkItem * pWorkItem = pIterator->Current();
+		NCore::IWorkItem * pWorkItem = pIterator->Current();
 		int level = pIterator->GetLevel();
 		for (int i = 0; i < level; i++)
 			std::cout << " ";

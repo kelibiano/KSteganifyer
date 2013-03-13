@@ -6,10 +6,10 @@
  *      Author: yacine.haoues
  ******************************************************************************/
 
-#include "CFile.h"
-#include "IWIComposite.h"
+#include "File/CFile.h"
+#include "Core/IWIComposite.h"
 
-using namespace Utils ;
+using namespace NFile ;
 
 /******************************************************************************/
 /* CFile::CFile                                                               */
@@ -22,7 +22,7 @@ CFile::CFile()
 /******************************************************************************/
 /* CFile::CFile(Core::IWIComposite * iParent)                                 */
 /******************************************************************************/
-CFile::CFile(Core::IWIComposite * iParent):
+CFile::CFile(NCore::IWIComposite * iParent):
 		CWorkItemImpl(iParent)
 {
 }

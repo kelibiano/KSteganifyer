@@ -11,12 +11,12 @@
 
 #include "IIterator.h"
 #include <stack>
-namespace Core
+namespace NCore
 {
 
 class IWorkItem;
 
-class IWIIterator: public Core::IIterator<IWorkItem*>
+class IWIIterator: public NCore::IIterator<IWorkItem*>
 {
 public:
 	IWIIterator(IWorkItem * ipFirst);

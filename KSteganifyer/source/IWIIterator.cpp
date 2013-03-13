@@ -6,11 +6,11 @@
  *      Author: Kelibiano
  ******************************************************************************/
 
-#include "IWIIterator.h"
-#include "IWorkItem.h"
-#include "IWIComposite.h"
+#include "Core/IWIIterator.h"
+#include "Core/IWorkItem.h"
+#include "Core/IWIComposite.h"
 #include "Config.h"
-using namespace Core;
+using namespace NCore;
 
 /******************************************************************************/
 /* IWIIterator::IWIIterator(IWorkItem* ipFirst)                               */

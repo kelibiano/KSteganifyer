@@ -6,9 +6,9 @@
  *      Author: Kelibiano
  ******************************************************************************/
 
-#include "CWICompositeImpl.h"
+#include "Core/CWICompositeImpl.h"
 
-using namespace Core;
+using namespace NCore;
 
 /******************************************************************************/
 /* CWICompositeImpl::CWICompositeImpl()                                       */
@@ -81,7 +81,7 @@ bool CWICompositeImpl::IsRoot() const
 /******************************************************************************/
 /* IWorkItem* Core::CWICompositeImpl::GetParent() const                       */
 /******************************************************************************/
-IWorkItem* Core::CWICompositeImpl::GetParent() const
+IWorkItem* NCore::CWICompositeImpl::GetParent() const
 {
 	return CWorkItemImpl::GetParent();
 }

@@ -9,9 +9,9 @@
 #ifndef CWORKITEMIMPL_H_
 #define CWORKITEMIMPL_H_
 
-#include "IWorkItem.h"
+#include "Core/IWorkItem.h"
 
-namespace Core
+namespace NCore
 {
 class IWIComposite;
 
@@ -31,7 +31,10 @@ public:
 	virtual ~CWorkItemImpl();
 
 	virtual IWorkItem * GetParent() const;
+
+private:
 	virtual bool IsCompound() const;
+
 private:
 	IWIComposite * mpParent;
 };

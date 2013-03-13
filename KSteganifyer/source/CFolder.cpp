@@ -6,10 +6,10 @@
  *      Author: yacine.haoues
  ******************************************************************************/
 
-#include "CFolder.h"
+#include "File/CFolder.h"
 #include <dirent.h>
 
-using namespace Utils;
+using namespace NFile;
 
 /******************************************************************************/
 /* CFolder::CFolder()                                                         */
@@ -29,7 +29,7 @@ CFolder::~CFolder()
 /******************************************************************************/
 /* Utils::CFolder::CFolder(IWIComposite* iParent)                             */
 /******************************************************************************/
-Utils::CFolder::CFolder(IWIComposite* iParent):
+NFile::CFolder::CFolder(IWIComposite* iParent):
 		CWICompositeImpl(iParent)
 {
 }

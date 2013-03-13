@@ -11,7 +11,7 @@
 
 #include "IItem.h"
 
-namespace Core {
+namespace NCore {
 
 class IWorkItem : public IItem {
 public:

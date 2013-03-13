@@ -6,10 +6,10 @@
  *      Author: Kelibiano
  ******************************************************************************/
 
-#include "CWorkItemImpl.h"
-#include "IWIComposite.h"
+#include "Core/CWorkItemImpl.h"
+#include "Core/IWIComposite.h"
 
-using namespace Core;
+using namespace NCore;
 
 /******************************************************************************/
 /* CWorkItemImpl::CWorkItemImpl(IWIComposite * iParent)                       */

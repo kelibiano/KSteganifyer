@@ -1,45 +1,50 @@
 /* DISTRIBUTED UNDER GNU PUBLIC LICENCE 2013                                   *
  *******************************************************************************
- * CFolder.h
+ * CFile.h
  *
  *  Created on: 12.03.2013
  *      Author: yacine.haoues
  ******************************************************************************/
 
-#ifndef CFOLDER_H_
-#define CFOLDER_H_
+#ifndef CFILE_H_
+#define CFILE_H_
 
-#include "CWICompositeImpl.h"
-#include "CFile.h"
+#include "Core/CWorkItemImpl.h"
+#include <string>
 
-namespace Utils {
+
+namespace NCore
+{
+	class IWIComposite;
+}
+
+
+namespace NFile {
 
 /**
- * Class to represent a generic folder in file system
+ * Class to represent a generic file in the file system.
  */
-class CFolder : public Core::CWICompositeImpl,
-				public CFile
-{
+class CFile: public NCore::CWorkItemImpl {
 public:
-
-	/** class's constructor */
-	CFolder();
+	/** Classe's constructor */
+	CFile();
 
 	/**
 	 * Classe's constructor with parent as parameter
 	 * @param[in] iParent Parent Composite
 	 */
-	CFolder(IWIComposite * iParent);
+	CFile(NCore::IWIComposite * iParent);
 
-	/** Class's destructor */
-	virtual ~CFolder();
+	/** Destructor */
+	virtual ~CFile();
 
 	/**
 	 * Returns the name of the current item
 	 * @return copy of the name (std::string)
 	 */
 	std::string GetName() const;
+
 };
 
 } /* namespace Utils */
-#endif /* CFOLDER_H_ */
+#endif /* CFILE_H_ */

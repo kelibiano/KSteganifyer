@@ -13,7 +13,7 @@
 #include "CWorkItemImpl.h"
 #include <vector>
 
-namespace Core
+namespace NCore
 {
 class IWorkItem;
 
@@ -45,13 +45,6 @@ public:
 	 * @return bool (is root)
 	 */
 	virtual bool IsRoot() const;
-
-	/**
-	 * Checks if the current item is a compound (In this case it returns always
-	 * true). This method overrides the pure virtual one in the IWorkItem
-	 * @return bool (is root)
-	 */
-	virtual bool IsCompound() const;
 
 	/**
 	 * Checks if the current item has children or not
@@ -87,6 +80,14 @@ public:
 	 * @return IWorkItem * (pointer to the child)
 	 */
 	virtual IWorkItem * GetChild(const int iIndex) const;
+
+private:
+	/**
+	 * Checks if the current item is a compound (In this case it returns always
+	 * true). This method overrides the pure virtual one in the IWorkItem
+	 * @return bool (is root)
+	 */
+	virtual bool IsCompound() const;
 
 private:
 	std::vector<IWorkItem*> mItems;
