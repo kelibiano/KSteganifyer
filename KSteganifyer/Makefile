@@ -12,7 +12,8 @@ LIBS =
 
 
 # define the C source files
-SRCS = CWorkItemImpl.cpp CWICompositeImpl.cpp IWIIterator.cpp CFolder.cpp CFile.cpp main.cpp
+SRCS = CWorkItemImpl.cpp CWICompositeImpl.cpp IWIIterator.cpp CFolder.cpp \
+	   CFile.cpp CFolderScanner.cpp main.cpp
 
 # define the C compiler to use
 CC = g++

@@ -8,9 +8,9 @@
 
 #include "Core/IWorkItem.h"
 #include "Core/IWIComposite.h"
-#include "File/CFolder.h"
-#include "File/CFile.h"
 #include "Core/IWIIterator.h"
+#include "File/CFolder.h"
+#include "File/CFolderScanner.h"
 #include <dirent.h>
 #include <errno.h>
 #include <dirent.h>
@@ -23,41 +23,18 @@
 /******************************************************************************/
 int main(int argc, char ** argv)
 {
-	NCore::IWIComposite * pComposite = new NFile::CFolder();
-	NCore::IWorkItem * pFile1 = new NFile::CFile(pComposite);
-	NCore::IWorkItem * pFile2 = new NFile::CFile(pComposite);
+	NFile::CFolderScanner * pScanner = new NFile::CFolderScanner(".");
+	NCore::IWIComposite * pComposite = pScanner->Scan(NFile::Recursive);
 	NCore::IWIIterator * pIterator = new NCore::IWIIterator(pComposite);
 	for (; !pIterator->End(); pIterator->Next())
 	{
-		NCore::IWorkItem * pWorkItem = pIterator->Current();
 		int level = pIterator->GetLevel();
 		for (int i = 0; i < level; i++)
 			std::cout << " ";
-		std::cout << pWorkItem->GetName() << std::endl;
+		std::cout << "Item" << std::endl;
 	}
 	delete pIterator;
 	delete pComposite;
-	delete pFile1;
-	delete pFile2;
-
-	DIR *pdir;
-	 struct dirent *pent;
-
-	 pdir=opendir("."); //"." refers to the current dir
-	 if (!pdir){
-	 printf ("opendir() failure; terminating");
-	 exit(1);
-	 }
-	 errno=0;
-	 while ((pent=readdir(pdir))){
-	  printf("%s", pent->d_name);
-	 }
-	 if (errno){
-	 printf ("readdir() failure; terminating");
-	 exit(1);
-	 }
-	 closedir(pdir);
-
 	return 0;
 }
 
