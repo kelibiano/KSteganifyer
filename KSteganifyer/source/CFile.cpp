@@ -42,3 +42,12 @@ std::string CFile::GetName() const
 	return "File";
 }
 
+void CFile::SetName(std::string iName)
+{
+	mPath = iName;
+}
+
+std::string CFile::ToString()
+{
+	return mPath;
+}

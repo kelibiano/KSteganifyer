@@ -43,6 +43,11 @@ public:
 	 * @return copy of the name (std::string)
 	 */
 	std::string GetName() const;
+	void SetName(std::string iName);
+	virtual std::string ToString();
+
+private :
+	std::string mPath;
 
 };
 

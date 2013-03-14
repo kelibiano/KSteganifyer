@@ -31,6 +31,7 @@ public:
 	CFolder * Scan(const std::string & iPath, EScanDepth iDepth = Recursive) const;
 	CFolder * Update(CFolder * iOldFolder);
 	void SetScanPath(std::string & iPath);
+	virtual std::string ToString();
 protected:
 private :
 	std::string mPath;

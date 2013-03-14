@@ -28,10 +28,8 @@ int main(int argc, char ** argv)
 	NCore::IWIIterator * pIterator = new NCore::IWIIterator(pComposite);
 	for (; !pIterator->End(); pIterator->Next())
 	{
-		int level = pIterator->GetLevel();
-		for (int i = 0; i < level; i++)
-			std::cout << " ";
-		std::cout << "Item" << std::endl;
+		NCore::IWorkItem * pItem = pIterator->Current();
+		std::cout << pItem->ToString() << std::endl;
 	}
 	delete pIterator;
 	delete pComposite;

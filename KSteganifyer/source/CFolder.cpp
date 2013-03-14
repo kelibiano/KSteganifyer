@@ -41,3 +41,8 @@ std::string CFolder::GetName() const
 {
 	return "Folder";
 }
+
+std::string NFile::CFolder::ToString()
+{
+	return CFile::ToString();
+}

@@ -39,6 +39,8 @@ public:
 	 * @return copy of the name (std::string)
 	 */
 	std::string GetName() const;
+	virtual std::string ToString();
+
 };
 
 } /* namespace Utils */

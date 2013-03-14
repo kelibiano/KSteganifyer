@@ -18,6 +18,7 @@ class IItem
 {
 public:
 	inline virtual ~IItem(){}
+	virtual std::string ToString() = 0;
 };
 
 } /* namespace Core */

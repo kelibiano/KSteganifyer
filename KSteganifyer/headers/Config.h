@@ -13,5 +13,9 @@
 //#define NULL 0;
 #endif
 
+#define FILE_CONST_PATH_SEP "/"
+#define FILE_CONST_CURR_DIR "."
+#define FILE_CONST_UPER_DIR ".."
+
 
 #endif /* CONFIG_H_ */
