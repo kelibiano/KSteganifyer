@@ -13,26 +13,41 @@
 #include <stack>
 using namespace NFile;
 
+/******************************************************************************/
+/* CFolderScanner::CFolderScanner()                                           */
+/******************************************************************************/
 CFolderScanner::CFolderScanner():
 	mPath("")
 {
 }
 
+/******************************************************************************/
+/* CFolderScanner::CFolderScanner(const std::string& iPath)                   */
+/******************************************************************************/
 CFolderScanner::CFolderScanner(const std::string& iPath):
 		mPath(iPath)
 {
 }
 
+/******************************************************************************/
+/* CFolderScanner::~CFolderScanner()                                          */
+/******************************************************************************/
 CFolderScanner::~CFolderScanner()
 {
 
 }
 
+/******************************************************************************/
+/* CCFolder* CFolderScanner::Scan(EScanDepth iDepth) const                    */
+/******************************************************************************/
 CFolder* CFolderScanner::Scan(EScanDepth iDepth) const
 {
 	return Scan(mPath, iDepth);
 }
 
+/******************************************************************************/
+/* CFolder* CFolderScanner::Update(CFolder* iOldFolder)                       */
+/******************************************************************************/
 CFolder* CFolderScanner::Scan(const std::string& iPath, EScanDepth iDepth) const
 {
 	//TODO : Change items creation to be done by a factory that creates files
@@ -120,17 +135,26 @@ CFolder* CFolderScanner::Scan(const std::string& iPath, EScanDepth iDepth) const
 	return pRoot;
 }
 
+/******************************************************************************/
+/* CFolder* CFolderScanner::Update(CFolder* iOldFolder)                       */
+/******************************************************************************/
 CFolder* CFolderScanner::Update(CFolder* iOldFolder)
 {
 	return iOldFolder;
 }
 
+/******************************************************************************/
+/* void CFolderScanner::SetScanPath(std::string& iPath)                       */
+/******************************************************************************/
 void CFolderScanner::SetScanPath(std::string& iPath)
 {
 	mPath = iPath;
 }
 
-std::string NFile::CFolderScanner::ToString()
+/******************************************************************************/
+/* std::string CFolderScanner::ToString()                                     */
+/******************************************************************************/
+std::string CFolderScanner::ToString()
 {
 	return "NFile::CFolderScanner";
 }
