@@ -1,11 +1,27 @@
-
+# Minimum version
 cmake_minimum_required (VERSION 2.6)
 
-project (Steganifyer)
+# Project definition
+set (PROJECT_NAME "Steganifyer" CXX)
+project (${PROJECT_NAME})
 
+# Defining variables
 set (Steganifyer_VERSION_MAJOR 1)
 set (Steganifyer_VERSION_MINOR 0)
 
-include_directories("${PROJECT_BINARY_DIR}")
+set (Boost_NO_SYSTEM_PATHS ON)
+set (Boost_USE_MULTITHREADED ON)
+set (Boost_USE_STATIC_LIBS ON)
+set (Boost_USE_STATIC_RUNTIME OFF)
+set (BOOST_ALL_DYN_LINK OFF)
 
-add_executable(Steganifyer src/main.cpp)
+find_package(Boost 1.63.0 COMPONENTS program_options REQUIRED)
+
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIR}
+                        ${PROJECT_BINARY_DIR})
+    add_executable(${PROJECT_NAME} src/main.cpp)
+    target_link_libraries (${PROJECT_NAME} ${Boost_LIBRARIES})
+endif()
+
+# Executables
