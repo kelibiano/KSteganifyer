@@ -22,21 +22,16 @@
  * THE SOFTWARE.
  */
 
-/* 
- * File:   Types.h
- * Author: yacinehaoues
- *
- * Created on November 4, 2017, 5:28 PM
- */
+#include <CommandContext.h>
+#include <iostream>
+namespace API {
 
-#ifndef TYPES_H
-#define TYPES_H
+    CommandContext::CommandContext() {
+        std::cout << "New Command Context Created ..." << std::endl;
+    }
 
-#include <map>
+    CommandContext::~CommandContext() {
 
+    }
 
-typedef std::string String;
-typedef std::vector<String> StringVector;
-
-#endif /* TYPES_H */
-
+}

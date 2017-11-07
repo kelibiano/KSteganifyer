@@ -23,20 +23,47 @@
  */
 
 /* 
- * File:   Types.h
+ * File:   Steganifyer.cpp
  * Author: yacinehaoues
- *
- * Created on November 4, 2017, 5:28 PM
+ * 
+ * Created on November 6, 2017, 7:59 PM
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#include <Steganifyer.h>
+#include <CommandContext.h>
+#include <iostream>
+#include <vector>
 
-#include <map>
+namespace Impl {
+    StringVector & initCommands();
+    
+    String COMMANDS[] = {"Steganify"};
+    static const String & STR_MODULE_ID ="STEGANIFYER";
+    static const StringVector & LST_COMMANDS = initCommands();
+    
+    StringVector & initCommands() {
+        StringVector * cmds = new StringVector();
+        for( unsigned int a = 0; a < sizeof(COMMANDS)/sizeof(COMMANDS[0]); a = a + 1 )
+            cmds->push_back(COMMANDS[a]);
+        return *cmds;
+    }
+    
+    Steganifyer::Steganifyer() {
+    }
 
-
-typedef std::string String;
-typedef std::vector<String> StringVector;
-
-#endif /* TYPES_H */
-
+    Steganifyer::~Steganifyer() {
+    }
+    
+    const String & Steganifyer::getID() const {
+        return STR_MODULE_ID;
+    }
+    
+    const StringVector& Steganifyer::getCommands() const {
+        return LST_COMMANDS;
+    }
+    
+    void Steganifyer::handle(const String& cmd, API::CommandContext& cmdCtx) {
+        std::cout << "Handling ..." << std::endl;
+        std::cout << "Done." << std::endl;
+    }
+}

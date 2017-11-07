@@ -23,20 +23,25 @@
  */
 
 /* 
- * File:   Types.h
+ * File:   CommandContext.h
  * Author: yacinehaoues
  *
- * Created on November 4, 2017, 5:28 PM
+ * Created on November 6, 2017, 7:29 PM
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef COMMANDCONTEXT_H
+#define COMMANDCONTEXT_H
 
-#include <map>
+namespace API {
+
+    class CommandContext {
+    public:
+        CommandContext();
+        virtual ~CommandContext();
+    };
+
+}
 
 
-typedef std::string String;
-typedef std::vector<String> StringVector;
-
-#endif /* TYPES_H */
+#endif /* COMMANDCONTEXT_H */
 

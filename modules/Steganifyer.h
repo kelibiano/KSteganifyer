@@ -23,20 +23,34 @@
  */
 
 /* 
- * File:   Types.h
+ * File:   Steganifyer.h
  * Author: yacinehaoues
  *
- * Created on November 4, 2017, 5:28 PM
+ * Created on November 6, 2017, 7:59 PM
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef STEGANIFYER_H
+#define STEGANIFYER_H
 
-#include <map>
+#include <Module.h>
 
+namespace Impl {
+    
+    class Steganifyer : public API::Module {
+    public :
+        Steganifyer();
+        virtual ~Steganifyer();
+        
+        /* Returns the ID of The Module */
+        const String& getID() const;
+        
+        /* Returns the list of the handled commands */
+        const StringVector& getCommands() const;
+        
+        /* Handles the given commands with the given parameters */
+        void handle(const String&, API::CommandContext &);
+    };
+}
 
-typedef std::string String;
-typedef std::vector<String> StringVector;
-
-#endif /* TYPES_H */
+#endif /* STEGANIFYER_H */
 

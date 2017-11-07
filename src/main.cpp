@@ -29,7 +29,12 @@
 #include <iostream>
 
 /***************************************************** Project party includes */
+#include <CommandContext.h>
+#include <ModulesManagers.h>
 #include <Module.h>
+
+/*********************************************************** Included Modules */
+#include <modules/Steganifyer.h>
 
 
 using namespace boost::program_options;
@@ -60,6 +65,14 @@ int main(int ac, char const *av[]) {
     } else {
         std::cout << "Compression level was not set.\n";
     }
+    
+    Impl::ModulesManager & modulesManager = Impl::ModulesManager::singleton();
+    Impl::Steganifyer steganifyer = Impl::Steganifyer();
+    modulesManager.registerModule(steganifyer);
+    API::CommandContext cmdCtx = API::CommandContext();
+    steganifyer.handle("Hello", cmdCtx);
+    
+    
     /* We are still Building ...*/
     std::cout << "/* We are still Building ... */" << '\n';
     return 0;

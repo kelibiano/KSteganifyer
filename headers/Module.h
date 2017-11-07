@@ -36,20 +36,23 @@
 
 namespace API {
 
+    /* Forward declaration */
+    class CommandContext;
+    
     class Module {
     public:
         
         /* Returns the ID of The Module */
-        const String& getID() const = 0;
+        virtual const String& getID() const = 0;
         
         /* Returns the list of the handled commands */
-        const StringVector& getCommands() const = 0;
+        virtual const StringVector& getCommands() const = 0;
         
         /* Handles the given commands with the given parameters */
-        void handle(const String&, const Map&) const = 0;
+        virtual void handle(const String&, CommandContext &) = 0;
         
         /* Destructor */
-        virtual ~Module() = 0;
+        virtual ~Module() {};
     };
 
 }

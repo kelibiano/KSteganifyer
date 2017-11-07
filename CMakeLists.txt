@@ -20,8 +20,12 @@ find_package(Boost 1.63.0 COMPONENTS program_options REQUIRED)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIR}
                         ${PROJECT_BINARY_DIR}
-                        ${PROJECT_BINARY_DIR}/headers)
-    add_executable(${PROJECT_NAME} src/main.cpp)
+                        ${PROJECT_BINARY_DIR}/headers
+                        ${PROJECT_BINARY_DIR}/modules)
+    add_executable(${PROJECT_NAME}  src/main.cpp 
+                                    src/CommandContext.cpp
+                                    src/ModulesManager.cpp
+                                    modules/Steganifyer.cpp)
     target_link_libraries (${PROJECT_NAME} ${Boost_LIBRARIES})
 endif()
 

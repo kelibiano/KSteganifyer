@@ -21,22 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#include <ModulesManagers.h>
+#include <stddef.h>
 
-/* 
- * File:   Types.h
- * Author: yacinehaoues
- *
- * Created on November 4, 2017, 5:28 PM
- */
-
-#ifndef TYPES_H
-#define TYPES_H
-
-#include <map>
-
-
-typedef std::string String;
-typedef std::vector<String> StringVector;
-
-#endif /* TYPES_H */
-
+namespace Impl {
+    
+    ModulesManager * ModulesManager::instance = NULL;
+    
+    ModulesManager & ModulesManager::singleton() {
+        if(instance == NULL) {
+            instance = new ModulesManager();
+        }
+        return *instance;
+    }
+    
+    bool ModulesManager::registerModule(const API::Module&) {
+        return true;
+    }
+    
+    ModulesManager::ModulesManager() {
+        
+    }
+    
+    ModulesManager::~ModulesManager() {
+        
+    }
+}
