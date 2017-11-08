@@ -34,7 +34,7 @@
 
 #include <map>
 #include <vector>
-
+#include <string>
 
 typedef std::string String;
 typedef std::vector<String> StringVector;
