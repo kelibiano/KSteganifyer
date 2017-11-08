@@ -32,10 +32,16 @@
 #ifndef COMMANDCHAIN_H
 #define COMMANDCHAIN_H
 
+#include <Types.h>
+
 namespace Impl {
 
     class CommandChain {
     public:
+        void addCommand(const String&);
+        void addParameter(const String&, const String&);
+        void addParameter(const String&);
+        
         CommandChain();
         virtual ~CommandChain();
     };

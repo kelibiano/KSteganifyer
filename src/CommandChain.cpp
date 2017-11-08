@@ -28,10 +28,22 @@
 namespace Impl {
 
     CommandChain::CommandChain() {
-        std::cout << "New Command Chain Created ..." << std::endl;
+        std::cout << "New Command Chain Created ..." << '\n';
     }
 
     CommandChain::~CommandChain() {
 
+    }
+    
+    void CommandChain::addCommand(const String& cmd) {
+        std::cout << "Command : " << cmd << '\n';
+    }
+    
+    void CommandChain::addParameter(const String& param) {
+        std::cout << "Parameter : " << param << '\n';
+    }
+    
+    void CommandChain::addParameter(const String& param, const String& value) {
+        std::cout << "Parameter : " << param <<'\t'<<"Value : "<< value<<'\n';
     }
 }

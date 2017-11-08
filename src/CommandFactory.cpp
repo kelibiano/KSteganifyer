@@ -24,7 +24,7 @@
 
 #include <CommandFactory.h>
 #include <CommandChain.h>
-
+#include <Types.h>
 #include <iostream>
 
 namespace Impl {
@@ -37,9 +37,31 @@ namespace Impl {
 
     }
 
-    CommandChain & CommandFactory::createCommandChain(int argc, char const* argv[]) {
-        CommandChain * cmdChain = new CommandChain();
-        return *cmdChain;
+    CommandChain *const CommandFactory::createCommandChain(int argc, char const* argv[]) {
+        CommandChain *const chain = new CommandChain();
+        
+        for(int i = 1; i < argc; i++) {
+            String cmd = String(argv[i]);
+            if(cmd.size()<= 1) {
+                return chain;
+            }
+            
+            if('-' == *cmd.begin()) { 
+                size_t found = cmd.find('=');
+                if(found != String::npos){
+                    String value = cmd.substr(found, cmd.size() - 1);
+                    if(value.size() > 0) {
+                        chain->addParameter(cmd.substr(1, found), value);
+                    }
+                } else {
+                    chain->addParameter(cmd.substr(1, cmd.size()));
+                }
+            }else {
+                chain->addCommand(cmd);
+            }
+        }
+        
+        return chain;
     }
 
 }

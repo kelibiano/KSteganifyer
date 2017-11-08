@@ -69,21 +69,27 @@ namespace Global {
     //------------------------------------------------------------------------//
 
     void Application::start(int argc, char const* av[]) {
+        
+        // Check and update modules cache here
+        
         // Create Command factory instance
-        Impl::CommandFactory * const factory = new Impl::CommandFactory();
+        Impl::CommandFactory *const factory = new Impl::CommandFactory();
         // Parsing and creating command chain
-        Impl::CommandChain * const chain = &factory->createCommandChain(argc, av);
-
-        // Following code should be moved to some command handler
-        Impl::Steganifyer * const steganifyer = new Impl::Steganifyer();
-        modulesManager->registerModule(*steganifyer);
-
-        API::CommandContext * cmdCtx = new API::CommandContext();
-        const std::string command = "command";
-        steganifyer->handle(command, *cmdCtx);
+        Impl::CommandChain *const chain = factory->createCommandChain(argc, av);
+        // initializing context
+        API::CommandContext *const cmdCtx = new API::CommandContext();
+        
+        /* Processing commands
+         * 
+        while(chain->hasCommands()) {
+            Impl::Command & cmd = Commandchain->nextCommand();
+            Module & module = modulesManager->getModuleForCommand(cmd);
+            module.handle(command, *cmdCtx);
+        }
+        * 
+        */
 
         // Cleaning Memory
-        delete steganifyer;
         delete factory;
         delete cmdCtx;
         delete chain;

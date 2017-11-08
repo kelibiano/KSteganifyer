@@ -38,8 +38,7 @@ namespace Impl {
 
     class CommandFactory {
     public:
-        CommandChain & createCommandChain(int, char const*[]);
-
+        CommandChain *const createCommandChain(int, char const*[]);
         CommandFactory();
         virtual ~CommandFactory();
     };
