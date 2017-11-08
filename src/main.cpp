@@ -24,57 +24,48 @@
  */
 
 
-/*****************************************************+* Third party includes */
-#include <boost/program_options.hpp>
+//--- Third party includes -------------------------------------------------- //
 #include <iostream>
 
-/***************************************************** Project party includes */
-#include <CommandContext.h>
-#include <ModulesManagers.h>
-#include <Module.h>
+//--- Project party includes ------------------------------------------------ //
+#include <Application.h>
 
-/*********************************************************** Included Modules */
-#include <modules/Steganifyer.h>
+//--- Forward declaration --------------------------------------------------- //
+void printStrillInWorkMessage();
 
-
-using namespace boost::program_options;
-
-
-struct myclass {           // function object type:
-  void operator() (variables_map::value_type & i) {std::cout << i.first << std::endl;}
-} myobject;
-
+//--------------------------------------------------------------------------- //
+// Entry point                                                                //
+//----------------------------------------------------------------------------//
 
 int main(int ac, char const *av[]) {
-    options_description desc("Allowed options");
-    desc.add_options()
-            ("help", "produce help message")
-                ("compression", value<int>(), "set compression level");
+    // Print still in work 
+    printStrillInWorkMessage();
 
-    variables_map vm;
-    store(parse_command_line(ac, av, desc), vm);
-    notify(vm);
+    // Initialize and start application
+    Global::Application * const application = new Global::Application();
+    application->start(ac, av);
+    int result = application->getExecutionResult();
 
+    // Cleaning Memory
+    delete application;
     
-    std::for_each(vm.begin(), vm.end(), myobject);
-    std::cout << "params : " <<vm.size() << std::endl;
-    
-    if (vm.count("compression")) {
-        std::cout << "Compression level was set to "
-                << vm["compression"].as<int>() << ".\n";
-    } else {
-        std::cout << "Compression level was not set.\n";
-    }
-    
-    Impl::ModulesManager & modulesManager = Impl::ModulesManager::singleton();
-    Impl::Steganifyer steganifyer = Impl::Steganifyer();
-    modulesManager.registerModule(steganifyer);
-    API::CommandContext cmdCtx = API::CommandContext();
-    steganifyer.handle("Hello", cmdCtx);
-    
-    
-    /* We are still Building ...*/
-    std::cout << "/* We are still Building ... */" << '\n';
-    return 0;
+    // End of program
+    return result;
+}
+
+//--------------------------------------------------------------------------- //
+// Still in work message                                                      //
+//----------------------------------------------------------------------------//
+
+void printStrillInWorkMessage() {
+    std::cout << '\n';
+    std::cout << "****************************************************" << '\n';
+    std::cout << "*                                                  *" << '\n';
+    std::cout << "*                  K-STEGANIFYER                   *" << '\n';
+    std::cout << "*                                           v1.0.x *" << '\n';
+    std::cout << "****************************************************" << '\n';
+    std::cout << "* We are still Building ...                        *" << '\n';
+    std::cout << "****************************************************" << '\n';
+    std::cout << '\n';
 }
 

@@ -22,41 +22,16 @@
  * THE SOFTWARE.
  */
 
-/* 
- * File:   Module.h
- * Author: yacinehaoues
- *
- * Created on November 4, 2017, 5:28 PM
- */
+#include <CommandChain.h>
 
-#ifndef MODULE_H
-#define MODULE_H
+#include <iostream>
+namespace Impl {
 
-#include <Types.h>
+    CommandChain::CommandChain() {
+        std::cout << "New Command Chain Created ..." << std::endl;
+    }
 
-namespace API {
+    CommandChain::~CommandChain() {
 
-    /* Forward declaration */
-    class CommandContext;
-
-    class Module {
-    public:
-
-        /* Returns the ID of The Module */
-        virtual const String& getID() const = 0;
-
-        /* Returns the list of the handled commands */
-        virtual const StringVector& getCommands() const = 0;
-
-        /* Handles the given commands with the given parameters */
-        virtual void handle(const String&, CommandContext &) = 0;
-
-        /* Destructor */
-        virtual ~Module() {
-        };
-    };
-
+    }
 }
-
-#endif /* MODULE_H */
-

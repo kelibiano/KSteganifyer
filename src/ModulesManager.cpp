@@ -21,29 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <ModulesManagers.h>
+#include "ModulesManagers.h"
 #include <stddef.h>
 
 namespace Impl {
-    
-    ModulesManager * ModulesManager::instance = NULL;
-    
-    ModulesManager & ModulesManager::singleton() {
-        if(instance == NULL) {
-            instance = new ModulesManager();
-        }
-        return *instance;
-    }
-    
+
     bool ModulesManager::registerModule(const API::Module&) {
         return true;
     }
-    
+
     ModulesManager::ModulesManager() {
-        
+
     }
-    
+
     ModulesManager::~ModulesManager() {
-        
+
     }
 }

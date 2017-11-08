@@ -22,41 +22,30 @@
  * THE SOFTWARE.
  */
 
-/* 
- * File:   Module.h
+/*
+ * File:   CommandFactory.h
  * Author: yacinehaoues
  *
- * Created on November 4, 2017, 5:28 PM
+ * Created on November 6, 2017, 7:29 PM
  */
 
-#ifndef MODULE_H
-#define MODULE_H
+#ifndef COMMANDFACTORY_H
+#define COMMANDFACTORY_H
 
-#include <Types.h>
+namespace Impl {
 
-namespace API {
+    class CommandChain;
 
-    /* Forward declaration */
-    class CommandContext;
-
-    class Module {
+    class CommandFactory {
     public:
+        CommandChain & createCommandChain(int, char const*[]);
 
-        /* Returns the ID of The Module */
-        virtual const String& getID() const = 0;
-
-        /* Returns the list of the handled commands */
-        virtual const StringVector& getCommands() const = 0;
-
-        /* Handles the given commands with the given parameters */
-        virtual void handle(const String&, CommandContext &) = 0;
-
-        /* Destructor */
-        virtual ~Module() {
-        };
+        CommandFactory();
+        virtual ~CommandFactory();
     };
 
 }
 
-#endif /* MODULE_H */
+
+#endif /* COMMANDFACTORY_H */
 

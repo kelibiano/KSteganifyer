@@ -22,41 +22,34 @@
  * THE SOFTWARE.
  */
 
-/* 
- * File:   Module.h
+/*
+ * File:   Application.h
  * Author: yacinehaoues
  *
- * Created on November 4, 2017, 5:28 PM
+ * Created on November 8, 2017, 20 PM
  */
 
-#ifndef MODULE_H
-#define MODULE_H
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
-#include <Types.h>
-
-namespace API {
-
-    /* Forward declaration */
-    class CommandContext;
-
-    class Module {
-    public:
-
-        /* Returns the ID of The Module */
-        virtual const String& getID() const = 0;
-
-        /* Returns the list of the handled commands */
-        virtual const StringVector& getCommands() const = 0;
-
-        /* Handles the given commands with the given parameters */
-        virtual void handle(const String&, CommandContext &) = 0;
-
-        /* Destructor */
-        virtual ~Module() {
-        };
-    };
-
+namespace Impl {
+    class ModulesManager;
 }
 
-#endif /* MODULE_H */
+namespace Global {
 
+    class Application {
+    public:
+        void start(int, char const*[]);
+        int getExecutionResult();
+
+        Application();
+        ~Application();
+
+    private:
+        int execResult;
+        Impl::ModulesManager * const modulesManager;
+    };
+}
+
+#endif // !APPLICATION_H

@@ -33,6 +33,7 @@
 #define TYPES_H
 
 #include <map>
+#include <vector>
 
 
 typedef std::string String;

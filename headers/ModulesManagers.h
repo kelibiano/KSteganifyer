@@ -42,15 +42,12 @@ namespace Impl {
 
     class ModulesManager {
     public:
-        static ModulesManager & singleton();
 
         bool registerModule(const API::Module&);
         bool unregisterModule(API::Module&);
-    private:
+
         ModulesManager();
         virtual ~ModulesManager();
-
-        static ModulesManager * instance;
     };
 }
 #endif /* MODULESMANAGERS_H */
