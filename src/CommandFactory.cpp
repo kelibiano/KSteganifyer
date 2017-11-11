@@ -24,8 +24,11 @@
 
 #include <CommandFactory.h>
 #include <CommandChain.h>
+#include <Command.h>
 #include <Types.h>
 #include <iostream>
+#include <algorithm>
+#include <array>
 
 namespace Impl {
 
@@ -37,9 +40,12 @@ namespace Impl {
 
     }
 
+    void func(int i) {
+
+    }
+
     CommandChain *const CommandFactory::createCommandChain(int argc, char const* argv[]) {
         CommandChain *const chain = new CommandChain();
-        
         for(int i = 1; i < argc; i++) {
             String cmd = String(argv[i]);
             if(cmd.size()<= 1) {
@@ -49,15 +55,15 @@ namespace Impl {
             if('-' == *cmd.begin()) { 
                 size_t found = cmd.find('=');
                 if(found != String::npos){
-                    String value = cmd.substr(found, cmd.size() - 1);
+                    String value = cmd.substr(found + 1, cmd.size() - 1);
                     if(value.size() > 0) {
-                        chain->addParameter(cmd.substr(1, found), value);
+                        chain->addParameter(cmd.substr(1, found - 1), value);
                     }
                 } else {
                     chain->addParameter(cmd.substr(1, cmd.size()));
                 }
             }else {
-                chain->addCommand(cmd);
+                chain->addCommand(new Command(cmd));
             }
         }
         

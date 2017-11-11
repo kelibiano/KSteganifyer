@@ -9,6 +9,9 @@ project (${PROJECT_NAME})
 set (Steganifyer_VERSION_MAJOR 1)
 set (Steganifyer_VERSION_MINOR 0)
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set (Boost_NO_SYSTEM_PATHS ON)
 set (Boost_USE_MULTITHREADED ON)
 set (Boost_USE_STATIC_LIBS ON)
@@ -28,6 +31,7 @@ if(Boost_FOUND)
                                     src/ModulesManager.cpp
                                     src/CommandFactory.cpp
                                     src/CommandChain.cpp
+                                    src/Command.cpp
                                     modules/Steganifyer.cpp)
     target_link_libraries (${PROJECT_NAME} ${Boost_LIBRARIES})
 endif()

@@ -34,13 +34,14 @@
 #include <CommandFactory.h>
 #include <CommandChain.h>
 #include <CommandContext.h>
+#include <Command.h>
 #include <Module.h>
 
 // Included Modules 
 #include <Steganifyer.h>
 
 // Included libs
-#include <string>
+#include<iostream>
 
 namespace Global {
 
@@ -79,20 +80,21 @@ namespace Global {
         // initializing context
         API::CommandContext *const cmdCtx = new API::CommandContext();
         
-        /* Processing commands
-         * 
+        // Processing commands
         while(chain->hasCommands()) {
-            Impl::Command & cmd = Commandchain->nextCommand();
-            Module & module = modulesManager->getModuleForCommand(cmd);
-            module.handle(command, *cmdCtx);
+            Impl::Command *const cmd = chain->nextCommand();
+            std::cout << "Processing " << cmd->getCommandString() << std::endl;
+            // Module & module = modulesManager->getModuleForCommand(cmd);
+            // module.handle(command, *cmdCtx);
+            delete cmd;
         }
-        * 
-        */
 
         // Cleaning Memory
+        std::cout << "Cleaning..." << std::endl;
         delete factory;
         delete cmdCtx;
         delete chain;
+        std::cout << "Done." << std::endl;
     }
 
     //------------------------------------------------------------------------//

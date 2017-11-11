@@ -23,11 +23,13 @@
  */
 
 #include <CommandChain.h>
-
+#include <Command.h>
 #include <iostream>
 namespace Impl {
 
-    CommandChain::CommandChain() {
+    
+    CommandChain::CommandChain() : commands(new std::queue<Command *const>()) {
+        
         std::cout << "New Command Chain Created ..." << '\n';
     }
 
@@ -35,8 +37,8 @@ namespace Impl {
 
     }
     
-    void CommandChain::addCommand(const String& cmd) {
-        std::cout << "Command : " << cmd << '\n';
+    void CommandChain::addCommand(Command *const cmd) {
+        commands->push(cmd);
     }
     
     void CommandChain::addParameter(const String& param) {
@@ -45,5 +47,15 @@ namespace Impl {
     
     void CommandChain::addParameter(const String& param, const String& value) {
         std::cout << "Parameter : " << param <<'\t'<<"Value : "<< value<<'\n';
+    }
+
+    bool CommandChain::hasCommands() {
+        return !commands->empty();
+    }
+
+    Command * CommandChain::nextCommand() {
+        Command * cmd = commands->front();
+        commands->pop();
+        return cmd;
     }
 }

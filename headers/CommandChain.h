@@ -33,17 +33,23 @@
 #define COMMANDCHAIN_H
 
 #include <Types.h>
+#include <queue>
 
 namespace Impl {
-
+    class Command;
     class CommandChain {
     public:
-        void addCommand(const String&);
+        void addCommand(Command *const);
         void addParameter(const String&, const String&);
         void addParameter(const String&);
+        bool hasCommands();
+        Command * nextCommand();
         
         CommandChain();
         virtual ~CommandChain();
+        
+    private:
+        std::queue<Command *const> *const commands;
     };
 }
 
