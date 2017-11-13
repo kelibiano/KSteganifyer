@@ -25,15 +25,17 @@
 #include <CommandFactory.h>
 #include <CommandChain.h>
 #include <Command.h>
+#include <Logger.h>
+
 #include <Types.h>
 #include <iostream>
 #include <algorithm>
 #include <array>
 
-namespace Impl {
+namespace API {
 
     CommandFactory::CommandFactory() {
-        std::cout << "New Command Factory Created ..." << std::endl;
+        Info << "New Command Factory Created ...";
     }
 
     CommandFactory::~CommandFactory() {

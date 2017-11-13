@@ -16,9 +16,10 @@ set (Boost_NO_SYSTEM_PATHS ON)
 set (Boost_USE_MULTITHREADED ON)
 set (Boost_USE_STATIC_LIBS ON)
 set (Boost_USE_STATIC_RUNTIME OFF)
-set (BOOST_ALL_DYN_LINK OFF)
+set (BOOST_ALL_DYN_LINK OFF) 
+set(CMAKE_BUILD_TYPE Debug)
 
-find_package(Boost 1.63.0 COMPONENTS program_options REQUIRED)
+find_package(Boost 1.63.0 COMPONENTS program_options log REQUIRED)
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIR}

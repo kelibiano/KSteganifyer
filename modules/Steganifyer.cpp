@@ -31,8 +31,11 @@
 
 #include <Steganifyer.h>
 #include <CommandContext.h>
+#include <Command.h>
+#include <Logger.h>
 #include <iostream>
 #include <vector>
+
 
 namespace Impl {
     StringVector & initCommands();
@@ -62,8 +65,7 @@ namespace Impl {
         return LST_COMMANDS;
     }
     
-    void Steganifyer::handle(const String& cmd, API::CommandContext& cmdCtx) {
-        std::cout << "Handling ..." << std::endl;
-        std::cout << "Done." << std::endl;
+    void Steganifyer::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx) {
+        Info << "Handling " << *cmd << " ...";
     }
 }

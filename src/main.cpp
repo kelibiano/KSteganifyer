@@ -26,9 +26,9 @@
 
 //--- Third party includes -------------------------------------------------- //
 #include <iostream>
-
 //--- Project party includes ------------------------------------------------ //
 #include <Application.h>
+#include <Logger.h>
 
 //--- Forward declaration --------------------------------------------------- //
 void printStrillInWorkMessage();
@@ -42,7 +42,7 @@ int main(int ac, char const *av[]) {
     printStrillInWorkMessage();
 
     // Initialize and start application
-    Global::Application * const application = new Global::Application();
+    API::Application * const application = new API::Application();
     application->start(ac, av);
     int result = application->getExecutionResult();
 

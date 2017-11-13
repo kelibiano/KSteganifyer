@@ -32,23 +32,20 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-namespace Impl {
+namespace API {
     class ModulesManager;
-}
-
-namespace Global {
-
+    
     class Application {
     public:
         void start(int, char const*[]);
-        int getExecutionResult();
+        const int getExecutionResult();
 
         Application();
         ~Application();
 
     private:
         int execResult;
-        Impl::ModulesManager * const modulesManager;
+        ModulesManager * const modulesManager;
     };
 }
 

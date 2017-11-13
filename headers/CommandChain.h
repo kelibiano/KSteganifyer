@@ -35,13 +35,13 @@
 #include <Types.h>
 #include <queue>
 
-namespace Impl {
+namespace API {
     class Command;
     class CommandChain {
     public:
         void addCommand(Command *const);
-        void addParameter(const String&, const String&);
-        void addParameter(const String&);
+        void addParameter(const String, const String);
+        void addParameter(const String);
         bool hasCommands();
         Command * nextCommand();
         
@@ -52,7 +52,6 @@ namespace Impl {
         std::queue<Command *const> *const commands;
     };
 }
-
 
 #endif /* COMMANDCONTEXT_H */
 

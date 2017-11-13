@@ -28,7 +28,7 @@
  *
  * Created on November 8, 2017, 20 PM
  */
-
+#include <Types.h>
 #include <Application.h>
 #include <ModulesManagers.h>
 #include <CommandFactory.h>
@@ -36,28 +36,26 @@
 #include <CommandContext.h>
 #include <Command.h>
 #include <Module.h>
+#include <Logger.h>
 
 // Included Modules 
 #include <Steganifyer.h>
-
 // Included libs
 #include<iostream>
 
-namespace Global {
+namespace API {
 
     //------------------------------------------------------------------------//
     // Constructor                                                            //
     //------------------------------------------------------------------------//
-
     Application::Application()
-    : modulesManager(new Impl::ModulesManager()) {
+    : modulesManager(new ModulesManager()) {
 
     }
 
     //------------------------------------------------------------------------//
     // Desctructor                                                            //
     //------------------------------------------------------------------------//
-
     Application::~Application() {
         delete modulesManager;
     }
@@ -68,41 +66,47 @@ namespace Global {
     // argumments : argc    int         I   numberof arguments                //
     //              av      const* []   I   command line params	              //
     //------------------------------------------------------------------------//
-
     void Application::start(int argc, char const* av[]) {
         
         // Check and update modules cache here
-        
+        if(modulesManager->initializeModules() <1) {
+            Error << "No Modules has been found!";
+            execResult = -1;
+            return;
+        }
+
         // Create Command factory instance
-        Impl::CommandFactory *const factory = new Impl::CommandFactory();
+        CommandFactory *const factory = new CommandFactory();
         // Parsing and creating command chain
-        Impl::CommandChain *const chain = factory->createCommandChain(argc, av);
+        CommandChain *const chain = factory->createCommandChain(argc, av);
         // initializing context
-        API::CommandContext *const cmdCtx = new API::CommandContext();
+        CommandContext *const cmdCtx = new CommandContext();
         
         // Processing commands
         while(chain->hasCommands()) {
-            Impl::Command *const cmd = chain->nextCommand();
-            std::cout << "Processing " << cmd->getCommandString() << std::endl;
-            // Module & module = modulesManager->getModuleForCommand(cmd);
-            // module.handle(command, *cmdCtx);
+            Command *const cmd = chain->nextCommand();
+            Module *const module = modulesManager->getModuleForCommand(cmd);
+            if(module != NULL) {
+                module->handle(cmd, cmdCtx);
+            } else {
+                Error << "None of the known Modules handles the command " << *cmd;
+            }
             delete cmd;
         }
 
         // Cleaning Memory
-        std::cout << "Cleaning..." << std::endl;
+        Info << "Cleaning...";
         delete factory;
         delete cmdCtx;
         delete chain;
-        std::cout << "Done." << std::endl;
+        Info << "Done.";
     }
 
     //------------------------------------------------------------------------//
     // getExecutionResult : Returms the results of the execution of the       //
     // Application                                                            //
     //------------------------------------------------------------------------//
-
-    int Application::getExecutionResult() {
+    const int Application::getExecutionResult() {
         return execResult;
     }
 }

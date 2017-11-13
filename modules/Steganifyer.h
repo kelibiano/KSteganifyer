@@ -34,6 +34,11 @@
 
 #include <Module.h>
 
+namespace {
+    class Command;
+    class CommandContext;
+}
+
 namespace Impl {
     
     class Steganifyer : public API::Module {
@@ -48,7 +53,7 @@ namespace Impl {
         const StringVector& getCommands() const;
         
         /* Handles the given commands with the given parameters */
-        void handle(const String&, API::CommandContext &);
+        void handle(const API::Command *const, API::CommandContext *const);
     };
 }
 

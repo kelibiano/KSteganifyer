@@ -34,18 +34,18 @@
 
 #include <Types.h>
 
-namespace Impl {
+namespace API {
 
     class Command {
     public:
         const String getCommandString() const;
-        Command(const String&);
+        Command(const String);
         virtual ~Command();
         friend std::ostream & operator<<(std::ostream&, const Command&);
         friend std::ostream & operator<<(std::ostream&, const Command*);
 
     private:
-        const String& strCommand;
+        const String strCommand;
     };
 }
 

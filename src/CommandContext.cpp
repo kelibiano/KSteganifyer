@@ -23,11 +23,13 @@
  */
 
 #include <CommandContext.h>
+#include <Logger.h>
+
 #include <iostream>
 namespace API {
 
     CommandContext::CommandContext() {
-        std::cout << "New Command Context Created ..." << std::endl;
+        Info << "New Command Context Created ...";
     }
 
     CommandContext::~CommandContext() {

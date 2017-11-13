@@ -25,12 +25,13 @@
 #include <CommandChain.h>
 #include <Command.h>
 #include <iostream>
-namespace Impl {
+#include <Logger.h>
+namespace API {
 
     
     CommandChain::CommandChain() : commands(new std::queue<Command *const>()) {
         
-        std::cout << "New Command Chain Created ..." << '\n';
+        Info << "New Command Chain Created ...";
     }
 
     CommandChain::~CommandChain() {
@@ -41,12 +42,12 @@ namespace Impl {
         commands->push(cmd);
     }
     
-    void CommandChain::addParameter(const String& param) {
-        std::cout << "Parameter : " << param << '\n';
+    void CommandChain::addParameter(const String param) {
+        Info << "Parameter : " << param;
     }
     
-    void CommandChain::addParameter(const String& param, const String& value) {
-        std::cout << "Parameter : " << param <<'\t'<<"Value : "<< value<<'\n';
+    void CommandChain::addParameter(const String param, const String value) {
+        Info << "Parameter : " << param <<'\t'<<"Value : "<< value;
     }
 
     bool CommandChain::hasCommands() {

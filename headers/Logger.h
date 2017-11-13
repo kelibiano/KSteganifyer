@@ -22,29 +22,23 @@
  * THE SOFTWARE.
  */
 
-/*
- * File:   CommandFactory.h
+/* 
+ * File:   Logger.h
  * Author: yacinehaoues
  *
- * Created on November 6, 2017, 7:29 PM
+ * Created on November 11, 2017, 1:48 PM
  */
 
-#ifndef COMMANDFACTORY_H
-#define COMMANDFACTORY_H
+#ifndef LOGGER_H
+#define LOGGER_H
 
-namespace API {
+#include<boost/log/trivial.hpp>
 
-    class CommandChain;
+#define Debug   BOOST_LOG_TRIVIAL(debug)
+#define Info    BOOST_LOG_TRIVIAL(info)
+#define Warn    BOOST_LOG_TRIVIAL(warning)
+#define Error   BOOST_LOG_TRIVIAL(error)
+#define Fatal   BOOST_LOG_TRIVIAL(fatal)
 
-    class CommandFactory {
-    public:
-        CommandChain *const createCommandChain(int, char const*[]);
-        CommandFactory();
-        virtual ~CommandFactory();
-    };
-
-}
-
-
-#endif /* COMMANDFACTORY_H */
+#endif /* LOGGER_H */
 

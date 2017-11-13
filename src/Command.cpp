@@ -23,14 +23,21 @@
 */
 
 #include <Command.h>
+#include <Logger.h>
 
 #include <iostream>
-namespace Impl {
+namespace API {
 
-    Command::Command(const String& cmd ) : strCommand(cmd) {
-        std::cout << "New Cmd : " << getCommandString() << std::endl;
+    //------------------------------------------------------------------------//
+    // Constructor                                                            //
+    //------------------------------------------------------------------------//
+    Command::Command(const String cmd ) : strCommand(cmd) {
+        Info << "New Command : " << getCommandString();
     }
 
+    //------------------------------------------------------------------------//
+    // Desctructor                                                            //
+    //------------------------------------------------------------------------//
     Command::~Command() {
 
     }
@@ -40,7 +47,6 @@ namespace Impl {
     }
 
     std::ostream& operator<<(std::ostream& stream, const Command& cmd) {
-        std::cout << cmd.getCommandString();
         return stream << cmd.getCommandString();
     }
     

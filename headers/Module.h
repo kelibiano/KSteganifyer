@@ -38,7 +38,8 @@ namespace API {
 
     /* Forward declaration */
     class CommandContext;
-
+    class Command;
+    
     class Module {
     public:
 
@@ -49,7 +50,7 @@ namespace API {
         virtual const StringVector& getCommands() const = 0;
 
         /* Handles the given commands with the given parameters */
-        virtual void handle(const String&, CommandContext &) = 0;
+        virtual void handle(const Command *const, CommandContext *const) = 0;
 
         /* Destructor */
         virtual ~Module() {

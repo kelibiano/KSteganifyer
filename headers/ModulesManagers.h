@@ -32,22 +32,31 @@
 #ifndef MODULESMANAGERS_H
 #define MODULESMANAGERS_H
 
-/* Forward declaration */
-namespace API {
-    class Module;
-}
+#include <Types.h>
+#include <map>
 
 /* Class definition */
-namespace Impl {
+namespace API {
+
+    class Module;
+    class Command;
 
     class ModulesManager {
-    public:
+    
+    typedef std::map<String, Module *const> ModulesMap;
 
-        bool registerModule(const API::Module&);
-        bool unregisterModule(API::Module&);
+    public:
+        bool registerModule(Module *const);
+        bool unregisterModule(Module *const);
+        const int initializeModules();
+
+        Module *const getModuleForCommand(const Command *const) const;
 
         ModulesManager();
         virtual ~ModulesManager();
+
+    private:
+        ModulesMap *const modules;
     };
 }
 #endif /* MODULESMANAGERS_H */
