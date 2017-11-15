@@ -23,49 +23,41 @@
  */
 
 /* 
- * File:   Steganifyer.cpp
+ * File:   BMPIO.cpp
  * Author: yacinehaoues
  * 
- * Created on November 6, 2017, 7:59 PM
+ * Created on November 14, 2017, 7:59 PM
  */
 
-#include <Steganifyer.h>
+#include <BMPIO.h>
 #include <CommandContext.h>
 #include <Command.h>
 #include <Logger.h>
-#include <iostream>
+#include <Types.h>
 #include <vector>
 
-
 namespace Impl {
-    StringVector & initCommands();
+
+    BMPIO::BMPIO() : ID(new String("BMPIO-")), cmds(new StringVector()) {
+        cmds->push_back("read");
+        cmds->push_back("write");
+    }
+
+    BMPIO::~BMPIO() {
+        Info << "Cleaning BMPIO";
+        delete ID;
+        delete v;
+    }
     
-    String COMMANDS[] = {"Steganify"};
-    static const String & STR_MODULE_ID ="STEGANIFYER";
-    static const StringVector & LST_COMMANDS = initCommands();
+    const String & BMPIO::getID() const {
+        return *ID;
+    }
     
-    StringVector & initCommands() {
-        StringVector * cmds = new StringVector();
-        for( unsigned int a = 0; a < sizeof(COMMANDS)/sizeof(COMMANDS[0]); a = a + 1 )
-            cmds->push_back(COMMANDS[a]);
+    const StringVector& BMPIO::getCommands() const {
         return *cmds;
     }
     
-    Steganifyer::Steganifyer() {
-    }
-
-    Steganifyer::~Steganifyer() {
-    }
-    
-    const String & Steganifyer::getID() const {
-        return STR_MODULE_ID;
-    }
-    
-    const StringVector& Steganifyer::getCommands() const {
-        return LST_COMMANDS;
-    }
-    
-    void Steganifyer::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx) {
+    void BMPIO::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx) {
         Info << "Handling " << *cmd << " ...";
     }
 }

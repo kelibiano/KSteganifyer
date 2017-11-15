@@ -32,12 +32,32 @@
 #ifndef COMMANDCONTEXT_H
 #define COMMANDCONTEXT_H
 
+#include <Types.h>
+#include <map>
+
 namespace API {
+
+    struct DataDescriptor {
+        const String type;
+        void *const raw;
+        DataDescriptor(String etype, void * const data) : type(etype), raw(data) {}
+        DataDescriptor(const DataDescriptor & dsc) : type(dsc.type), raw(dsc.raw){}
+    };
+
+    inline DataDescriptor * const describe(String type, void * const data) {
+        return new DataDescriptor(type, data);
+    }
 
     class CommandContext {
     public:
+        bool put(String, DataDescriptor *const);
+        DataDescriptor *const get(String);
+
         CommandContext();
         virtual ~CommandContext();
+    private:
+        typedef std::map<String, DataDescriptor *const> DataMap;
+        DataMap * dataMap;
     };
 
 }

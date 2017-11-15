@@ -22,40 +22,43 @@
  * THE SOFTWARE.
  */
 
-#include <CommandChain.h>
-#include <Command.h>
-#include <iostream>
-#include <Logger.h>
-namespace API {
+/* 
+ * File:   BMPIO.h
+ * Author: yacinehaoues
+ *
+ * Created on November 14, 2017, 7:59 PM
+ */
 
-    
-    CommandChain::CommandChain() : commands(new std::queue<Command *const>()) {
-        Info << "New Command Chain Created ...";
-    }
+#ifndef BMPIO_H
+#define BMPIO_H
 
-    CommandChain::~CommandChain() {
+#include <Module.h>
 
-    }
-    
-    void CommandChain::addCommand(Command *const cmd) {
-        commands->push(cmd);
-    }
-    
-    void CommandChain::addParameter(const String param) {
-        Info << "Parameter : " << param;
-    }
-    
-    void CommandChain::addParameter(const String param, const String value) {
-        Info << "Parameter : " << param <<'\t'<<"Value : "<< value;
-    }
-
-    bool CommandChain::hasCommands() {
-        return !commands->empty();
-    }
-
-    Command * CommandChain::nextCommand() {
-        Command * cmd = commands->front();
-        commands->pop();
-        return cmd;
-    }
+namespace {
+    class Command;
+    class CommandContext;
 }
+
+namespace Impl {
+    
+    class BMPIO : public API::Module {
+    public :
+        BMPIO();
+        virtual ~BMPIO();
+        
+        /* Returns the ID of The Module */
+        const String& getID() const;
+        
+        /* Returns the list of the handled commands */
+        const StringVector& getCommands() const;
+        
+        /* Handles the given commands with the given parameters */
+        void handle(const API::Command *const, API::CommandContext *const);
+        private :
+            const String *const ID;
+            StringVector *const cmds;
+    };
+}
+
+#endif /* BMPIO_H */
+

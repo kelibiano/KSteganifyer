@@ -24,16 +24,25 @@
 
 #include <CommandContext.h>
 #include <Logger.h>
-
+#include <Types.h>
 #include <iostream>
 namespace API {
 
-    CommandContext::CommandContext() {
+    CommandContext::CommandContext() : dataMap(new DataMap()) {
         Info << "New Command Context Created ...";
     }
 
     CommandContext::~CommandContext() {
-
+        delete dataMap;
     }
 
+    DataDescriptor *const CommandContext::get(String key) {
+        DataMap::iterator ptr = dataMap->find(key);
+        return ptr != dataMap->end() ? ptr->second : NULL;
+    }
+
+    bool CommandContext::put(String key, DataDescriptor *const data) {
+        dataMap->emplace(key, data);
+        return true;
+    }
 }

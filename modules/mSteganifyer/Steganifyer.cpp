@@ -22,40 +22,50 @@
  * THE SOFTWARE.
  */
 
-#include <CommandChain.h>
+/* 
+ * File:   Steganifyer.cpp
+ * Author: yacinehaoues
+ * 
+ * Created on November 6, 2017, 7:59 PM
+ */
+
+#include <Steganifyer.h>
+#include <CommandContext.h>
 #include <Command.h>
-#include <iostream>
 #include <Logger.h>
-namespace API {
+#include <iostream>
+#include <vector>
 
+
+namespace Impl {
+    StringVector & initCommands();
     
-    CommandChain::CommandChain() : commands(new std::queue<Command *const>()) {
-        Info << "New Command Chain Created ...";
-    }
-
-    CommandChain::~CommandChain() {
-
+    String COMMANDS[] = {"Steganify"};
+    static const String & STR_MODULE_ID ="STEGANIFYER-";
+    static const StringVector & LST_COMMANDS = initCommands();
+    
+    StringVector & initCommands() {
+        StringVector * cmds = new StringVector();
+        for( unsigned int a = 0; a < sizeof(COMMANDS)/sizeof(COMMANDS[0]); a = a + 1 )
+            cmds->push_back(COMMANDS[a]);
+        return *cmds;
     }
     
-    void CommandChain::addCommand(Command *const cmd) {
-        commands->push(cmd);
-    }
-    
-    void CommandChain::addParameter(const String param) {
-        Info << "Parameter : " << param;
-    }
-    
-    void CommandChain::addParameter(const String param, const String value) {
-        Info << "Parameter : " << param <<'\t'<<"Value : "<< value;
+    Steganifyer::Steganifyer() {
     }
 
-    bool CommandChain::hasCommands() {
-        return !commands->empty();
+    Steganifyer::~Steganifyer() {
     }
-
-    Command * CommandChain::nextCommand() {
-        Command * cmd = commands->front();
-        commands->pop();
-        return cmd;
+    
+    const String & Steganifyer::getID() const {
+        return STR_MODULE_ID;
+    }
+    
+    const StringVector& Steganifyer::getCommands() const {
+        return LST_COMMANDS;
+    }
+    
+    void Steganifyer::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx) {
+        Info << "Handling " << *cmd << " ...";
     }
 }

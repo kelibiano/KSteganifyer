@@ -11,11 +11,11 @@
 *.lai
 *.la
 *.a
-/Makefile
+Makefile
 /nbproject/private/launcher.properties
-/CMakeCache.txt
-/cmake_install.cmake
-/CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles
 nbproject/*
 /Steganifyer
 /.vs

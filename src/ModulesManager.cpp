@@ -21,10 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 #include <ModulesManagers.h>
 #include <Module.h>
 #include <Command.h>
+
 #include <Steganifyer.h>
+#include <BMPIO.h>
 
 namespace API {
 
@@ -80,6 +83,7 @@ namespace API {
     //------------------------------------------------------------------------//
     const int ModulesManager::initializeModules() {
         registerModule(new Impl::Steganifyer());
+        registerModule(new Impl::BMPIO());
         return modules->size();
     }
 
@@ -96,7 +100,7 @@ namespace API {
     //------------------------------------------------------------------------//
     ModulesManager::~ModulesManager() {
         for(ModulesMap::iterator it = modules->begin(); it != modules->end(); ++it) {
-            delete it->second;
+            // TODO : review here "delete it->second";
         }
         delete modules;
     }
