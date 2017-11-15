@@ -42,6 +42,9 @@ namespace API {
         void addCommand(Command *const);
         void addParameter(const String, const String);
         void addParameter(const String);
+        String *const getParameter(const String param) const;
+        bool hasParamerter(const String param) const;
+
         bool hasCommands();
         Command * nextCommand();
         
@@ -49,7 +52,11 @@ namespace API {
         virtual ~CommandChain();
         
     private:
-        std::queue<Command *const> *const commands;
+        typedef std::map<String,String> StringMap;
+        typedef std::queue<Command *const> CommandsQueue;
+
+        CommandsQueue *const commands;
+        StringMap *const parameters;
     };
 }
 

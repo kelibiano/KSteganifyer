@@ -28,8 +28,12 @@
 #include <Logger.h>
 namespace API {
 
+    const String STR_EMPTY = "";
     
-    CommandChain::CommandChain() : commands(new std::queue<Command *const>()) {
+    CommandChain::CommandChain() : 
+        commands(new CommandsQueue()),
+        parameters(new StringMap()) {
+
         Info << "New Command Chain Created ...";
     }
 
@@ -43,10 +47,21 @@ namespace API {
     
     void CommandChain::addParameter(const String param) {
         Info << "Parameter : " << param;
+        parameters->emplace(param, STR_EMPTY);
     }
     
     void CommandChain::addParameter(const String param, const String value) {
         Info << "Parameter : " << param <<'\t'<<"Value : "<< value;
+        parameters->emplace(param, value);
+    }
+
+    String *const CommandChain::getParameter(const String param) const {
+        StringMap::iterator it = parameters->find(param);
+        return it != parameters->end() ? new String(it->second) : NULL;
+    }
+
+    bool CommandChain::hasParamerter(const String param) const {
+        return parameters->find(param) != parameters->end();
     }
 
     bool CommandChain::hasCommands() {

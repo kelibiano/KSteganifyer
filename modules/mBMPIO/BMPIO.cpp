@@ -30,13 +30,17 @@
  */
 
 #include <BMPIO.h>
+#include <BMPStructure.h>
 #include <CommandContext.h>
+#include <CommandChain.h>
 #include <Command.h>
 #include <Logger.h>
 #include <Types.h>
 #include <vector>
 
 namespace Impl {
+
+    const String STR_PARAM_INPUTFILE = "input-file";
 
     BMPIO::BMPIO() : ID(new String("BMPIO-")), cmds(new StringVector()) {
         cmds->push_back("read");
@@ -46,7 +50,7 @@ namespace Impl {
     BMPIO::~BMPIO() {
         Info << "Cleaning BMPIO";
         delete ID;
-        delete v;
+        delete cmds;
     }
     
     const String & BMPIO::getID() const {
@@ -58,6 +62,24 @@ namespace Impl {
     }
     
     void BMPIO::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx) {
-        Info << "Handling " << *cmd << " ...";
+
+        // Checking the command (Another way is to found later, Strategy pattern maybe)
+        if(cmd->getCommandString() != "read") {
+            Error << "Command " << *cmd << " Not handled yet.";
+            return;
+        }
+
+        // Searching the relevant parameters for the command
+        API::CommandChain *const chain = cmdCtx->getChain();
+        const String *const fname = chain->getParameter(STR_PARAM_INPUTFILE);
+        if(fname == NULL) {
+            Error << "No input BMP file found !";
+            return;
+        }
+
+        // read the BMP
+        Info << "Reading " << *fname << " ...";
+        BMPStructure *const bmpStrcut = new BMPStructure(*fname);
+        delete bmpStrcut;
     }
 }

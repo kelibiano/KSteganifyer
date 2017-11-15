@@ -23,12 +23,16 @@
  */
 
 #include <CommandContext.h>
+#include <CommandChain.h>
+
 #include <Logger.h>
 #include <Types.h>
 #include <iostream>
 namespace API {
 
-    CommandContext::CommandContext() : dataMap(new DataMap()) {
+    CommandContext::CommandContext(CommandChain * const mChain):
+        chain(mChain), dataMap(new DataMap()) {
+        
         Info << "New Command Context Created ...";
     }
 
@@ -36,7 +40,11 @@ namespace API {
         delete dataMap;
     }
 
-    DataDescriptor *const CommandContext::get(String key) {
+    CommandChain *const CommandContext::getChain() const {
+        return chain;
+    }
+
+    DataDescriptor *const CommandContext::get(String key) const {
         DataMap::iterator ptr = dataMap->find(key);
         return ptr != dataMap->end() ? ptr->second : NULL;
     }

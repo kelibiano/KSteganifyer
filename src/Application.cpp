@@ -80,7 +80,7 @@ namespace API {
         // Parsing and creating command chain
         CommandChain *const chain = factory->createCommandChain(argc, av);
         // initializing context
-        CommandContext *const cmdCtx = new CommandContext();
+        CommandContext *const cmdCtx = new CommandContext(chain);
         
         // Processing commands
         while(chain->hasCommands()) {

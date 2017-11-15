@@ -23,48 +23,53 @@
  */
 
 /* 
- * File:   CommandContext.h
+ * File:   BMPStructure.cpp
  * Author: yacinehaoues
- *
- * Created on November 6, 2017, 7:29 PM
+ * 
+ * Created on November 15, 2017, 7:59 PM
  */
 
-#ifndef COMMANDCONTEXT_H
-#define COMMANDCONTEXT_H
+#include <BMPStructure.h>
+#include <Logger.h>
 
-#include <Types.h>
-#include <map>
+#include <fstream>
 
-namespace API {
-
-    class CommandChain;
-
-    struct DataDescriptor {
-        const String type;
-        void *const raw;
-        DataDescriptor(String etype, void * const data) : type(etype), raw(data) {}
-        DataDescriptor(const DataDescriptor & dsc) : type(dsc.type), raw(dsc.raw){}
-    };
-
-    inline DataDescriptor * const describe(String type, void * const data) {
-        return new DataDescriptor(type, data);
+namespace Impl {
+    BMPStructure::BMPStructure(const String file) :
+        bitmap(readFile(file)) {
     }
 
-    class CommandContext {
-    public:
-        bool put(String, DataDescriptor *const);
-        DataDescriptor *const get(String) const;
-        CommandChain *const getChain() const;
-        CommandContext(CommandChain *const);
-        virtual ~CommandContext();
-    private:
-        typedef std::map<String, DataDescriptor *const> DataMap;
-        DataMap * dataMap;
-        CommandChain *const chain;
-    };
+    BMPStructure::~BMPStructure() {
+        if(bitmap != NULL) {
+            delete bitmap;
+        }
+    }
 
+    const Bitmap *const BMPStructure::readFile(const String file) {
+        std::ifstream ifs;
+        ifs.open(file, std::ifstream::in | std::ifstream::binary);
+        if(!ifs.is_open()) {
+            Error << "File "<< file << " Cannot be opened.";
+            ifs.close();
+            return NULL;
+        }
+
+        BMPFileHeader * fHeader = new BMPFileHeader;
+        ifs.read(reinterpret_cast<byte*>(fHeader), sizeof(*fHeader));
+
+        if(fHeader->bfType[0] == 'B' && 
+           fHeader->bfType[1] == 'M') {
+            Info << "Reading Valid Bitmap file...";
+        } else {
+            Error << file << " is an Invalid Bitmap File.";
+        }
+
+
+
+        delete fHeader;
+        ifs.close();
+        // On error
+        return NULL;
+    }
+    
 }
-
-
-#endif /* COMMANDCONTEXT_H */
-
