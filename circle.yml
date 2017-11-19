@@ -2,11 +2,10 @@ jobs:
   build:
     machine:
       pre: sudo apt-get install libboost-dev
+    compile:
+      override:
+        - cmake CMakeLists.txt
+        - cmake --build .
     steps:
       - checkout
-      - run:
-          name: Generating Makefiles
-          command: cmake CMakeLists.txt
-      - run: 
-          name: Building...
-          command: cmake --build .
+      
