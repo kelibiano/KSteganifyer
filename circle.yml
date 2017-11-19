@@ -1,11 +1,15 @@
-jobs:
-  build:
-    machine:
-      pre: sudo apt-get install libboost-dev
-    compile:
-      override:
-        - cmake CMakeLists.txt
-        - cmake --build .
-    steps:
-      - checkout
+
+machine:
+  timezone:
+    America/Los_Angeles
+dependencies:
+  pre: sudo apt-get install libboost-dev
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
+compile:
+  override:
+    - cmake CMakeLists.txt
+    - cmake --build .
       
