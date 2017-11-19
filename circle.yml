@@ -1,15 +1,12 @@
-version: 2
 jobs:
   build:
-     machine: true
-     steps:
-       - checkout
-       - run: 
-          name: installing BOOST
-          command: sudo apt-get install libboost-dev
-       - run:
+    machine:
+      pre: sudo apt-get install libboost-dev
+    steps:
+      - checkout
+      - run:
           name: Generating Makefiles
           command: cmake CMakeLists.txt
-       - run: 
+      - run: 
           name: Building...
           command: cmake --build .
