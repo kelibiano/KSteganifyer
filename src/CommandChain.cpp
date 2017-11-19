@@ -68,8 +68,8 @@ namespace API {
         return !commands->empty();
     }
 
-    Command * CommandChain::nextCommand() {
-        Command * cmd = commands->front();
+    Command const* CommandChain::nextCommand() {
+        Command const * cmd = commands->front();
         commands->pop();
         return cmd;
     }

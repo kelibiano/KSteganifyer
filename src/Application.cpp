@@ -84,7 +84,7 @@ namespace API {
         
         // Processing commands
         while(chain->hasCommands()) {
-            Command *const cmd = chain->nextCommand();
+            Command const* cmd = chain->nextCommand();
             Module *const module = modulesManager->getModuleForCommand(cmd);
             if(module != NULL) {
                 module->handle(cmd, cmdCtx);

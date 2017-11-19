@@ -46,14 +46,14 @@ namespace API {
         bool hasParamerter(const String param) const;
 
         bool hasCommands();
-        Command * nextCommand();
+        Command const* nextCommand();
         
         CommandChain();
         virtual ~CommandChain();
         
     private:
         typedef std::map<String,String> StringMap;
-        typedef std::queue<Command *const> CommandsQueue;
+        typedef std::queue<Command const*> CommandsQueue;
 
         CommandsQueue *const commands;
         StringMap *const parameters;

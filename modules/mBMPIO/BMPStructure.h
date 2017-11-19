@@ -35,13 +35,14 @@
 namespace Impl {
 
     typedef char byte;
+    const size_t COLORS_24 = 24;
 
     struct BMPFileHeader {
-        byte bfType[2]; // standard type "BM"
+        byte bfType[2]; // standard type 
         byte bfSize[4]; // file size
         byte bfReserved1[2]; // reserved 2
         byte bfReserved2[2]; // reserved 1
-        byte bfOffBits[4]; // offset
+        byte bfOffBits[4]; // offset to the pixels data
     };
 
     struct BMPInfoHeader {
@@ -63,6 +64,11 @@ namespace Impl {
         byte rgbGreen;
         byte rgbRed;
         byte rgbReserved;
+    };
+    struct RGBTRIPLE {
+        byte rgbBlue;
+        byte rgbGreen;
+        byte rgbRed;
     };
 
     struct Bitmap {
