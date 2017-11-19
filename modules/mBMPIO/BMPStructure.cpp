@@ -52,7 +52,7 @@ namespace Impl {
     const Bitmap *const BMPStructure::readFile(const String file) {
         std::ifstream ifs;
         // try to open the given file
-        ifs.open(file, std::ifstream::in | std::ifstream::binary);
+        ifs.open(file.c_str(), std::ifstream::in | std::ifstream::binary);
         if(!ifs.is_open()) {
             Error << "File "<< file << " Cannot be opened.";
             ifs.close();
