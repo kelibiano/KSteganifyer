@@ -22,7 +22,7 @@ set (Boost_USE_STATIC_LIBS ON)
 set (Boost_USE_STATIC_RUNTIME OFF)
 set (BOOST_ALL_DYN_LINK OFF) 
 # FIND BOOST
-find_package(Boost 1.63.0 COMPONENTS program_options log REQUIRED)
+find_package(Boost COMPONENTS program_options log REQUIRED)
 
 if(Boost_FOUND)
     # INCLUDE SUB FOLDERS
