@@ -1,12 +1,17 @@
 version: 2
-machine:
-  timezone: Europe/Dublin
-  pre:
-    - sudo apt-get install libboost-dev
-compile:
-  override:
-    - cmake CMakeLists.txt
-    - cmake --build .
-general:
-  artifacts:
-    - "Steganifyer"
+version: 2
+jobs:
+   build:
+     docker:
+       - image: ubuntu:14.04
+     steps:
+       - checkout
+       - run: 
+          name: installing BOOST
+          command: sudo apt-get install libboost-dev
+       - run:
+          name: Generating Makefiles
+          command: cmake CMakeLists.txt
+       - run: 
+          name: Building...
+          command: cmake --build .
