@@ -40,7 +40,7 @@ namespace API {
     //------------------------------------------------------------------------//
     bool ModulesManager::registerModule(Module *const module) {
         const StringVector commands = module->getCommands();
-        for(int i = 0; i < commands.size(); i++) {
+        for(size_t i = 0; i < commands.size(); i++) {
             modules->emplace(commands.at(i), module);
         }
         // for the moment let's retutn true

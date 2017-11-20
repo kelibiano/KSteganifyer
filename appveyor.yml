@@ -3,7 +3,7 @@ environment:
   PATH: '%PATH%;C:\MinGW\bin'
   BOOST_ROOT: C:\Libraries\boost_1_63_0
 build_script:
-- cmd: "cmake CMakeLists.txt \ncmake --build ."
+- cmd: "mkdir build\ncd build\ncmake .. \ncmake --build .\ncd test\nctest"
 artifacts:
 - path: Debug\Steganifyer.exe
   name: Steganifyer.exe

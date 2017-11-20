@@ -17,3 +17,6 @@ clean
 
 cd ../mBMPIO
 clean
+
+cd ../../test
+clean

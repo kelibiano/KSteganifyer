@@ -101,10 +101,10 @@ namespace Impl {
         ifs.read(reinterpret_cast<byte*>(quads), block);
 
         char ch[] = {' ','.','-','+','X','B', '#'};
-        for (int i = height - 1; i >= 0; i--)
+        for (size_t i = height - 1; i >= 0; i--)
         {
             std::cout << "->";
-            for (int j = 0; j < width; j++) { 
+            for (size_t j = 0; j < width; j++) {
                 int idx = i * width + j +i;
 
                 int x = ((((unsigned char)quads[idx].rgbBlue) +

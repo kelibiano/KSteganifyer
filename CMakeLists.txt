@@ -2,7 +2,8 @@
 cmake_minimum_required (VERSION 2.6)
 
 # Project definition
-set (PROJECT_NAME "Steganifyer" CXX)
+set (PROJECT_NAME "Steganifyer" C CXX)
+
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -21,15 +22,19 @@ set (Boost_USE_MULTITHREADED ON)
 set (Boost_USE_STATIC_LIBS ON)
 set (Boost_USE_STATIC_RUNTIME OFF)
 set (BOOST_ALL_DYN_LINK OFF) 
+
 # FIND BOOST
+
 find_package(Boost COMPONENTS program_options log REQUIRED)
 
 if(Boost_FOUND)
     # INCLUDE SUB FOLDERS
     add_subdirectory(modules)
+    add_subdirectory(test)
 
     # INCLUDES
     include_directories(${Boost_INCLUDE_DIR}
+                        ${GTEST_INCLUDE_DIRS}
                         ${PROJECT_SOURCE_DIR}
                         ${PROJECT_SOURCE_DIR}/headers
                         ${PROJECT_SOURCE_DIR}/modules/mSteganifyer
@@ -43,7 +48,3 @@ if(Boost_FOUND)
     target_link_libraries (${PROJECT_NAME} mSteganifyer)
     target_link_libraries (${PROJECT_NAME} mBMPIO)
 endif()
-
-#set(FooTestArgs --foo 1 --bar 2)
-#add_executable(FooTest FooUnitTest.cc)
-#GTEST_ADD_TESTS(FooTest "${FooTestArgs}" FooUnitTest.cc)
