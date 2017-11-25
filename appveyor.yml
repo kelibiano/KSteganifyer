@@ -2,8 +2,6 @@ version: 1.0.{build}
 environment:
   PATH: '%PATH%;C:\MinGW\bin'
   BOOST_ROOT: C:\Libraries\boost_1_63_0
-before_build:
- - nuget restore
 build_script:
 - cmd: "cmake -P build.cmake"
 test_script:
