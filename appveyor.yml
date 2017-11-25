@@ -2,10 +2,20 @@ version: 1.0.{build}
 environment:
   PATH: '%PATH%;C:\MinGW\bin'
   BOOST_ROOT: C:\Libraries\boost_1_63_0
+before_build:
+ - nuget restore
 build_script:
-- cmd: "mkdir build\ncd build\ncmake .. \ncmake --build .\ncd test\nctest"
+- cmd: "cmake -P build.cmake"
+test_script:
+ - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"build\test\Steganifyer_test.exe" -targetargs:"--gtest_output=xml" -output:"coverage.xml"
+after_test:
+  - ps: |
+      $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
+      Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
+      bash codecov.sh -f "coverage.xml" -t d6fe3982-76ba-4107-a5b4-d599779c799c
+
 artifacts:
-- path: Debug\Steganifyer.exe
+- path: build\Debug\Steganifyer.exe
   name: Steganifyer.exe
 notifications:
 - provider: GitHubPullRequest

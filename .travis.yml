@@ -1,0 +1,18 @@
+sudo: require
+language: cpp
+compiler: gcc
+
+before_install:
+  - sudo pip install codecov
+
+addons:
+  apt:
+  packages: libboost-all-dev
+
+script:
+  - cmake -P build.cmake
+  - ./get_code_cov.sh
+  - codecov
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
