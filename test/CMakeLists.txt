@@ -29,6 +29,7 @@ else()
         )
 endif()
 
-target_link_libraries(${PROJECT_TEST_NAME} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(${PROJECT_TEST_NAME} 
+                        ${CMAKE_THREAD_LIBS_INIT})
 
 add_test(test1 ${PROJECT_TEST_NAME} --gtest_output=xml)
