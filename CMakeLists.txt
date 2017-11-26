@@ -36,15 +36,14 @@ if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIR}
                         ${GTEST_INCLUDE_DIRS}
                         ${PROJECT_SOURCE_DIR}
-                        ${PROJECT_SOURCE_DIR}/headers
-                        ${PROJECT_SOURCE_DIR}/modules/mSteganifyer
-                        ${PROJECT_SOURCE_DIR}/modules/mBMPIO)
+                        ${PROJECT_SOURCE_DIR}/headers)
     
     file(GLOB APP_SRC "src/*.cpp")
     # MAIN EXECUTABLE
     add_executable(${PROJECT_NAME} ${APP_SRC})
     #LINKING 
     target_link_libraries (${PROJECT_NAME} ${Boost_LIBRARIES})
+    target_link_libraries (${PROJECT_NAME} api)
     target_link_libraries (${PROJECT_NAME} mSteganifyer)
     target_link_libraries (${PROJECT_NAME} mBMPIO)
 endif()

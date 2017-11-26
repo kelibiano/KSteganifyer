@@ -11,7 +11,7 @@ cache:
 env:
   global:
     - BOOST_ROOT: $HOME/.cache/boost
-    - BOOST_LIBRARYDIR: $BOOST_ROOT/stage/lib
+    - : $BOOST_ROOT/stage/lib
 addons:
   apt:
     sources:
@@ -49,6 +49,8 @@ install:
     fi
 
 script:
+  - export BOOST_LIBRARYDIR=$BOOST_ROOT/stage/lib
+  - ls $BOOST_LIBRARYDIR
   - cd $TRAVIS_BUILD_DIR
   - ls -l
   - cmake -P build.cmake

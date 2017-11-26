@@ -1,6 +1,7 @@
 
 #include <gtest/gtest.h>
 #include <algorithm>
+#include <../headers/CommandFactory.h>
 
 int main(int argc, char ** argv) { 
     ::testing::InitGoogleTest(&argc, argv);
@@ -24,4 +25,11 @@ TEST(cpp_sorter_test, null_term_str_sort)
 
     for (int i = 0; i<sz; i++)
         EXPECT_EQ(arr[i], eq[i]);
+}
+
+TEST(cpp_sorter_test, test_command_chain)
+{
+    API::CommandFactory * factory = new API::CommandFactory();
+    const char* args [] = {"a","b"};
+    factory->createCommandChain(2, args);
 }

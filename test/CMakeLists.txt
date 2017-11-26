@@ -30,6 +30,8 @@ else()
 endif()
 
 target_link_libraries(${PROJECT_TEST_NAME} 
-                        ${CMAKE_THREAD_LIBS_INIT})
+                      ${CMAKE_THREAD_LIBS_INIT}
+                      ${Boost_LIBRARIES}
+                      api)
 
 add_test(test1 ${PROJECT_TEST_NAME} --gtest_output=xml)
