@@ -1,7 +1,7 @@
-sudo: require
+os: osx
+compiler: clang++
 language: cpp
-matrix:
-    - COMPILER=nvcc
+
 cache:
   apt: true
   directories:
@@ -14,23 +14,9 @@ env:
     - CMAKE_ROOT: $HOME/.cache/cmake
     - BOOST_ROOT: $HOME/.cache/boost
     - BOOST_LIBRARYDIR: $BOOST_ROOT/lib
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.9
-      - libopenmpi-dev
-      - libhdf5-serial-dev
 
 before_install:
   - sudo pip install codecov
-  - if [ "$COMPILER" == "nvcc" ]; then
-        echo "Using CUDA 7.5 ...";
-        export CXX=g++-4.9;
-        export CC=gcc-4.9;
-        export PATH=$CUDA_ROOT/bin:$PATH;
-    fi
   - echo "$CXX $CC"
   - $CXX --version
   - $CC --version
