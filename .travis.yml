@@ -49,6 +49,7 @@ install:
 
 script:
   - export BOOST_LIBRARYDIR=$BOOST_ROOT/stage/lib
+  - ls $BOOST_ROOT
   - ls $BOOST_LIBRARYDIR
   - cd $TRAVIS_BUILD_DIR
   - ls -l
