@@ -1,16 +1,55 @@
 sudo: require
 language: cpp
 compiler: gcc
+cache:
+  apt: true
+  directories:
+#    - $HOME/.cache/cuda
+#    - $HOME/.cache/cmake
+    - $HOME/.cache/boost
+
+env:
+  global:
+    - BOOST_ROOT: $HOME/.cache/boost
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.9
+      - libboost-test-dev
+      - libopenmpi-dev
+      - libhdf5-serial-dev
 
 before_install:
   - sudo pip install codecov
 
-addons:
-  apt:
-    packages: libboost-all-dev
+install:
+  #############################################################################
+  # BOOST                                                                     #
+  #############################################################################
+  - export CMAKE_PREFIX_PATH=$BOOST_ROOT:$CMAKE_PREFIX_PATH
+  # cmake --find-package -DNAME=Boost -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
+  - echo -e "#include <boost/version.hpp>\n#include <iostream>\nint main() { std::cout << BOOST_VERSION << std::endl; return 0; }"
+        | $CXX -I$BOOST_ROOT/include -x c++ - >/dev/null || { echo 0; }
+  - ls $BOOST_ROOT
+  - BOOST_FOUND=$([ $(./a.out) -ge $BOOST_MIN ] && { echo 0; } || { echo 1; })
+  - if [ $BOOST_FOUND -ne 0 ]; then
+      mkdir -p $ BOOST_ROOT &&
+      cd $BOOST_ROOT &&
+      travis_retry wget --no-check-certificate -O boost.tar.bz2 http://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2/download &&
+      tar -xjf boost.tar.bz2 &&
+      cd boost_1_63_0 &&
+      ./bootstrap.sh --with-libraries=test --prefix=$BOOST_ROOT &&
+      ./b2 -j2 &&
+      ./b2 install &&
+      rm -rf boost.tar.bz2 boost_1_60_0 &&
+      cd $HOME;
+    fi
 
 script:
   - cmake -P build.cmake
+  - sudo chmod +x get_code_cov.sh
   - ./get_code_cov.sh
   - codecov
 
