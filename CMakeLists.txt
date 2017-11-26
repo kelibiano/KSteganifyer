@@ -3,7 +3,6 @@ cmake_minimum_required (VERSION 2.6)
 
 # Project definition
 set (PROJECT_NAME "Steganifyer" C CXX)
-
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -18,9 +17,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # BOOST CONFIG
 set (Boost_NO_SYSTEM_PATHS ON)
-set (Boost_USE_MULTITHREADED OFF)
+set (Boost_USE_MULTITHREADED ON)
 set (Boost_USE_STATIC_LIBS ON)
-set (Boost_USE_STATIC_RUNTIME OFF)
+set (Boost_USE_STATIC_RUNTIME ON)
 set (BOOST_LOG_DYN_LINK ON)
 
 # FIND BOOST
