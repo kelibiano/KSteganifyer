@@ -11,7 +11,6 @@ cache:
 env:
   global:
     - BOOST_ROOT: $HOME/.cache/boost
-    - : $BOOST_ROOT/stage/lib
 addons:
   apt:
     sources:
