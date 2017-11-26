@@ -4,13 +4,13 @@ environment:
   BOOST_ROOT: C:\Libraries\boost_1_63_0
 build_script:
 - cmd: "cmake -P build.cmake"
-test_script:
- - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"build\test\Steganifyer_test.exe" -targetargs:"--gtest_output=xml" -output:"coverage.xml"
-after_test:
-  - ps: |
-      $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
-      Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
-      bash codecov.sh -f "coverage.xml" -t d6fe3982-76ba-4107-a5b4-d599779c799c
+#test_script:
+# - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"build\test\Steganifyer_test.exe" -targetargs:"--gtest_output=xml" -output:"coverage.xml"
+#after_test:
+#  - ps: |
+#      $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
+#      Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
+#     bash codecov.sh -f "coverage.xml" -t d6fe3982-76ba-4107-a5b4-d599779c799c
 
 artifacts:
 - path: build\Debug\Steganifyer.exe

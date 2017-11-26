@@ -7,7 +7,7 @@ before_install:
 
 addons:
   apt:
-  packages: libboost-all-dev
+    packages: libboost-all-dev
 
 script:
   - cmake -P build.cmake
