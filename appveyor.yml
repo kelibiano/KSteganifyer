@@ -13,7 +13,7 @@ build_script:
 #     bash codecov.sh -f "coverage.xml" -t d6fe3982-76ba-4107-a5b4-d599779c799c
 
 test_script:
-  - build\Debug\test\Steganifyer_test.exe "--gtest_output=xml"
+  - build\test\Debug\Steganifyer_test.exe "--gtest_output=xml"
 
 artifacts:
 - path: build\Debug\Steganifyer.exe
