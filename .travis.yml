@@ -35,6 +35,7 @@ install:
   #    rm -rf cmake-3.3.2-Linux-x86_64.tar.gz cmake-3.3.2-Linux-x86_64 &&
   #    cd -;
   #  fi
+  - brew update
   - brew install cmake
   - cmake --version
   #############################################################################

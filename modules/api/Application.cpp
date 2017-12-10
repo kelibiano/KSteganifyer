@@ -60,6 +60,16 @@ namespace API {
         delete modulesManager;
     }
 
+    const int Application::initializeModules() {
+        // Check and update modules cache here
+        const int nbModules = modulesManager->initializeModules();
+        if(nbModules < 1) {
+            Error << "No Modules has been found!";
+            execResult = -1;
+        }
+        return nbModules;
+    }
+
     //------------------------------------------------------------------------//
     // Start Method : method called to start the application                  //
     //                                                                        //
@@ -67,14 +77,10 @@ namespace API {
     //              av      const* []   I   command line params	              //
     //------------------------------------------------------------------------//
     void Application::start(int argc, char const* av[]) {
-        
-        // Check and update modules cache here
-        if(modulesManager->initializeModules() <1) {
-            Error << "No Modules has been found!";
-            execResult = -1;
+
+        if(execResult < 0){
             return;
         }
-
         // Create Command factory instance
         CommandFactory *const factory = new CommandFactory();
         // Parsing and creating command chain

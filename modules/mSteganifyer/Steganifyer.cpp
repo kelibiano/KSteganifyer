@@ -69,3 +69,11 @@ namespace Impl {
         Info << "Handling " << *cmd << " ...";
     }
 }
+
+extern "C" API::Module * create() {
+    return new Impl::Steganifyer();
+}
+
+extern "C" void destroy(API::Module * m) {
+    delete m;
+}

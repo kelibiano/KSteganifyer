@@ -44,6 +44,7 @@ namespace API {
     class ModulesManager {
     
     typedef std::map<String, Module *const> ModulesMap;
+    typedef std::vector<Module *> ModulesArray;
 
     public:
         bool registerModule(Module *const);
@@ -56,6 +57,7 @@ namespace API {
         virtual ~ModulesManager();
 
     private:
+        ModulesArray * findModulesInDir( const String dir) const;
         ModulesMap *const modules;
     };
 }

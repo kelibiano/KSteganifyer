@@ -22,12 +22,17 @@
  * THE SOFTWARE.
  */
 
+#include <dlfcn.h>
+
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
+
 #include <ModulesManagers.h>
 #include <Module.h>
 #include <Command.h>
+#include <Logger.h>
 
-#include <Steganifyer.h>
-#include <BMPIO.h>
+namespace fs = boost::filesystem;
 
 namespace API {
 
@@ -76,14 +81,58 @@ namespace API {
         }
     }
 
+    ModulesManager::ModulesArray * ModulesManager::findModulesInDir(const String dir) const {
+        Info << "Searching for modules in " << dir << "/";
+        ModulesArray * modules = new ModulesArray();
+
+        fs::path path(dir.c_str());
+        if(!fs::exists(path)) {
+            Error << "Path not found.";
+        }
+
+        fs::directory_iterator end_iter;
+        for ( fs::directory_iterator dir_itr(path); dir_itr != end_iter; ++dir_itr ){
+            if (fs::is_regular_file(dir_itr->status())) {
+                Info << "Loading " << dir_itr->path().filename();
+
+                void *handle = dlopen(dir_itr->path().c_str(), RTLD_NOW);
+                if (!handle) {
+                    Error << "Failed to load Module " << dir_itr->path().filename();
+                    Error << dlerror();
+                    continue;
+                }
+
+                typedef Module * create();
+                typedef void destroy(Module*);
+
+                create  * pCreate  = (create*)  dlsym(handle, "create");
+                destroy * pDestroy = (destroy*) dlsym(handle, "destroy");
+                if(!pCreate || !pDestroy) {
+                    Error << "Module " << dir_itr->path().filename() << " Is not Compatible.";
+                    Error << dlerror();
+                    continue;
+                }
+                Info << dir_itr->path().filename() << " Loaded";
+                Module * m = pCreate();
+                modules->push_back(m);
+            }
+        }
+
+        return modules;
+    }
+
     //------------------------------------------------------------------------//
     // initializeModules : Initializes the manager and registers mocules into //
     // it with some logic (for the momen in a static way).                    //
     // return     : int     : the number of registered modules                //
     //------------------------------------------------------------------------//
     const int ModulesManager::initializeModules() {
-        registerModule(new Impl::Steganifyer());
-        registerModule(new Impl::BMPIO());
+        // read modules from directory
+        const String libDir =  String("libs");
+        ModulesArray * modules = findModulesInDir(libDir);
+        for(ModulesArray::iterator it = modules->begin(); it != modules->end(); it++)
+            registerModule(*it);
+        
         return modules->size();
     }
 

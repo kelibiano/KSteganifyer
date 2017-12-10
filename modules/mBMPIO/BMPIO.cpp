@@ -83,3 +83,11 @@ namespace Impl {
         delete bmpStrcut;
     }
 }
+
+extern "C" API::Module * create() {
+    return new Impl::BMPIO();
+}
+
+extern "C" void destroy(API::Module * m) {
+    delete m;
+}

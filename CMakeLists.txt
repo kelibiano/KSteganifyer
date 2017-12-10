@@ -1,3 +1,4 @@
+INCLUDE(CPack)
 # Minimum version
 cmake_minimum_required (VERSION 2.6)
 
@@ -15,12 +16,12 @@ set (Steganifyer_VERSION_MINOR 0)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libs)
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
 # BOOST CONFIG
-set (Boost_NO_SYSTEM_PATHS ON)
-set (Boost_USE_MULTITHREADED ON)
-set (Boost_USE_STATIC_LIBS ON)
-set (Boost_USE_STATIC_RUNTIME ON)
-set (BOOST_LOG_DYN_LINK ON)
+set(Boost_USE_STATIC_LIBS   ON)
+set(BOOST_ALL_DYN_LINK ON)
 
 # FIND BOOST
 
@@ -43,6 +44,7 @@ if(Boost_FOUND)
     #LINKING 
     target_link_libraries (${PROJECT_NAME} ${Boost_LIBRARIES})
     target_link_libraries (${PROJECT_NAME} api)
-    target_link_libraries (${PROJECT_NAME} mSteganifyer)
-    target_link_libraries (${PROJECT_NAME} mBMPIO)
+
+    install (TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin
+                                     LIBRARY DESTINATION lib)
 endif()

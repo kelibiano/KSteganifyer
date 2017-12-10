@@ -37,6 +37,7 @@ namespace API {
     
     class Application {
     public:
+        const int initializeModules();
         void start(int, char const*[]);
         const int getExecutionResult();
 

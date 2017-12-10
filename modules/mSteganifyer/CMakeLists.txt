@@ -10,4 +10,6 @@ include_directories(./
                     ${PROJECT_SOURCE_DIR}/headers
                     ${PROJECT_SOURCE_DIR}/modules/mSteganifyer)
 
-ADD_LIBRARY(${LIBRARY_NAME} STATIC ${SRCS})
+ADD_LIBRARY(${LIBRARY_NAME} SHARED ${SRCS})
+target_link_libraries (${LIBRARY_NAME} ${Boost_LIBRARIES})
+target_link_libraries (${LIBRARY_NAME} api)
