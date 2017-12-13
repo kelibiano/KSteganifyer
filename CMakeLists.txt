@@ -1,7 +1,7 @@
 INCLUDE(CPack)
 # Minimum version
 cmake_minimum_required (VERSION 2.6)
-
+enable_testing()
 # Project definition
 set (PROJECT_NAME "Steganifyer" C CXX)
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)

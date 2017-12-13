@@ -1,10 +1,11 @@
-include( CTest )
+include(CTest)
+
 add_definitions(${MSVC_COMPILER_DEFS})
 # ---- tesing
 set(EXT_PROJECTS_DIR ext)
 add_subdirectory(${EXT_PROJECTS_DIR}/gtest)
 
-enable_testing()
+
 set(PROJECT_NAME_STR Steganifyer)
 set(PROJECT_TEST_NAME ${PROJECT_NAME_STR}_test)
 include_directories(${GTEST_INCLUDE_DIRS} ${COMMON_INCLUDES})
@@ -34,4 +35,4 @@ target_link_libraries(${PROJECT_TEST_NAME}
                       ${Boost_LIBRARIES}
                       api)
 
-add_test(test1 ${PROJECT_TEST_NAME} --gtest_output=xml)
+add_test(test1 ../${PROJECT_TEST_NAME})
