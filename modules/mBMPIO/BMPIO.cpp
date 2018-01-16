@@ -84,10 +84,11 @@ namespace Impl {
     }
 }
 
-extern "C" API::Module * create() {
+MODULE_EXPORT API::Module * create() {
     return new Impl::BMPIO();
 }
 
-extern "C" void destroy(API::Module * m) {
+MODULE_EXPORT void destroy(API::Module * m) {
     delete m;
 }
+

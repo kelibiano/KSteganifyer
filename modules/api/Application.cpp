@@ -49,7 +49,8 @@ namespace API {
     // Constructor                                                            //
     //------------------------------------------------------------------------//
     Application::Application()
-    : modulesManager(new ModulesManager()) {
+    : modulesManager(new ModulesManager()),
+      execResult(0) {
 
     }
 

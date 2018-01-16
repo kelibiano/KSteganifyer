@@ -54,6 +54,7 @@ namespace Impl {
         
         /* Handles the given commands with the given parameters */
         void handle(const API::Command *const, API::CommandContext *const);
+
         private :
             const String *const ID;
             StringVector *const cmds;

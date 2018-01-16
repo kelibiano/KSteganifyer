@@ -32,13 +32,39 @@
 #ifndef MODULE_H
 #define MODULE_H
 
+#ifndef MODULE_EXPORT
+#if defined(_MSC_VER)
+#define MODULE_EXPORT extern "C" __declspec(dllexport)
+#elif defined(__GNUC__)
+#define MODULE_EXPORT extern "C" 
+#else
+#error define your copiler
+#endif /* Compiler */
+#endif /* MODULE_EXPORT */
+
+#ifndef MODULE_IMPORT
+#if defined(_MSC_VER)
+#define MODULE_IMPORT __declspec(dllimport)
+#elif defined(__GNUC__)
+#define MODULE_IMPORT 
+#else
+#error define your copiler
+#endif /* Compiler */
+#endif /* MODULE_IMPORT */
+
 #include <Types.h>
+
 
 namespace API {
 
     /* Forward declaration */
     class CommandContext;
     class Command;
+    class Module;
+
+    struct Callback {
+        virtual void operator()(Module *) = 0;
+    };
     
     class Module {
     public:
@@ -52,9 +78,15 @@ namespace API {
         /* Handles the given commands with the given parameters */
         virtual void handle(const Command *const, CommandContext *const) = 0;
 
+        /* Library clean callback */
+        inline void setCleanLibraryCallback(Callback * call) { callback = call; };
+        inline Callback * getCleanCallback() const { return callback; };
+
         /* Destructor */
-        virtual ~Module() {
-        };
+        inline virtual ~Module() {};
+
+    private:
+        Callback * callback = NULL;
     };
 
 }

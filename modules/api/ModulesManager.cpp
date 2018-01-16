@@ -22,13 +22,16 @@
  * THE SOFTWARE.
  */
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
+
 
 #include <ModulesManagers.h>
+#include <ModuleFactory.h>
 #include <Module.h>
 #include <Command.h>
 #include <Logger.h>
+
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
 
 namespace fs = boost::filesystem;
 
@@ -44,12 +47,16 @@ namespace API
 //------------------------------------------------------------------------//
 bool ModulesManager::registerModule(Module *const module)
 {
+    // Register commands
     const StringVector commands = module->getCommands();
-    for (size_t i = 0; i < commands.size(); i++)
-    {
-        modules->emplace(commands.at(i), module);
+    for (size_t i = 0; i < commands.size(); i++) {
+        this->commands->emplace(commands.at(i), module);
     }
-    // for the moment let's retutn true
+
+    // register module
+    this->modules->push_back(module);
+
+    // for the moment let's return true
     return true;
 }
 
@@ -76,44 +83,42 @@ bool ModulesManager::unregisterModule(Module *const module)
 Module *const ModulesManager::getModuleForCommand(const Command *const cmd)
     const
 {
-    ModulesMap::iterator found = modules->find(cmd->getCommandString());
-    if (found != modules->end())
-    {
+    ModulesMap::iterator found = this->commands->find(cmd->getCommandString());
+    if (found != this->commands->end()) {
         return found->second;
     }
-    else
-    {
-        return NULL;
-    }
+    return NULL;
 }
 
-API::Module *loadModuleFromLib(const char *path);
-
-ModulesManager::ModulesArray *ModulesManager::findModulesInDir(const String dir) const
+//------------------------------------------------------------------------//
+// findModulesInDir : scans the given folder for modules and loads them   //
+// argumments : I   dir     const String : folder to be scanned           //
+// return     : ModulesArray List of the found modules                    //
+//------------------------------------------------------------------------//
+ModulesManager::ModulesArray * 
+                ModulesManager::findModulesInDir(const String dir) const
 {
     Info << "Searching for modules in " << dir << "/";
     ModulesArray *modules = new ModulesArray();
 
     fs::path path(dir.c_str());
-    if (!fs::exists(path))
-    {
+    if (!fs::exists(path)){
         Error << "Path not found.";
     }
 
     fs::directory_iterator end_iter;
-    for (fs::directory_iterator dir_itr(path); dir_itr != end_iter; ++dir_itr)
-    {
-        if (fs::is_regular_file(dir_itr->status()))
-        {
-            Info << "Loading " << dir_itr->path().filename();
-            Module *module = loadModuleFromLib(dir_itr->path().c_str());
+    const ModuleFactory * factory = new ModuleFactory();
+
+    for (fs::directory_iterator dir_itr(path); dir_itr != end_iter; ++dir_itr) {
+        if (fs::is_regular_file(dir_itr->status())) {
+            Module * module = factory->createModule(dir_itr->path().string().c_str());
             if (module)
             {
                 modules->push_back(module);
-            }
+            } 
         }
     }
-
+    delete factory;
     return modules;
 }
 
@@ -137,8 +142,8 @@ const int ModulesManager::initializeModules()
 // Constructor                                                            //
 //------------------------------------------------------------------------//
 ModulesManager::ModulesManager()
-    : modules(new std::map<String, Module *const>())
-{
+    : commands(new std::map<String, Module *const>()),
+      modules(new ModulesArray()) {
 }
 
 //------------------------------------------------------------------------//
@@ -146,48 +151,17 @@ ModulesManager::ModulesManager()
 //------------------------------------------------------------------------//
 ModulesManager::~ModulesManager()
 {
-    for (ModulesMap::iterator it = modules->begin(); it != modules->end(); ++it)
-    {
-        // TODO : review here "delete it->second";
+    for (Module * module : *(this->modules)) {
+        Callback * clean = module->getCleanCallback();
+        if (clean) {
+            (*clean)(module);
+            delete clean;
+        }
+        else {
+            Error << "Module Could not be cleaned. Memory leaks may occur.";
+        }
     }
-    delete modules;
+    delete this->modules;
+    delete this->commands;
 }
-
-#ifndef _WIN32
-#include <dlfcn.h>
-API::Module *loadModuleFromLib(const char *path)
-{
-    void *handle = dlopen(path, RTLD_NOW);
-    if (!handle)
-    {
-        Error << "Failed to load Module " << path;
-        Error << dlerror();
-        return NULL;
-    }
-
-    typedef Module *create();
-    typedef void destroy(Module *);
-
-    create *pCreate = (create *)dlsym(handle, "create");
-    destroy *pDestroy = (destroy *)dlsym(handle, "destroy");
-    if (!pCreate || !pDestroy)
-    {
-        Error << "Module " << path << " Is not Compatible.";
-        Error << dlerror();
-        return NULL;
-    }
-    Info << path << " Loaded";
-    return pCreate();
-}
-#else
-#include <windows.h> 
-
-API::Module *loadModuleFromLib(const char * path)
-{
-    HINSTANCE hinstLib; 
-    BOOL fFreeResult, fRunTimeLinkSuccess = FALSE; 
-    LoadLibrary(TEXT(path));
-    return NULL;
-}
-#endif
 }

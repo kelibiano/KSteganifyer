@@ -16,7 +16,6 @@ env:
     - BOOST_LIBRARYDIR: $BOOST_ROOT/lib
 
 before_install:
-  - sudo pip install codecov
   - echo "$CXX $CC"
   - $CXX --version
   - $CC --version
@@ -66,9 +65,9 @@ script:
   - cd $TRAVIS_BUILD_DIR
   - ls -l
   - cmake -P build.cmake
-  - sudo chmod +x get_code_cov.sh
-  - ./get_code_cov.sh
-  - codecov
-
-after_success:
-- bash <(curl -s https://codecov.io/bash)
+#  - sudo chmod +x get_code_cov.sh
+#  - ./get_code_cov.sh
+#  - codecov
+#
+#after_success:
+#- bash <(curl -s https://codecov.io/bash)

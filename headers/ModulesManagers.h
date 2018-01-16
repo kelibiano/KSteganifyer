@@ -58,7 +58,8 @@ namespace API {
 
     private:
         ModulesArray * findModulesInDir( const String dir) const;
-        ModulesMap *const modules;
+        ModulesArray *const modules;
+        ModulesMap *const commands;
     };
 }
 #endif /* MODULESMANAGERS_H */
