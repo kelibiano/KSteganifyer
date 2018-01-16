@@ -16,8 +16,11 @@ test_script:
   - build\test\Debug\Steganifyer_test.exe "--gtest_output=xml"
 
 artifacts:
-- path: build\Debug\Steganifyer.exe
-  name: Steganifyer.exe
+- path: '**\Steganifyer.exe'
+  name: Steganifyer
+- path: '**\m*.dll'
+- path: '**\test_detail.xml'
+
 notifications:
 - provider: GitHubPullRequest
   on_build_success: true

@@ -35,4 +35,4 @@ target_link_libraries(${PROJECT_TEST_NAME}
                       ${Boost_LIBRARIES}
                       api)
 
-add_test(test1 ../${PROJECT_TEST_NAME})
+add_test(test1 ../${PROJECT_TEST_NAME} --gtest_output=xml)
