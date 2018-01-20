@@ -43,37 +43,122 @@ namespace Impl {
     String COMMANDS[] = {"Steganify"};
     static const String & STR_MODULE_ID ="STEGANIFYER-";
     static const StringVector & LST_COMMANDS = initCommands();
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn StringVector & initCommands()
+    ///
+    /// @brief  Initializes the commands.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @return A reference to a StringVector.
+    ///-------------------------------------------------------------------------------------------------
+
     StringVector & initCommands() {
         StringVector * cmds = new StringVector();
         for( unsigned int a = 0; a < sizeof(COMMANDS)/sizeof(COMMANDS[0]); a = a + 1 )
             cmds->push_back(COMMANDS[a]);
         return *cmds;
     }
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn Steganifyer::Steganifyer()
+    ///
+    /// @brief  Default constructor.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///-------------------------------------------------------------------------------------------------
+
     Steganifyer::Steganifyer() {
     }
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn Steganifyer::~Steganifyer()
+    ///
+    /// @brief  Destructor.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///-------------------------------------------------------------------------------------------------
+
     Steganifyer::~Steganifyer() {
     }
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn const String & Steganifyer::getID() const
+    ///
+    /// @brief  Gets the identifier.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @return The identifier.
+    ///-------------------------------------------------------------------------------------------------
+
     const String & Steganifyer::getID() const {
         return STR_MODULE_ID;
     }
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn const StringVector& Steganifyer::getCommands() const
+    ///
+    /// @brief  Gets the commands.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @return The commands.
+    ///-------------------------------------------------------------------------------------------------
+
     const StringVector& Steganifyer::getCommands() const {
         return LST_COMMANDS;
     }
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn void Steganifyer::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx)
+    ///
+    /// @brief  Handles.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @param          cmd     The command.
+    /// @param [in,out] cmdCtx  If non-null, context for the command.
+    ///-------------------------------------------------------------------------------------------------
+
     void Steganifyer::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx) {
         Info << "Handling " << *cmd << " ...";
     }
 }
 
+///-------------------------------------------------------------------------------------------------
+/// @fn MODULE_EXPORT API::Module * create()
+///
+/// @brief  Creates a new API::Module*.
+///
+/// @author Yacine Haoues
+/// @date   1/18/2018
+///
+/// @return Null if it fails, else a pointer to an API::Module.
+///-------------------------------------------------------------------------------------------------
+
 MODULE_EXPORT API::Module * create() {
     return new Impl::Steganifyer();
 }
 
-MODULE_EXPORT void destroy(API::Module * m) {
+///-------------------------------------------------------------------------------------------------
+/// @fn MODULE_EXPORT void destroy(const API::Module *const m)
+///
+/// @brief  Destroys the given m.
+///
+/// @author Yacine Haoues
+/// @date   1/18/2018
+///
+/// @param  m   The m to destroy.
+///-------------------------------------------------------------------------------------------------
+
+MODULE_EXPORT void destroy(const API::Module *const m) {
     delete m;
 }

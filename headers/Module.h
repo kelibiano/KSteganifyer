@@ -62,10 +62,14 @@ namespace API {
     class Command;
     class Module;
 
+    /// <summary>
+    /// Callback function used to clean module
+    /// </summary>
     struct Callback {
         virtual void operator()(Module *) = 0;
+        virtual ~Callback(){};
     };
-    
+
     class Module {
     public:
 

@@ -28,22 +28,99 @@
 #include <iostream>
 namespace API {
 
-    //------------------------------------------------------------------------//
-    // Constructor                                                            //
-    //------------------------------------------------------------------------//
-    Command::Command(const String cmd ) : strCommand(cmd) {
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn Command::Command(const String cmd )
+    ///
+    /// @brief  Constructor.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @param  cmd The command.
+    ///-------------------------------------------------------------------------------------------------
+    Command::Command(const String cmd ) 
+        : strCommand(cmd) , dict(new Dictionnary()) {
         Info << "New Command : " << getCommandString();
     }
 
-    //------------------------------------------------------------------------//
-    // Desctructor                                                            //
-    //------------------------------------------------------------------------//
-    Command::~Command() {
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn Command::~Command()
+    ///
+    /// @brief  Destructor.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///-------------------------------------------------------------------------------------------------
 
+    Command::~Command() {
+        delete dict;
     }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn const String Command::getCommandString() const
+    ///
+    /// @brief  Gets command string.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @return The command string.
+    ///-------------------------------------------------------------------------------------------------
 
     const String Command::getCommandString() const {
         return strCommand;
+    }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn const String Command::get(const String key) const
+    ///
+    /// @brief  Gets a constant string using the given key.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @param  key The key to get.
+    ///
+    /// @return A const String.
+    ///-------------------------------------------------------------------------------------------------
+
+    const String Command::get(const String key) const {
+        Dictionnary::const_iterator it = dict->find(key);
+        return it != dict->end() ? it->second : String("");
+    }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn void Command::put(const String key, const String val)
+    ///
+    /// @brief  Puts.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @param  key The key.
+    /// @param  val The value.
+    ///-------------------------------------------------------------------------------------------------
+
+    void Command::put(const String key, const String val) {
+        dict->emplace(key, val);
+    }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn bool Command::conatin(const String key) const
+    ///
+    /// @brief  Conatins the given key.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @param  key The key.
+    ///
+    /// @return True if it succeeds, false if it fails.
+    ///-------------------------------------------------------------------------------------------------
+
+    bool Command::conatin(const String key) const {
+        Dictionnary::const_iterator it = dict->find(key);
+        return it != dict->end();
     }
 
     std::ostream& operator<<(std::ostream& stream, const Command& cmd) {

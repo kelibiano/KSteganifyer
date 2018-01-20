@@ -38,6 +38,7 @@
 
 typedef std::string String;
 typedef std::vector<String> StringVector;
+typedef std::map<String, String> Dictionnary;
 
 #endif /* TYPES_H */
 

@@ -74,7 +74,7 @@ bool ModulesManager::unregisterModule(Module *const module)
 }
 
 //------------------------------------------------------------------------//
-// getModuleForCommand : Retrieves The module that handles the given      //                                                               //
+// getModuleForCommand : Retrieves The module that handles the given      //
 // command as input (if it exists)                                        //
 // argumments : I   cmd     Command *const  Command to be looked          //
 // return     : Module *const   The module that handles the command. if   //
@@ -99,11 +99,12 @@ ModulesManager::ModulesArray *
                 ModulesManager::findModulesInDir(const String dir) const
 {
     Info << "Searching for modules in " << dir << "/";
-    ModulesArray *modules = new ModulesArray();
+    ModulesArray * modules = new ModulesArray();
 
     fs::path path(dir.c_str());
     if (!fs::exists(path)){
         Error << "Path not found.";
+        return modules;
     }
 
     fs::directory_iterator end_iter;

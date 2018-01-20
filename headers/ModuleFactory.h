@@ -41,8 +41,10 @@ namespace API {
 
     class ModuleFactory {
     public:
+        
+        
         Module * createModule(const char *) const;
-        /* Destructor */
+
         virtual ~ModuleFactory() {};
     };
 

@@ -31,32 +31,34 @@
 
 #ifndef BMPSTRUCTURE_H
 #define BMPSTRUCTURE_H
+
 #include <Types.h>
 namespace Impl {
-
+    
     typedef char byte;
     const size_t COLORS_24 = 24;
 
     struct BMPFileHeader {
-        byte bfType[2]; // standard type 
-        byte bfSize[4]; // file size
-        byte bfReserved1[2]; // reserved 2
-        byte bfReserved2[2]; // reserved 1
-        byte bfOffBits[4]; // offset to the pixels data
+        unsigned char bfType1; // standard type 
+        unsigned char bfType2;
+        unsigned int bfSize; // file size
+        unsigned short bfReserved1; // reserved 1
+        unsigned short bfReserved2; // reserved 2
+        unsigned int bfOffBits; // offset to the pixels data
     };
 
     struct BMPInfoHeader {
-        byte biSize [4];
-        byte biWidth [4];
-        byte biHeight [4];
-        byte biPlanes [2];
-        byte biBitCount [2];
-        byte biCompression [4];
-        byte biSizeImage [4];
-        byte biXPelsPerMeter [4];
-        byte biYPelsPerMeter [4];
-        byte biClrUsed [4];
-        byte biClrImportant [4];
+        unsigned long biSize;
+        unsigned long biWidth;
+        unsigned long biHeight;
+        short biPlanes;
+        short biBitCount;
+        unsigned long biCompression;
+        unsigned long biSizeImage;
+        unsigned long biXPelsPerMeter;
+        unsigned long biYPelsPerMeter;
+        unsigned long biClrUsed;
+        unsigned long biClrImportant;
     };
 
     struct RGBQUAD {

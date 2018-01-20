@@ -42,25 +42,77 @@ namespace Impl {
 
     const String STR_PARAM_INPUTFILE = "input-file";
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn BMPIO::BMPIO()
+    ///
+    /// @brief  Default constructor.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///-------------------------------------------------------------------------------------------------
+
     BMPIO::BMPIO() : ID(new String("BMPIO-")), cmds(new StringVector()) {
         cmds->push_back("read");
         cmds->push_back("write");
     }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn BMPIO::~BMPIO()
+    ///
+    /// @brief  Destructor.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///-------------------------------------------------------------------------------------------------
 
     BMPIO::~BMPIO() {
         Info << "Cleaning BMPIO";
         delete ID;
         delete cmds;
     }
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn const String & BMPIO::getID() const
+    ///
+    /// @brief  Gets the identifier.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @return The identifier.
+    ///-------------------------------------------------------------------------------------------------
+
     const String & BMPIO::getID() const {
         return *ID;
     }
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn const StringVector& BMPIO::getCommands() const
+    ///
+    /// @brief  Gets the commands.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @return The commands.
+    ///-------------------------------------------------------------------------------------------------
+
     const StringVector& BMPIO::getCommands() const {
         return *cmds;
     }
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn void BMPIO::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx)
+    ///
+    /// @brief  Handles.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @param          cmd     The command.
+    /// @param [in,out] cmdCtx  If non-null, context for the command.
+    ///-------------------------------------------------------------------------------------------------
+
     void BMPIO::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx) {
 
         // Checking the command (Another way is to found later, Strategy pattern maybe)
@@ -84,11 +136,33 @@ namespace Impl {
     }
 }
 
+///-------------------------------------------------------------------------------------------------
+/// @fn MODULE_EXPORT API::Module * create()
+///
+/// @brief  Creates a new API::Module*.
+///
+/// @author Yacine Haoues
+/// @date   1/18/2018
+///
+/// @return Null if it fails, else a pointer to an API::Module.
+///-------------------------------------------------------------------------------------------------
+
 MODULE_EXPORT API::Module * create() {
     return new Impl::BMPIO();
 }
 
-MODULE_EXPORT void destroy(API::Module * m) {
+///-------------------------------------------------------------------------------------------------
+/// @fn MODULE_EXPORT void destroy(API::Module * m)
+///
+/// @brief  Destroys the given m.
+///
+/// @author Yacine Haoues
+/// @date   1/18/2018
+///
+/// @param [in,out] m   If non-null, the m to destroy.
+///-------------------------------------------------------------------------------------------------
+
+MODULE_EXPORT void destroy(const API::Module *const m) {
     delete m;
 }
 

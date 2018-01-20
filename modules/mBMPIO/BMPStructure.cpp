@@ -35,13 +35,39 @@
 #include <iomanip>
 #include <fstream>
 
+#pragma pack(1)
+
 namespace Impl {
 
     const bool checkValidHeader(BMPFileHeader const * fHeader);
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn BMPStructure::BMPStructure(const String file)
+    ///
+    /// @summary    Constructor.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @param  file    The file.
+    ///
+    /// ### remarks Yacine Haoues, 1/18/2018.
+    ///-------------------------------------------------------------------------------------------------
+
     BMPStructure::BMPStructure(const String file) :
         bitmap(readFile(file)) {
     }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn BMPStructure::~BMPStructure()
+    ///
+    /// @summary    Destructor.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// ### remarks Yacine Haoues, 1/18/2018.
+    ///-------------------------------------------------------------------------------------------------
 
     BMPStructure::~BMPStructure() {
         if(bitmap != NULL) {
@@ -49,10 +75,25 @@ namespace Impl {
         }
     }
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn const Bitmap *const BMPStructure::readFile(const String file)
+    ///
+    /// @summary    Reads a file.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @param  file    The file.
+    ///
+    /// @return The file.
+    ///
+    /// ### remarks Yacine Haoues, 1/18/2018.
+    ///-------------------------------------------------------------------------------------------------
+
     const Bitmap *const BMPStructure::readFile(const String file) {
         std::ifstream ifs;
         // try to open the given file
-        ifs.open(file.c_str(), std::ifstream::in | std::ifstream::binary);
+        ifs.open(file.c_str(), std::ios::binary);
         if(!ifs.is_open()) {
             Error << "File "<< file << " Cannot be opened.";
             ifs.close();
@@ -61,8 +102,8 @@ namespace Impl {
         // read the header of the file
         BMPFileHeader * fHeader = new BMPFileHeader;
         BMPInfoHeader * iHeader = new BMPInfoHeader;
-
-        ifs.read(reinterpret_cast<byte*>(fHeader), sizeof(BMPFileHeader));
+        ifs.seekg(0, std::ios::beg);
+        ifs.read((char*)fHeader, sizeof(BMPFileHeader));
         // Check if the header is a valid one
         if(checkValidHeader(fHeader)) {
             Info << "Reading Valid Bitmap file...";
@@ -73,39 +114,31 @@ namespace Impl {
             return NULL;
         }
 
-        ifs.read(reinterpret_cast<byte*>(iHeader), sizeof(BMPInfoHeader));
+        ifs.read(reinterpret_cast<char*>(iHeader), sizeof(BMPInfoHeader));
 
-        const unsigned int size = *reinterpret_cast<unsigned int*>(fHeader->bfSize);
-        const unsigned int offset = *reinterpret_cast<unsigned int*>(fHeader->bfOffBits);
-
-        Info << "File size : " << size ;
-        Info << "Goto offset : " << offset;
+        Info << "File size : " << fHeader->bfSize;
+        Info << "Goto offset : " << fHeader->bfOffBits;
         
-        ifs.seekg(offset);
+        ifs.seekg(fHeader->bfOffBits);
 
-        const unsigned int block = size - offset;
-        const unsigned int nbquads = block / sizeof(RGBTRIPLE);
-        Info << "reading " << block << " bytes into "<< nbquads << " RGBA" ;
+        const unsigned int nbquads = iHeader->biSizeImage / sizeof(RGBTRIPLE);
+        Info << "reading " << iHeader->biSizeImage << " bytes into "<< nbquads << " RGBA" ;
        
-        
-        
-        const unsigned int width = *reinterpret_cast<unsigned int*>(iHeader->biWidth);
-        const unsigned int height = *reinterpret_cast<unsigned int*>(iHeader->biHeight);
-        const unsigned int bitCount = *reinterpret_cast<unsigned int*>(iHeader->biBitCount);
-        Info << "Printing " << width << " x " << height << " Image";
-        Info << "With " << bitCount << " Bits";
+
+        Info << "Printing " << iHeader->biWidth << " x " << iHeader->biHeight << " Image";
+        Info << "With " << iHeader->biBitCount << " Bits";
        
 
 
         RGBTRIPLE * quads = new RGBTRIPLE[nbquads];
-        ifs.read(reinterpret_cast<byte*>(quads), block);
+        ifs.read(reinterpret_cast<char*>(quads), iHeader->biSizeImage);
 
         char ch[] = {' ','.','-','+','X','B', '#'};
-        for (size_t i = height - 1; i >= 0; i--)
+        for (size_t i = iHeader->biHeight - 1; i >= 0; i--)
         {
             std::cout << "->";
-            for (size_t j = 0; j < width; j++) {
-                int idx = i * width + j +i;
+            for (size_t j = 0; j < iHeader->biWidth; j++) {
+                int idx = i * iHeader->biWidth + j +i;
 
                 int x = ((((unsigned char)quads[idx].rgbBlue) +
                 ((unsigned char)quads[idx].rgbGreen) +
@@ -122,8 +155,22 @@ namespace Impl {
         // On error
         return NULL;
     }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn const bool checkValidHeader(BMPFileHeader const * fHeader)
+    ///
+    /// @summary    Check if the file has a valid header.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///
+    /// @param  fHeader The header.
+    ///
+    /// @return A const bool. true if the header starts with 'BM', false otherwise.
+    ///-------------------------------------------------------------------------------------------------
+    /// 
     const bool checkValidHeader(BMPFileHeader const * fHeader) {
-        return  fHeader->bfType[0] == 'B' &&
-                fHeader->bfType[1] =='M';
+        return  fHeader->bfType1 == 'B' &&
+                fHeader->bfType2 =='M';
     }
 }

@@ -36,9 +36,22 @@
 
 namespace API {
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @class  Command
+    ///
+    /// @brief  A command.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/18/2018
+    ///-------------------------------------------------------------------------------------------------
+
     class Command {
     public:
         const String getCommandString() const;
+        void put(const String, const String);
+        const String get(const String) const;
+        bool conatin(const String) const;
+
         Command(const String);
         virtual ~Command();
         friend std::ostream & operator<<(std::ostream&, const Command&);
@@ -46,9 +59,9 @@ namespace API {
 
     private:
         const String strCommand;
+        Dictionnary *const dict;
     };
 }
 
 
 #endif /* COMMANDCONTEXT_H */
-
