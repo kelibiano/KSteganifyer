@@ -29,18 +29,25 @@
  * Created on November 15, 2017, 7:59 PM
  */
 
-#include <BMPStructure.h>
+// Module's include
+#include "BMPStructure.h"
+// Common API
 #include <Logger.h>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
 
-#pragma pack(1)
+// disable memory optimisation for structures reading
+
 
 namespace Impl {
 
-    const bool checkValidHeader(BMPFileHeader const * fHeader);
-
+    // forward declaration
+    const bool checkValidHeader (BMPFileHeader const * fHeader);
+    RGBA * readDataCompression00(const BMPImageHeader*, const BGRA *, std::ifstream *);
+    RGBA * readDataCompression01(const BMPImageHeader*, const BGRA *, std::ifstream *);
+    RGBA * readDataCompression02(const BMPImageHeader*, const BGRA *, std::ifstream *);
+    RGBA * readDataCompression03(const BMPImageHeader*, const BGRA *, std::ifstream *);
     ///-------------------------------------------------------------------------------------------------
     /// @fn BMPStructure::BMPStructure(const String file)
     ///
@@ -92,18 +99,22 @@ namespace Impl {
 
     const Bitmap *const BMPStructure::readFile(const String file) {
         std::ifstream ifs;
+
         // try to open the given file
-        ifs.open(file.c_str(), std::ios::binary);
+        ifs.open(file.c_str(), std::ios::binary | std::ios::in);
         if(!ifs.is_open()) {
             Error << "File "<< file << " Cannot be opened.";
             ifs.close();
             return NULL;
         }
+
+        // starting from the beginneing
+        ifs.seekg(0, std::ios::beg);
+
         // read the header of the file
         BMPFileHeader * fHeader = new BMPFileHeader;
-        BMPInfoHeader * iHeader = new BMPInfoHeader;
-        ifs.seekg(0, std::ios::beg);
-        ifs.read((char*)fHeader, sizeof(BMPFileHeader));
+        ifs.read(reinterpret_cast<char*>(fHeader), sizeof(BMPFileHeader));
+
         // Check if the header is a valid one
         if(checkValidHeader(fHeader)) {
             Info << "Reading Valid Bitmap file...";
@@ -113,47 +124,49 @@ namespace Impl {
             ifs.close();
             return NULL;
         }
-
-        ifs.read(reinterpret_cast<char*>(iHeader), sizeof(BMPInfoHeader));
-
-        Info << "File size : " << fHeader->bfSize;
-        Info << "Goto offset : " << fHeader->bfOffBits;
         
-        ifs.seekg(fHeader->bfOffBits);
+        // Read image header
+        BMPImageHeader * iHeader = new BMPImageHeader;
+        ifs.read(reinterpret_cast<char*>(iHeader), sizeof(BMPImageHeader));
 
-        const unsigned int nbquads = iHeader->biSizeImage / sizeof(RGBTRIPLE);
-        Info << "reading " << iHeader->biSizeImage << " bytes into "<< nbquads << " RGBA" ;
-       
+        Info << "File size : " << fHeader->Size;
+        Info << "Data offset : " << fHeader->BitsOffset;
+        Info << "Width : " << iHeader->Width;
+        Info << "Height : " << iHeader->Height;
 
-        Info << "Printing " << iHeader->biWidth << " x " << iHeader->biHeight << " Image";
-        Info << "With " << iHeader->biBitCount << " Bits";
-       
+        // Read color table
+        unsigned int colTableSize = 0;
+        switch(iHeader->BitCount) {
+            case 1: colTableSize = 2; break;
+            case 4: colTableSize = 16; break;
+            case 8: colTableSize = 256; break;
+        }
+        BGRA * colTable = new BGRA[colTableSize];
+        ifs.seekg(BITMAP_FILEHEADER_SIZE + iHeader->HeaderSize, std::ios::beg);
+        ifs.read(reinterpret_cast<char*>(colTable), sizeof(BGRA) * iHeader->ClrUsed);
 
-
-        RGBTRIPLE * quads = new RGBTRIPLE[nbquads];
-        ifs.read(reinterpret_cast<char*>(quads), iHeader->biSizeImage);
-
-        char ch[] = {' ','.','-','+','X','B', '#'};
-        for (size_t i = iHeader->biHeight - 1; i >= 0; i--)
-        {
-            std::cout << "->";
-            for (size_t j = 0; j < iHeader->biWidth; j++) {
-                int idx = i * iHeader->biWidth + j +i;
-
-                int x = ((((unsigned char)quads[idx].rgbBlue) +
-                ((unsigned char)quads[idx].rgbGreen) +
-                ((unsigned char)quads[idx].rgbRed)) )/3/37;
-                std::cout << ch[x];
-            }
-            std::cout << "<-" << std::endl;
+        typedef RGBA * (*DataLoader)(const BMPImageHeader*, const BGRA *, std::ifstream *);
+        DataLoader readDataCompression = NULL;
+        switch(iHeader->Compression) {
+            case 0: readDataCompression = readDataCompression00; break;
+            case 1: readDataCompression = readDataCompression01; break;
+            case 2: readDataCompression = readDataCompression02; break;
+            case 3: readDataCompression = readDataCompression03; break;
+        }
+        
+        RGBA * data = readDataCompression(iHeader, colTable, &ifs);
+        if(data == NULL) {
+            Error << "File Could Not Be Read.";
         }
 
-        // clean
-        delete[] quads;
+        delete iHeader;
         delete fHeader;
         ifs.close();
         // On error
-        return NULL;
+
+        Bitmap * bmp = new Bitmap;
+        bmp->bitmapBits = data;
+        return bmp;
     }
 
     ///-------------------------------------------------------------------------------------------------
@@ -170,7 +183,82 @@ namespace Impl {
     ///-------------------------------------------------------------------------------------------------
     /// 
     const bool checkValidHeader(BMPFileHeader const * fHeader) {
-        return  fHeader->bfType1 == 'B' &&
-                fHeader->bfType2 =='M';
+        return  fHeader->Signature == BITMAP_SIGNATURE;
     }
+
+    void readDataComp01BC01(RGBA * data, const BGRA * cTbl, int * idx, uint8_t * lPtr, unsigned int * j) {
+        uint32_t Color = *((uint8_t*) lPtr);
+        for (int k = 0; k < 8; k++) {
+            data[*idx].Red = cTbl[Color & 0x80 ? 1 : 0].Red;
+            data[*idx].Green = cTbl[Color & 0x80 ? 1 : 0].Green;
+            data[*idx].Blue = cTbl[Color & 0x80 ? 1 : 0].Blue;
+            data[*idx].Alpha = cTbl[Color & 0x80 ? 1 : 0].Alpha;
+            (*idx)= (*idx) + 1;
+            Color <<= 1;
+        }
+        lPtr++;
+        *j += 7;
+    }
+
+    void readDataComp01BC08(RGBA * data, const BGRA * cTbl, int * idx, uint8_t * lPtr, unsigned int * j) {
+        uint32_t color = *((uint8_t*) lPtr);
+        data[*idx].Red = cTbl[color].Red;
+        data[*idx].Green = cTbl[color].Green;
+        data[*idx].Blue = cTbl[color].Blue;
+        data[*idx].Alpha = cTbl[color].Alpha;
+        (*idx)= (*idx) + 1;
+        lPtr++;
+    }
+
+    RGBA * readDataCompression00(const BMPImageHeader* ihdr, const BGRA * cTbl, std::ifstream * ifs) {
+
+        typedef void (*LineReader)(RGBA *, const BGRA *, int *, uint8_t *, unsigned int *);
+        LineReader readLine = NULL;
+
+        switch(ihdr->BitCount){
+            case 1: readLine = readDataComp01BC01; break;
+            case 4:break;
+            case 8: readLine = readDataComp01BC08; break;
+            case 16:break;
+            case 24:break;
+            case 32:break;
+        }
+
+        if(readLine == NULL) {
+            Error << "Unsupported BitCount " << ihdr->BitCount;
+            return NULL;
+        }
+
+        const unsigned long iSize = ihdr->Width * ihdr->Height;
+        RGBA * data = new RGBA[iSize];
+        
+        unsigned int lSize = ((ihdr->Width * ihdr->BitCount / 8) + 3) & ~3;
+		uint8_t * line = new uint8_t[lSize];
+
+        int * idx = new int; *idx=0; // create and initialize index
+        for (unsigned int i = 0; i < ihdr->Height; i++) {
+            // red full line
+            ifs->read(reinterpret_cast<char*>(line), lSize);
+            uint8_t * lPtr = line;
+
+            for (unsigned int j = 0; j < ihdr->Width; j++) {
+                readLine(data, cTbl, idx, lPtr, &j);
+            }
+        }
+
+        return data;
+    }
+
+    RGBA * readDataCompression01(const BMPImageHeader*, const BGRA *, std::ifstream *) {
+        return NULL;
+    }
+
+    RGBA * readDataCompression02(const BMPImageHeader*, const BGRA *, std::ifstream *) {
+        return NULL;
+    }
+
+    RGBA * readDataCompression03(const BMPImageHeader*, const BGRA *, std::ifstream *) {
+        return NULL;
+    }
+    
 }

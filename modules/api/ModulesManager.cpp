@@ -69,7 +69,6 @@ bool ModulesManager::registerModule(Module *const module)
 //------------------------------------------------------------------------//
 bool ModulesManager::unregisterModule(Module *const module)
 {
-
     return true;
 }
 
@@ -102,8 +101,8 @@ ModulesManager::ModulesArray *
     ModulesArray * modules = new ModulesArray();
 
     fs::path path(dir.c_str());
-    if (!fs::exists(path)){
-        Error << "Path not found.";
+    if (!fs::exists(path)) {
+        Error << dir << " is not found in " << fs::current_path().c_str();
         return modules;
     }
 

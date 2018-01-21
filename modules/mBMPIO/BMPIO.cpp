@@ -29,8 +29,8 @@
  * Created on November 14, 2017, 7:59 PM
  */
 
-#include <BMPIO.h>
-#include <BMPStructure.h>
+#include "BMPIO.h"
+#include "BMPStructure.h"
 #include <CommandContext.h>
 #include <CommandChain.h>
 #include <Command.h>
@@ -132,7 +132,9 @@ namespace Impl {
         // read the BMP
         Info << "Reading " << *fname << " ...";
         BMPStructure *const bmpStrcut = new BMPStructure(*fname);
-        delete bmpStrcut;
+
+        // Save BMP in the command context
+        cmdCtx->put("IMAGE_DATA_ITERATOR", new API::DataDescriptor("RGB_IIERATOR", bmpStrcut));
     }
 }
 

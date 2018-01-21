@@ -35,20 +35,16 @@
 #ifndef MODULE_EXPORT
 #if defined(_MSC_VER)
 #define MODULE_EXPORT extern "C" __declspec(dllexport)
-#elif defined(__GNUC__)
-#define MODULE_EXPORT extern "C" 
 #else
-#error define your copiler
+#define MODULE_EXPORT extern "C" 
 #endif /* Compiler */
 #endif /* MODULE_EXPORT */
 
 #ifndef MODULE_IMPORT
 #if defined(_MSC_VER)
 #define MODULE_IMPORT __declspec(dllimport)
-#elif defined(__GNUC__)
-#define MODULE_IMPORT 
 #else
-#error define your copiler
+#define MODULE_IMPORT 
 #endif /* Compiler */
 #endif /* MODULE_IMPORT */
 

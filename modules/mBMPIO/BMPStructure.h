@@ -20,6 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ * 
  */
 
 /* 
@@ -27,69 +28,117 @@
  * Author: yacinehaoues
  *
  * Created on November 14, 2017, 7:59 PM
+ * 
+ * References : 
+ * Benjamin Kalytta
+ * Windows Bitmap File Loader
+ * Version 1.2.5 (20120929)
+ * http://www.kalytta.com/bitmap.h
+ * 
  */
 
 #ifndef BMPSTRUCTURE_H
 #define BMPSTRUCTURE_H
 
 #include <Types.h>
-namespace Impl {
-    
-    typedef char byte;
-    const size_t COLORS_24 = 24;
+namespace Impl
+{
 
-    struct BMPFileHeader {
-        unsigned char bfType1; // standard type 
-        unsigned char bfType2;
-        unsigned int bfSize; // file size
-        unsigned short bfReserved1; // reserved 1
-        unsigned short bfReserved2; // reserved 2
-        unsigned int bfOffBits; // offset to the pixels data
-    };
+#ifndef __LITTLE_ENDIAN__
+#ifndef __BIG_ENDIAN__
+#define __LITTLE_ENDIAN__
+#endif /* __BIG_ENDIAN__ */
+#endif /* __LITTLE_ENDIAN__ */
 
-    struct BMPInfoHeader {
-        unsigned long biSize;
-        unsigned long biWidth;
-        unsigned long biHeight;
-        short biPlanes;
-        short biBitCount;
-        unsigned long biCompression;
-        unsigned long biSizeImage;
-        unsigned long biXPelsPerMeter;
-        unsigned long biYPelsPerMeter;
-        unsigned long biClrUsed;
-        unsigned long biClrImportant;
-    };
+#ifdef __LITTLE_ENDIAN__
+#define BITMAP_SIGNATURE 0x4d42
+#else
+#define BITMAP_SIGNATURE 0x424d
+#endif /* __LITTLE_ENDIAN__ */
 
-    struct RGBQUAD {
-        byte rgbBlue;
-        byte rgbGreen;
-        byte rgbRed;
-        byte rgbReserved;
-    };
-    struct RGBTRIPLE {
-        byte rgbBlue;
-        byte rgbGreen;
-        byte rgbRed;
-    };
+#if defined(_MSC_VER) || defined(__INTEL_COMPILER)
+typedef unsigned __int32 uint32_t;
+typedef unsigned __int16 uint16_t;
+typedef unsigned __int8 uint8_t;
+typedef __int32 int32_t;
+#elif defined(__GNUC__) || defined(__CYGWIN__) || defined(__MWERKS__) || defined(__WATCOMC__) || defined(__PGI) || defined(__LCC__)
+#include <stdint.h>
+#else
+typedef unsigned int uint32_t;
+typedef unsigned short int uint16_t;
+typedef unsigned char uint8_t;
+typedef int int32_t;
+#endif
 
-    struct Bitmap {
-        BMPFileHeader fileHeader;
-        BMPInfoHeader infoHeader;
-        RGBQUAD * colors;
-        byte * bitmapBits;
-    };
+#pragma pack(push, 1)
 
-    
-    class BMPStructure  {
-    public :
-        BMPStructure(const String);
-        virtual ~BMPStructure();
-    private :
-        const Bitmap *const readFile(const String);
-        const Bitmap *const bitmap;
-    };
+typedef struct BMPFileHeader
+{
+    uint16_t Signature;
+    uint32_t Size;
+    uint32_t Reserved;
+    uint32_t BitsOffset;
+} BITMAP_FILEHEADER;
+
+#define BITMAP_FILEHEADER_SIZE 14
+
+typedef struct BMPImageHeader
+{
+    uint32_t HeaderSize;
+    int32_t Width;
+    int32_t Height;
+    uint16_t Planes;
+    uint16_t BitCount;
+    uint32_t Compression;
+    uint32_t SizeImage;
+    int32_t PelsPerMeterX;
+    int32_t PelsPerMeterY;
+    uint32_t ClrUsed;
+    uint32_t ClrImportant;
+    uint32_t RedMask;
+    uint32_t GreenMask;
+    uint32_t BlueMask;
+    uint32_t AlphaMask;
+    uint32_t CsType;
+    uint32_t Endpoints[9]; // see http://msdn2.microsoft.com/en-us/library/ms536569.aspx
+    uint32_t GammaRed;
+    uint32_t GammaGreen;
+    uint32_t GammaBlue;
+} BITMAP_HEADER;
+
+typedef struct _RGBA
+{
+    uint8_t Red;
+    uint8_t Green;
+    uint8_t Blue;
+    uint8_t Alpha;
+} RGBA;
+
+typedef struct _BGRA
+{
+    uint8_t Blue;
+    uint8_t Green;
+    uint8_t Red;
+    uint8_t Alpha;
+} BGRA;
+
+struct Bitmap
+{
+    RGBA * bitmapBits;
+};
+
+#pragma pack(pop)
+
+class BMPStructure
+{
+  public:
+    BMPStructure(const String);
+    virtual ~BMPStructure();
+
+  private:
+    const Bitmap *const readFile(const String);
+    const Bitmap *const bitmap;
+};
 }
 
 #endif /* BMPIO_H */
-

@@ -29,8 +29,9 @@
  * Created on November 6, 2017, 7:59 PM
  */
 
-#include <Steganifyer.h>
+#include "Steganifyer.h"
 #include <CommandContext.h>
+#include <CommandChain.h>
 #include <Command.h>
 #include <Logger.h>
 #include <iostream>
@@ -39,8 +40,8 @@
 
 namespace Impl {
     StringVector & initCommands();
-    
-    String COMMANDS[] = {"Steganify"};
+    String CMD_STEGANIFY = "steganify";
+    String COMMANDS[] = {CMD_STEGANIFY};
     static const String & STR_MODULE_ID ="STEGANIFYER-";
     static const StringVector & LST_COMMANDS = initCommands();
 
@@ -116,6 +117,10 @@ namespace Impl {
         return LST_COMMANDS;
     }
 
+
+    // call number
+    bool called = false;
+
     ///-------------------------------------------------------------------------------------------------
     /// @fn void Steganifyer::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx)
     ///
@@ -127,9 +132,33 @@ namespace Impl {
     /// @param          cmd     The command.
     /// @param [in,out] cmdCtx  If non-null, context for the command.
     ///-------------------------------------------------------------------------------------------------
-
+    
     void Steganifyer::handle(const API::Command *const cmd, API::CommandContext *const cmdCtx) {
-        Info << "Handling " << *cmd << " ...";
+
+        // Getting command chain
+        API::CommandChain *const chain = cmdCtx->getChain();
+
+        // read input data
+        // Here read input data file(s) (Format TBD)
+
+        // Searching for available data
+        API::DataDescriptor * dDesc = cmdCtx->get("IMAGE_DATA_ITERATOR");
+        if(dDesc == NULL && !called) {
+            Info << "No Data Found, Asking to read and input file " << * cmd << " ...";
+            chain->addCommand(new API::Command("read"));
+            chain->addCommand(new API::Command(CMD_STEGANIFY));
+            called = true; // limit tries to one call (no infinite loops)
+            return;
+        }
+
+        // Processing found Data
+        Info << "Processing data.";
+        
+        // Compressing
+        // Crypting
+
+        // Writing input data
+
     }
 }
 

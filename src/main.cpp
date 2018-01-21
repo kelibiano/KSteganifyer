@@ -43,6 +43,7 @@ int main(int ac, char const *av[]) {
 
     // Initialize and start application
     API::Application * const application = new API::Application();
+    
     application->initializeModules();
     application->start(ac, av);
     int result = application->getExecutionResult();
