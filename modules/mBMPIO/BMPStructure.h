@@ -72,55 +72,100 @@ typedef int int32_t;
 
 #pragma pack(push, 1)
 
+///-------------------------------------------------------------------------------------------------
+/// @struct BMPFileHeader
+///
+/// @brief  A bitmap file header.
+///
+/// @author Yacine Haoues
+/// @date   1/22/2018
+///-------------------------------------------------------------------------------------------------
+
 typedef struct BMPFileHeader
 {
-    uint16_t Signature;
-    uint32_t Size;
-    uint32_t Reserved;
-    uint32_t BitsOffset;
+    uint16_t signature;
+    uint32_t size;
+    uint32_t reserved;
+    uint32_t bitsOffset;
 } BITMAP_FILEHEADER;
 
 #define BITMAP_FILEHEADER_SIZE 14
 
+///-------------------------------------------------------------------------------------------------
+/// @struct BMPImageHeader
+///
+/// @brief  A bitmap image header.
+///
+/// @author Yacine Haoues
+/// @date   1/22/2018
+///-------------------------------------------------------------------------------------------------
+
 typedef struct BMPImageHeader
 {
-    uint32_t HeaderSize;
-    int32_t Width;
-    int32_t Height;
-    uint16_t Planes;
-    uint16_t BitCount;
-    uint32_t Compression;
-    uint32_t SizeImage;
-    int32_t PelsPerMeterX;
-    int32_t PelsPerMeterY;
-    uint32_t ClrUsed;
-    uint32_t ClrImportant;
-    uint32_t RedMask;
-    uint32_t GreenMask;
-    uint32_t BlueMask;
-    uint32_t AlphaMask;
-    uint32_t CsType;
-    uint32_t Endpoints[9]; // see http://msdn2.microsoft.com/en-us/library/ms536569.aspx
-    uint32_t GammaRed;
-    uint32_t GammaGreen;
-    uint32_t GammaBlue;
+    uint32_t headerSize;
+    int32_t width;
+    int32_t height;
+    uint16_t planes;
+    uint16_t bitcount;
+    uint32_t compression;
+    uint32_t sizeImage;
+    int32_t xResolution;
+    int32_t yResolution;
+    uint32_t clrUsed;
+    uint32_t clrImportant;
+    uint32_t redMask;
+    uint32_t greenMask;
+    uint32_t blueMask;
+    uint32_t alphaMask;
+    uint32_t csType;
+    uint32_t endpoints[9]; // see http://msdn2.microsoft.com/en-us/library/ms536569.aspx
+    uint32_t gammaRed;
+    uint32_t gammaGreen;
+    uint32_t gammaBlue;
 } BITMAP_HEADER;
+
+///-------------------------------------------------------------------------------------------------
+/// @struct _RGBA
+///
+/// @brief  A rgba.
+///
+/// @author Yacine Haoues
+/// @date   1/22/2018
+///-------------------------------------------------------------------------------------------------
 
 typedef struct _RGBA
 {
-    uint8_t Red;
-    uint8_t Green;
-    uint8_t Blue;
-    uint8_t Alpha;
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+    uint8_t alpha;
 } RGBA;
+
+///-------------------------------------------------------------------------------------------------
+/// @struct _BGRA
+///
+/// @brief  A bgra.
+///
+/// @author Yacine Haoues
+/// @date   1/22/2018
+///-------------------------------------------------------------------------------------------------
 
 typedef struct _BGRA
 {
-    uint8_t Blue;
-    uint8_t Green;
-    uint8_t Red;
-    uint8_t Alpha;
+    uint8_t blue;
+    uint8_t green;
+    uint8_t red;
+    uint8_t alpha;
 } BGRA;
+
+///-------------------------------------------------------------------------------------------------
+/// @struct Bitmap
+///
+/// @brief  A bitmap.
+///
+/// @author Yacine Haoues
+/// @date   1/22/2018
+///-------------------------------------------------------------------------------------------------
 
 struct Bitmap
 {
@@ -129,9 +174,19 @@ struct Bitmap
 
 #pragma pack(pop)
 
+///-------------------------------------------------------------------------------------------------
+/// @class  BMPStructure
+///
+/// @brief  A bitmap structure.
+///
+/// @author Yacine Haoues
+/// @date   1/22/2018
+///-------------------------------------------------------------------------------------------------
+
 class BMPStructure
 {
   public:
+
     BMPStructure(const String);
     virtual ~BMPStructure();
 

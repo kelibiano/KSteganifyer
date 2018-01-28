@@ -30,6 +30,7 @@
  */
 #include <Types.h>
 #include <Application.h>
+#include <ApplicationModule.h>
 #include <ModulesManagers.h>
 #include <CommandFactory.h>
 #include <CommandChain.h>
@@ -41,42 +42,50 @@
 // Included Modules 
 #include <Steganifyer.h>
 // Included libs
-#include<iostream>
+#include <iostream>
 
 namespace API {
 
-    //------------------------------------------------------------------------//
-    // Constructor                                                            //
-    //------------------------------------------------------------------------//
-    Application::Application()
-    : modulesManager(new ModulesManager()),
-      execResult(0) {
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn Application::Application()
+    ///
+    /// @brief  Default constructor
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///-------------------------------------------------------------------------------------------------
 
+    Application::Application(): 
+        modulesManager(new ModulesManager()), 
+        execResult(0) {
+        modulesManager->registerModule(new ApplicationModule());
     }
 
-    //------------------------------------------------------------------------//
-    // Desctructor                                                            //
-    //------------------------------------------------------------------------//
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn Application::~Application()
+    ///
+    /// @brief  Destructor
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///-------------------------------------------------------------------------------------------------
+
     Application::~Application() {
         delete modulesManager;
     }
 
-    const int Application::initializeModules() {
-        // Check and update modules cache here
-        const int nbModules = modulesManager->initializeModules();
-        if(nbModules < 1) {
-            Error << "No Modules has been found!";
-            execResult = -1;
-        }
-        return nbModules;
-    }
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn void Application::start(int argc, char const* av[])
+    ///
+    /// @brief  Starts
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param  argc    The argc.
+    /// @param  av      The av.
+    ///-------------------------------------------------------------------------------------------------
 
-    //------------------------------------------------------------------------//
-    // Start Method : method called to start the application                  //
-    //                                                                        //
-    // argumments : argc    int         I   numberof arguments                //
-    //              av      const* []   I   command line params	              //
-    //------------------------------------------------------------------------//
     void Application::start(int argc, char const* av[]) {
 
         if(execResult < 0){
@@ -87,17 +96,12 @@ namespace API {
         // Parsing and creating command chain
         CommandChain *const chain = factory->createCommandChain(argc, av);
         // initializing context
-        CommandContext *const cmdCtx = new CommandContext(chain);
+        CommandContext *const cmdCtx = new CommandContext(this, chain);
         
         // Processing commands
         while(chain->hasCommands()) {
             Command const* cmd = chain->nextCommand();
-            Module *const module = modulesManager->getModuleForCommand(cmd);
-            if(module != NULL) {
-                module->handle(cmd, cmdCtx);
-            } else {
-                Error << "None of the known Modules handles the command " << *cmd;
-            }
+            runCommand(cmd, cmdCtx);
             delete cmd;
         }
 
@@ -109,11 +113,43 @@ namespace API {
         Info << "Done.";
     }
 
-    //------------------------------------------------------------------------//
-    // getExecutionResult : Returms the results of the execution of the       //
-    // Application                                                            //
-    //------------------------------------------------------------------------//
+    void Application::runCommand(Command const*  cmd, CommandContext *const ctx) {
+        Module *const module = modulesManager->getModuleForCommand(cmd);
+        if (module != NULL) {
+            module->handle(cmd, ctx);
+        }
+        else {
+            Error << "None of the known Modules handles the command " << *cmd;
+        }
+    }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn const int Application::getExecutionResult()
+    ///
+    /// @brief  Gets execution result
+    /// 
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @return The execution result.
+    ///-------------------------------------------------------------------------------------------------
+
     const int Application::getExecutionResult() {
         return execResult;
+    }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn const int Application::getModulesManager()
+    ///
+    /// @brief  Gets Module Manager
+    /// 
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @return the Modules Manager
+    ///-------------------------------------------------------------------------------------------------
+
+    ModulesManager *const Application::getModulesManager() const {
+        return this->modulesManager;
     }
 }

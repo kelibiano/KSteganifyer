@@ -29,7 +29,16 @@
 namespace API {
 
     const String STR_EMPTY = "";
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn CommandChain::CommandChain()
+    ///
+    /// @brief  Default constructor
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///-------------------------------------------------------------------------------------------------
+
     CommandChain::CommandChain() : 
         commands(new CommandsQueue()),
         parameters(new StringMap()) {
@@ -37,39 +46,130 @@ namespace API {
         Info << "New Command Chain Created ...";
     }
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn CommandChain::~CommandChain()
+    ///
+    /// @brief  Destructor
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///-------------------------------------------------------------------------------------------------
+
     CommandChain::~CommandChain() {
 
     }
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn void CommandChain::addCommand(Command *const cmd)
+    ///
+    /// @brief  Adds a command
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param [in,out] cmd If non-null, the command.
+    ///-------------------------------------------------------------------------------------------------
+
     void CommandChain::addCommand(Command *const cmd) {
         commands->push(cmd);
     }
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn void CommandChain::addParameter(const String param)
+    ///
+    /// @brief  Adds a parameter
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param  param   The parameter.
+    ///-------------------------------------------------------------------------------------------------
+
     void CommandChain::addParameter(const String param) {
         Info << "Parameter : " << param;
         parameters->emplace(param, STR_EMPTY);
     }
-    
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn void CommandChain::addParameter(const String param, const String value)
+    ///
+    /// @brief  Adds a parameter to 'value'
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param  param   The parameter.
+    /// @param  value   The value.
+    ///-------------------------------------------------------------------------------------------------
+
     void CommandChain::addParameter(const String param, const String value) {
         Info << "Parameter : " << param <<'\t'<<"Value : "<< value;
         parameters->emplace(param, value);
     }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn String *const CommandChain::getParameter(const String param) const
+    ///
+    /// @brief  Gets a parameter
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param  param   The parameter.
+    ///
+    /// @return The parameter.
+    ///-------------------------------------------------------------------------------------------------
 
     String *const CommandChain::getParameter(const String param) const {
         StringMap::iterator it = parameters->find(param);
         return it != parameters->end() ? new String(it->second) : NULL;
     }
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn bool CommandChain::hasParamerter(const String param) const
+    ///
+    /// @brief  Query if 'param' has paramerter
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param  param   The parameter.
+    ///
+    /// @return True if paramerter, false if not.
+    ///-------------------------------------------------------------------------------------------------
+
     bool CommandChain::hasParamerter(const String param) const {
         return parameters->find(param) != parameters->end();
     }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn bool CommandChain::hasCommands()
+    ///
+    /// @brief  Query if this object has commands
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @return True if commands, false if not.
+    ///-------------------------------------------------------------------------------------------------
 
     bool CommandChain::hasCommands() {
         return !commands->empty();
     }
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn Command const* CommandChain::nextCommand()
+    ///
+    /// @brief  Next command
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @return Null if it fails, else a pointer to a const.
+    ///-------------------------------------------------------------------------------------------------
+
     Command const* CommandChain::nextCommand() {
-        Command const * cmd = commands->front();
+        Command  const* cmd = commands->front();
         commands->pop();
         return cmd;
     }

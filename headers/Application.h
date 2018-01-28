@@ -34,15 +34,17 @@
 
 namespace API {
     class ModulesManager;
+    class CommandContext;
+    class Command;
     
     class Application {
     public:
-        const int initializeModules();
-        void start(int, char const*[]);
-        const int getExecutionResult();
-
         Application();
         ~Application();
+        void start(int, char const*[]);
+        void runCommand(Command const* , CommandContext *const);
+        const int getExecutionResult();
+        ModulesManager *const getModulesManager() const;
 
     private:
         int execResult;

@@ -41,15 +41,16 @@ namespace API {
     class Module;
     class Command;
 
-    class ModulesManager {
-    
     typedef std::map<String, Module *const> ModulesMap;
     typedef std::vector<Module *> ModulesArray;
+
+    class ModulesManager {
+    
+    
 
     public:
         bool registerModule(Module *const);
         bool unregisterModule(Module *const);
-        const int initializeModules();
 
         Module *const getModuleForCommand(const Command *const) const;
 

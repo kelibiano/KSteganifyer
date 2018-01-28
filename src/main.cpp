@@ -33,9 +33,20 @@
 //--- Forward declaration --------------------------------------------------- //
 void printStrillInWorkMessage();
 
-//--------------------------------------------------------------------------- //
-// Entry point                                                                //
-//----------------------------------------------------------------------------//
+
+///-------------------------------------------------------------------------------------------------
+/// @fn int main(int ac, char const *av[])
+///
+/// @brief  Main entry-point for this application
+///
+/// @author Yacine Haoues
+/// @date   1/22/2018
+///
+/// @param  ac  The number of command-line arguments provided.
+/// @param  av  An array of command-line argument strings.
+///
+/// @return Exit-code for the process - 0 for success, else an error code.
+///-------------------------------------------------------------------------------------------------
 
 int main(int ac, char const *av[]) {
     // Print still in work 
@@ -43,8 +54,6 @@ int main(int ac, char const *av[]) {
 
     // Initialize and start application
     API::Application * const application = new API::Application();
-    
-    application->initializeModules();
     application->start(ac, av);
     int result = application->getExecutionResult();
 
@@ -55,10 +64,14 @@ int main(int ac, char const *av[]) {
     return result;
 }
 
-//--------------------------------------------------------------------------- //
-// Still in work message                                                      //
-//----------------------------------------------------------------------------//
-
+///-------------------------------------------------------------------------------------------------
+/// @fn void printStrillInWorkMessage()
+///
+/// @brief  Prints strill in work message
+///
+/// @author Yacine Haoues
+/// @date   1/22/2018
+///-------------------------------------------------------------------------------------------------
 void printStrillInWorkMessage() {
     std::cout << '\n';
     std::cout << "****************************************************" << '\n';

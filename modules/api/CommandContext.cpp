@@ -24,30 +24,106 @@
 
 #include <CommandContext.h>
 #include <CommandChain.h>
+#include <Application.h>
 
 #include <Logger.h>
 #include <Types.h>
 #include <iostream>
 namespace API {
 
-    CommandContext::CommandContext(CommandChain * const mChain):
-        chain(mChain), dataMap(new DataMap()) {
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn CommandContext::CommandContext(CommandChain * const mChain)
+    ///
+    /// @brief  Constructor
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param [in,out] mChain  If non-null, the chain.
+    ///-------------------------------------------------------------------------------------------------
+
+    CommandContext::CommandContext(Application *const app, CommandChain * const mChain):
+        application(app),
+        chain(mChain),
+        dataMap(new DataMap()) {
         
         Info << "New Command Context Created ...";
     }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn CommandContext::~CommandContext()
+    ///
+    /// @brief  Destructor
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///-------------------------------------------------------------------------------------------------
 
     CommandContext::~CommandContext() {
         delete dataMap;
     }
 
-    CommandChain *const CommandContext::getChain() const {
-        return chain;
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn Application *const CommandContext::getApplication() const
+    ///
+    /// @brief  Gets the Application
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @return The chain.
+    ///-------------------------------------------------------------------------------------------------
+
+    Application *const CommandContext::getApplication() const {
+        return this->application;
     }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn CommandChain *const CommandContext::getChain() const
+    ///
+    /// @brief  Gets the chain
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @return The chain.
+    ///-------------------------------------------------------------------------------------------------
+
+    CommandChain *const CommandContext::getChain() const {
+        return this->chain;
+    }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn DataDescriptor *const CommandContext::get(String key) const
+    ///
+    /// @brief  Gets a constant using the given key
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param  key The key to get.
+    ///
+    /// @return A const.
+    ///-------------------------------------------------------------------------------------------------
 
     DataDescriptor *const CommandContext::get(String key) const {
         DataMap::iterator ptr = dataMap->find(key);
         return ptr != dataMap->end() ? ptr->second : NULL;
     }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn bool CommandContext::put(String key, DataDescriptor *const data)
+    ///
+    /// @brief  Puts
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param          key     The key.
+    /// @param [in,out] data    If non-null, the data.
+    ///
+    /// @return True if it succeeds, false if it fails.
+    ///-------------------------------------------------------------------------------------------------
 
     bool CommandContext::put(String key, DataDescriptor *const data) {
         dataMap->emplace(key, data);

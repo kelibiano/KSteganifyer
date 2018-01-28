@@ -38,6 +38,7 @@
 namespace API {
 
     class CommandChain;
+    class Application;
 
     struct DataDescriptor {
         const String type;
@@ -55,12 +56,14 @@ namespace API {
         bool put(String, DataDescriptor *const);
         DataDescriptor *const get(String) const;
         CommandChain *const getChain() const;
-        CommandContext(CommandChain *const);
+        Application *const getApplication() const;
+        CommandContext(Application *const, CommandChain *const);
         virtual ~CommandContext();
     private:
         typedef std::map<String, DataDescriptor *const> DataMap;
         DataMap * dataMap;
         CommandChain *const chain;
+        Application *const application;
     };
 
 }

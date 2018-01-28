@@ -42,6 +42,15 @@ namespace API {
     typedef MODULE_IMPORT Module * (*Instance)();
     typedef MODULE_IMPORT void(*Destroy)(Module*);
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @struct CleanLibraryCallBack
+    ///
+    /// @brief  A clean library call back.
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///-------------------------------------------------------------------------------------------------
+
     struct CleanLibraryCallBack : public Callback {
         CleanLibraryCallBack(void * libPtr, Destroy d) 
             : lib(libPtr), destruct(d) {};
@@ -53,7 +62,18 @@ namespace API {
         Destroy destruct;
     };
 
-
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn Module * ModuleFactory::createModule(const char * path) const
+    ///
+    /// @brief  Creates a module
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param  path    Full pathname of the file.
+    ///
+    /// @return Null if it fails, else the new module.
+    ///-------------------------------------------------------------------------------------------------
 
     Module * ModuleFactory::createModule(const char * path) const {
         Info << "Loading " << path;

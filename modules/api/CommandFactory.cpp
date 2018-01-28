@@ -34,9 +34,27 @@
 
 namespace API {
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn CommandFactory::CommandFactory()
+    ///
+    /// @brief  Default constructor
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///-------------------------------------------------------------------------------------------------
+
     CommandFactory::CommandFactory() {
         Info << "New Command Factory Created ...";
     }
+
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn CommandFactory::~CommandFactory()
+    ///
+    /// @brief  Destructor
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///-------------------------------------------------------------------------------------------------
 
     CommandFactory::~CommandFactory() {
 
@@ -46,8 +64,25 @@ namespace API {
 
     }
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn CommandChain *const CommandFactory::createCommandChain(int argc, char const* argv[])
+    ///
+    /// @brief  Creates command chain
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/22/2018
+    ///
+    /// @param  argc    The argc.
+    /// @param  argv    The argv.
+    ///
+    /// @return The new command chain.
+    ///-------------------------------------------------------------------------------------------------
+
     CommandChain *const CommandFactory::createCommandChain(int argc, char const* argv[]) {
         CommandChain *const chain = new CommandChain();
+        chain->addCommand(new Command("configure"));
+        chain->addCommand(new Command("module_scan"));
+
         for(int i = 1; i < argc; i++) {
             String cmd = String(argv[i]);
             if(cmd.size()<= 1) {
