@@ -1,73 +1,28 @@
-os: osx
-compiler: clang++
+os: linux
 language: cpp
-
-cache:
-  apt: true
-  directories:
-#    - $HOME/.cache/cuda
-    - $HOME/.cache/cmake
-    - $HOME/.cache/boost
-
-env:
-  global:
-    - CMAKE_ROOT: $HOME/.cache/cmake
-    - BOOST_ROOT: $HOME/.cache/boost
-    - BOOST_LIBRARYDIR: $BOOST_ROOT/lib
+compiler: gcc
 
 before_install:
-  - echo "$CXX $CC"
-  - $CXX --version
-  - $CC --version
-install:
-  #############################################################################
-  # CMAKE                                                                     #
-  #############################################################################
-  #- export PATH=$CMAKE_ROOT/bin:$PATH
-  #- CMAKE_33_FOUND=$(cmake --version | grep " 3\.3\." >/dev/null && { echo 0; } || { echo 1; })
-  #- if [ $CMAKE_33_FOUND -ne 0 ]; then
-  #    mkdir -p $CMAKE_ROOT &&
-  #    cd $CMAKE_ROOT &&
-  #    travis_retry wget --no-check-certificate http://www.cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.tar.gz &&
-  #    tar -xzf cmake-3.3.2-Linux-x86_64.tar.gz &&
-  #    mv cmake-3.3.2-Linux-x86_64/* . &&
-  #    rm -rf cmake-3.3.2-Linux-x86_64.tar.gz cmake-3.3.2-Linux-x86_64 &&
-  #    cd -;
-  #  fi
-  - brew update
-  # - brew update cmake
-  - cmake --version
-  #############################################################################
-  # BOOST                                                                     #
-  #############################################################################
-  - export CMAKE_PREFIX_PATH=$BOOST_ROOT:$CMAKE_PREFIX_PATH
-  # cmake --find-package -DNAME=Boost -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
-  - echo -e "#include <boost/version.hpp>\n#include <iostream>\nint main() { std::cout << BOOST_VERSION << std::endl; return 0; }"
-        | $CXX -I$BOOST_ROOT/include -x c++ - >/dev/null || { echo 0; }
-  - ls $BOOST_ROOT
-  - BOOST_FOUND=$([ $(./a.out) -ge $BOOST_MIN ] && { echo 0; } || { echo 1; })
-  - if [ $BOOST_FOUND -ne 0 ]; then
-      mkdir -p $ BOOST_ROOT &&
-      cd $BOOST_ROOT &&
-      travis_retry wget --no-check-certificate -O boost.tar.bz2 http://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2/download &&
-      tar -xjf boost.tar.bz2 &&
-      cd boost_1_63_0 &&
-      ./bootstrap.sh --prefix=$BOOST_ROOT &&
-      ./b2 -j2 &&
-      ./b2 install &&
-      rm -rf boost.tar.bz2 boost_1_63_0 &&
-      cd $HOME;
-    fi
+ - sudo apt-get update -qq
+ - sudo apt-get install cmake libboost-all-dev
+
+before_script:
+ - mkdir build
+ - cd build
+ - cmake -DBUILD_TESTS=ON ..
 
 script:
-  - ls $BOOST_ROOT/lib
-  - ls $BOOST_LIBRARYDIR
-  - cd $TRAVIS_BUILD_DIR
-  - ls -l
-  - cmake -P build.cmake
-#  - sudo chmod +x get_code_cov.sh
-#  - ./get_code_cov.sh
-#  - codecov
-#
-#after_success:
-#- bash <(curl -s https://codecov.io/bash)
+  - make
+  - make test
+
+#notifications:
+# email:
+#  - github.travisci@gmail.com
+# on_success: change
+# on_failure: always
+
+#whitelist
+#branches:
+# only:
+#  - master
+#  - development
