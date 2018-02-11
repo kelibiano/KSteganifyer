@@ -12,17 +12,5 @@ before_script:
  - cmake -DBUILD_TESTS=ON ..
 
 script:
-  - make
+  - make 
   - make test
-
-#notifications:
-# email:
-#  - github.travisci@gmail.com
-# on_success: change
-# on_failure: always
-
-#whitelist
-#branches:
-# only:
-#  - master
-#  - development

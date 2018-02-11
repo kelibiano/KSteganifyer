@@ -1,35 +1,28 @@
+#include <boost/test/included/unit_test.hpp>
+using namespace boost::unit_test;
 
-#include <gtest/gtest.h>
-#include <algorithm>
-#include <../headers/CommandFactory.h>
+//____________________________________________________________________________//
 
-int main(int argc, char ** argv) { 
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS(); 
-}
+void test_case1() { /* : */ }
+void test_case2() { /* : */ }
+void test_case3() { /* : */ }
+void test_case4() { /* : */ }
 
-// simple sorter for arrays
-template <typename T>
-void array_sort(T * arr, size_t len)
+//____________________________________________________________________________//
+
+test_suite*
+init_unit_test_suite(int argc, char* argv[])
 {
-    std::sort(arr, arr + len);
-}
+    test_suite* ts1 = BOOST_TEST_SUITE("test_suite1");
+    ts1->add(BOOST_TEST_CASE(&test_case1));
+    ts1->add(BOOST_TEST_CASE(&test_case2));
 
+    test_suite* ts2 = BOOST_TEST_SUITE("test_suite2");
+    ts2->add(BOOST_TEST_CASE(&test_case3));
+    ts2->add(BOOST_TEST_CASE(&test_case4));
 
-TEST(cpp_sorter_test, null_term_str_sort)
-{
-    char arr[] = "abcdefghab";
-    char eq[] = "aabbcdefgh";
-    int sz = sizeof(arr) / sizeof(arr[0]) - 1; // we need it, to avoid terminating \0 in "" definition case
-    array_sort(arr, sz);
+    framework::master_test_suite().add(ts1);
+    framework::master_test_suite().add(ts2);
 
-    for (int i = 0; i<sz; i++)
-        EXPECT_EQ(arr[i], eq[i]);
-}
-
-TEST(cpp_sorter_test, test_command_chain)
-{
-    API::CommandFactory * factory = new API::CommandFactory();
-    const char* args [] = {"a","b"};
-    factory->createCommandChain(2, args);
+    return 0;
 }

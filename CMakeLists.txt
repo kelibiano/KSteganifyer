@@ -14,6 +14,10 @@ set(CMAKE_BUILD_TYPE Debug)
 
 project (${PROJECT_NAME})
 
+if(UNIX) 
+    add_definitions("-fPIC")
+endif()
+
 # Defining variables
 set (Steganifyer_VERSION_MAJOR 1)
 set (Steganifyer_VERSION_MINOR 0)
@@ -31,7 +35,7 @@ set(BOOST_ALL_DYN_LINK ON)
 
 # FIND BOOST
 
-find_package(Boost COMPONENTS program_options log REQUIRED)
+find_package(Boost COMPONENTS filesystem unit_test_framework REQUIRED)
 
 if(Boost_FOUND)
     # INCLUDE SUB FOLDERS
@@ -40,7 +44,6 @@ if(Boost_FOUND)
 
     # INCLUDES
     include_directories(${Boost_INCLUDE_DIR}
-                        ${GTEST_INCLUDE_DIRS}
                         ${PROJECT_SOURCE_DIR}
                         ${PROJECT_SOURCE_DIR}/headers)
     
@@ -48,8 +51,11 @@ if(Boost_FOUND)
     # MAIN EXECUTABLE
     add_executable(${PROJECT_NAME} ${APP_SRC})
     #LINKING 
-    target_link_libraries (${PROJECT_NAME} ${Boost_LIBRARIES})
-    target_link_libraries (${PROJECT_NAME} api)
+    target_link_libraries (${PROJECT_NAME} api ${Boost_LIBRARIES})
+    if (UNIX)
+        target_link_libraries (${PROJECT_NAME} dl)
+    #do something
+    endif (UNIX)
 
     install (TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin
                                      LIBRARY DESTINATION lib)

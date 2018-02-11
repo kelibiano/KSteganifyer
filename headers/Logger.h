@@ -32,13 +32,68 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include<boost/log/trivial.hpp>
 
-#define Debug   BOOST_LOG_TRIVIAL(debug)
-#define Info    BOOST_LOG_TRIVIAL(info)
-#define Warn    BOOST_LOG_TRIVIAL(warning)
-#define Error   BOOST_LOG_TRIVIAL(error)
-#define Fatal   BOOST_LOG_TRIVIAL(fatal)
+/* #include<boost/log/trivial.hpp>*/
+#include <Types.h>
+#include <iostream>
 
+namespace API {
+enum CLogLevel {
+    TRACE = 0,
+    DEBUG = 1,
+    INFO = 2,
+    WARN = 3,
+    ERR = 4,
+    FATAL = 5
+};
+
+class Logger {
+
+public :
+   
+
+    Logger(CLogLevel l) :close(false), lvl(l) {
+        operator << ("[" + getHeader(l) + "] ");
+    };
+
+    virtual ~Logger() {
+        if (close) {
+            std::cout << std::endl;
+        }
+        close = false;
+    };
+    template<class T> inline Logger &operator<<(const T &msg) {
+         std::cout << msg;
+         close = true;
+         return *this;
+    }
+
+private:
+   
+
+    inline String getHeader(CLogLevel l) {
+        String label;
+        switch (l) {
+            case TRACE: label = "TRACE"; break;
+            case DEBUG: label = "DEBUG"; break;
+            case INFO:  label = "INFO "; break;
+            case WARN:  label = "WARN "; break;
+            case ERR: label = "ERROR"; break;
+            case FATAL: label = "FATAL"; break;
+        }
+        return label;
+    }
+    bool close;
+    CLogLevel lvl;
+};
+
+#define Trace   API::Logger(API::TRACE)
+#define Debug   API::Logger(API::DEBUG)
+#define Info    API::Logger(API::INFO)
+#define Warn    API::Logger(API::WARN)
+#define Error   API::Logger(API::ERR)
+#define Fatal   API::Logger(API::FATAL)
+
+}
 #endif /* LOGGER_H */
 

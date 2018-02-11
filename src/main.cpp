@@ -23,7 +23,6 @@
  * THE SOFTWARE.
  */
 
-
 //--- Third party includes -------------------------------------------------- //
 #include <iostream>
 //--- Project party includes ------------------------------------------------ //

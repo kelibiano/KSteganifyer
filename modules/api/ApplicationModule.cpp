@@ -36,6 +36,18 @@
 
 namespace fs = boost::filesystem;
 
+///-------------------------------------------------------------------------------------------------
+/// @fn void readConfiguration(const API::Command *const cmd, API::CommandContext *const ctx)
+///
+/// @brief  Reads a configuration
+///
+/// @author Yacine Haoues
+/// @date   1/30/2018
+///
+/// @param          cmd The command.
+/// @param [in,out] ctx If non-null, the context.
+///-------------------------------------------------------------------------------------------------
+
 void readConfiguration(const API::Command *const cmd, API::CommandContext *const ctx) {
     Info << "Configuring...";
     // HERE READ THE CONFIGURATION FILE AND UPDATE THE CONFIGURATION
@@ -83,6 +95,17 @@ API::ModulesArray * findModulesInDir(const String dir)
     return modules;
 }
 
+///-------------------------------------------------------------------------------------------------
+/// @fn void checkForModules(const API::Command *const cmd, API::CommandContext *const ctx)
+///
+/// @brief  Check for modules
+///
+/// @author Yacine Haoues
+/// @date   1/30/2018
+///
+/// @param          cmd The command.
+/// @param [in,out] ctx If non-null, the context.
+///-------------------------------------------------------------------------------------------------
 
 void checkForModules(const API::Command *const cmd, API::CommandContext *const ctx) {
     Info << "Scanning for Modules...";
@@ -92,6 +115,15 @@ void checkForModules(const API::Command *const cmd, API::CommandContext *const c
     for (API::ModulesArray::iterator it = modules->begin(); it != modules->end(); it++)
         ctx->getApplication()->getModulesManager()->registerModule(*it);
 }
+
+///-------------------------------------------------------------------------------------------------
+/// @fn API::ApplicationModule::ApplicationModule()
+///
+/// @brief  Default constructor
+///
+/// @author Yacine Haoues
+/// @date   1/30/2018
+///-------------------------------------------------------------------------------------------------
 
 API::ApplicationModule::ApplicationModule() : SimpleModule("ApplicationModule") {
     registerCommandHandler("configure", readConfiguration);

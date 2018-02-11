@@ -26,13 +26,44 @@
 #include <Command.h>
 #include <CommandContext.h>
 
+///-------------------------------------------------------------------------------------------------
+/// @fn API::SimpleModule::SimpleModule(const String & mName)
+///
+/// @brief  Constructor
+///
+/// @author Yacine Haoues
+/// @date   1/30/2018
+///
+/// @param  mName   The name.
+///-------------------------------------------------------------------------------------------------
+
 API::SimpleModule::SimpleModule(const String & mName) {
 
 }
 
+///-------------------------------------------------------------------------------------------------
+/// @fn API::SimpleModule::~SimpleModule()
+///
+/// @brief  Destructor
+///
+/// @author Yacine Haoues
+/// @date   1/30/2018
+///-------------------------------------------------------------------------------------------------
+
 API::SimpleModule::~SimpleModule() {
 
 }
+
+///-------------------------------------------------------------------------------------------------
+/// @fn const String & API::SimpleModule::getID() const
+///
+/// @brief  Gets the identifier
+///
+/// @author Yacine Haoues
+/// @date   1/30/2018
+///
+/// @return The identifier.
+///-------------------------------------------------------------------------------------------------
 
 const String & API::SimpleModule::getID() const {
     return String("Module");
@@ -57,13 +88,50 @@ const StringVector&  API::SimpleModule::getCommands() const {
     return *v;
 }
 
+///-------------------------------------------------------------------------------------------------
+/// @fn void API::SimpleModule::registerCommandHandler(const String & cmd, CommandHandler hndlr)
+///
+/// @brief  Registers the command handler
+///
+/// @author Yacine Haoues
+/// @date   1/30/2018
+///
+/// @param  cmd     The command.
+/// @param  hndlr   The hndlr.
+///-------------------------------------------------------------------------------------------------
+
 void API::SimpleModule::registerCommandHandler(const String & cmd, CommandHandler hndlr) {
     handlers[cmd] = hndlr; // register command
 }
 
+///-------------------------------------------------------------------------------------------------
+/// @fn API::CommandHandler API::SimpleModule::getCommandHandler(const String& cmd)
+///
+/// @brief  Handler, called when the get command
+///
+/// @author Yacine Haoues
+/// @date   1/30/2018
+///
+/// @param  cmd The command.
+///
+/// @return The command handler.
+///-------------------------------------------------------------------------------------------------
+
 API::CommandHandler API::SimpleModule::getCommandHandler(const String& cmd) {
     return handlers[cmd];
 }
+
+///-------------------------------------------------------------------------------------------------
+/// @fn void API::SimpleModule::handle(const Command *const cmd, CommandContext *const ctx)
+///
+/// @brief  Handles
+///
+/// @author Yacine Haoues
+/// @date   1/30/2018
+///
+/// @param          cmd The command.
+/// @param [in,out] ctx If non-null, the context.
+///-------------------------------------------------------------------------------------------------
 
 void  API::SimpleModule::handle(const Command *const cmd, CommandContext *const ctx) {
     this->getCommandHandler(cmd->getCommandString())(cmd, ctx);

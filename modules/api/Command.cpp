@@ -38,8 +38,8 @@ namespace API {
     ///
     /// @param  cmd The command.
     ///-------------------------------------------------------------------------------------------------
-    Command::Command(const String cmd ) 
-        : strCommand(cmd) , dict(new Dictionnary()) {
+    Command::Command(const String cmd)
+        : strCommand(cmd), dict(new Dictionnary()) {
         Info << "New Command : " << getCommandString();
     }
 
@@ -126,7 +126,7 @@ namespace API {
     std::ostream& operator<<(std::ostream& stream, const Command& cmd) {
         return stream << cmd.getCommandString();
     }
-    
+
     std::ostream& operator<<(std::ostream& stream, const Command* cmd) {
         return stream << cmd->getCommandString();
     }

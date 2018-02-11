@@ -113,6 +113,18 @@ namespace API {
         Info << "Done.";
     }
 
+    ///-------------------------------------------------------------------------------------------------
+    /// @fn void Application::runCommand(Command const* cmd, CommandContext *const ctx)
+    ///
+    /// @brief  Executes the command operation
+    ///
+    /// @author Yacine Haoues
+    /// @date   1/30/2018
+    ///
+    /// @param          cmd The command.
+    /// @param [in,out] ctx If non-null, the context.
+    ///-------------------------------------------------------------------------------------------------
+
     void Application::runCommand(Command const*  cmd, CommandContext *const ctx) {
         Module *const module = modulesManager->getModuleForCommand(cmd);
         if (module != NULL) {
