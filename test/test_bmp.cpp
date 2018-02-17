@@ -1,9 +1,17 @@
 #include <boost/test/included/unit_test.hpp>
 using namespace boost::unit_test;
 
+#include <Application.h>
+#include <ModulesManagers.h>
+
 //____________________________________________________________________________//
 
-void test_case1() { /* : */ }
+void test_case1() { 
+    API::Application app;
+    BOOST_CHECK(app.getExecutionResult() == 0);
+    API::ModulesManager * mgr = app.getModulesManager();
+    BOOST_CHECK(mgr != NULL);
+}
 void test_case2() { /* : */ }
 void test_case3() { /* : */ }
 void test_case4() { /* : */ }

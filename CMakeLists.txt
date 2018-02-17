@@ -33,6 +33,44 @@ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libs)
 set(Boost_USE_STATIC_LIBS   ON)
 set(BOOST_ALL_DYN_LINK ON)
 
+#--------------
+
+
+set(ENABLE_CODECOVERAGE ON)
+
+if ( ENABLE_CODECOVERAGE )
+
+    if ( NOT CMAKE_BUILD_TYPE STREQUAL "Debug" )
+        message( WARNING "Code coverage results with an optimised (non-Debug) build may be misleading" )
+    endif ( NOT CMAKE_BUILD_TYPE STREQUAL "Debug" )
+
+    if ( NOT DEFINED CODECOV_OUTPUTFILE )
+        set( CODECOV_OUTPUTFILE cmake_coverage.output )
+    endif ( NOT DEFINED CODECOV_OUTPUTFILE )
+
+    if ( NOT DEFINED CODECOV_HTMLOUTPUTDIR )
+        set( CODECOV_HTMLOUTPUTDIR coverage_results )
+    endif ( NOT DEFINED CODECOV_HTMLOUTPUTDIR )
+
+    if(NOT WIN32 OR MINGW)
+        find_program(CODECOV_GCOV gcov)
+        find_program(CODECOV_LCOV lcov)
+        find_program(CODECOV_GENHTML genhtml)
+        add_definitions( -fprofile-arcs -ftest-coverage )
+        
+        if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+            link_libraries(gcov)
+        endif()
+
+        set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} --coverage)
+        add_custom_target( coverage_init ALL ${CODECOV_LCOV} --base-directory .  --directory ${CMAKE_BINARY_DIR} --output-file ${CODECOV_OUTPUTFILE} --capture --initial )
+        add_custom_target( coverage ${CODECOV_LCOV} --base-directory .  --directory ${CMAKE_BINARY_DIR} --output-file ${CODECOV_OUTPUTFILE} --capture COMMAND genhtml -o ${CODECOV_HTMLOUTPUTDIR} ${CODECOV_OUTPUTFILE} )
+    endif ()
+
+endif (ENABLE_CODECOVERAGE)
+#----------------
+
+
 # FIND BOOST
 
 find_package(Boost COMPONENTS filesystem unit_test_framework REQUIRED)
