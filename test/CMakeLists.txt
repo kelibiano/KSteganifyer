@@ -6,6 +6,8 @@ include(CTest)
 set(PROJECT_NAME_STR Steganifyer)
 set(PROJECT_TEST_NAME ${PROJECT_NAME_STR}_test)
 
+find_package(Boost COMPONENTS filesystem unit_test_framework REQUIRED)
+
 include_directories(${PROJECT_SOURCE_DIR}/headers
                     ${Boost_INCLUDE_DIR})
 

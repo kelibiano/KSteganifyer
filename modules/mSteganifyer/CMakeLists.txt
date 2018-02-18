@@ -12,3 +12,4 @@ include_directories(./
 
 ADD_LIBRARY(${LIBRARY_NAME} SHARED ${SRCS})
 target_link_libraries (${LIBRARY_NAME} api ${Boost_LIBRARIES})
+
