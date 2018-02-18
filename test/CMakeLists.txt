@@ -18,5 +18,9 @@ add_executable(${PROJECT_TEST_NAME} ${TEST_SRC_FILES})
 target_link_libraries(${PROJECT_TEST_NAME} 
                       api
                       ${Boost_LIBRARIES})
+ 
+ if (UNIX)
+        target_link_libraries (${PROJECT_TEST_NAME} dl)
+ endif (UNIX)
 
 add_test(test1 ../${PROJECT_TEST_NAME} --color_output -m XML -e test.xml -r detailed)
